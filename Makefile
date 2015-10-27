@@ -30,24 +30,29 @@ makepre: bib/switching.bib prepress.tex pandoc/latex-postprocessor.py linkpdf
 	xelatex McCloyEtAl-pupil-deconvolution-prepress.tex
 	xelatex McCloyEtAl-pupil-deconvolution-prepress.tex
 
-manuscript.tex: manuscript.md bib/manuscript-numeric.bst pandoc/template-JASA-EL-manuscript.tex makefigs
-	ln -sf bib/manuscript-numeric.bst pupil-kernel.bst
-	pandoc --filter pandoc-eqnos --natbib --no-tex-ligatures --template=pandoc/template-JASA-EL-manuscript.tex --output=manuscript.tex manuscript.md
+manuscript.tex: manuscript.md bib/manuscript-numeric.bst pandoc/template-JASA-manuscript.tex makefigs
+	ln -sf bib/manuscript-numeric.bst pupil-switching.bst
+	pandoc --filter pandoc-eqnos --natbib --no-tex-ligatures --template=pandoc/template-JASA-manuscript.tex --output=manuscript.tex manuscript.md
 
-submission.tex: manuscript.md bib/jasa-el-submission.bst pandoc/template-JASA-EL-submission.tex figures/fig-1.eps figures/fig-2.eps figures/fig-3.eps
-	ln -sf bib/jasa-el-submission.bst pupil-kernel.bst
-	pandoc --filter pandoc-eqnos --natbib --template=pandoc/template-JASA-EL-submission.tex --output=submission.tex manuscript.md
+submission.tex: manuscript.md bib/jasa-submission.bst pandoc/template-JASA-submission.tex figures/fig-1.eps figures/fig-2.eps figures/fig-3.eps
+	ln -sf bib/jasa-submission.bst pupil-switching.bst
+	pandoc --filter pandoc-eqnos --natbib --template=pandoc/template-JASA-submission.tex --output=submission.tex manuscript.md
 
-prepress.tex: manuscript.md bib/jasa-el-submission.bst pandoc/template-JASA-EL-prepress.tex makefigs
-	ln -sf bib/jasa-el-submission.bst pupil-kernel.bst
-	pandoc --filter pandoc-eqnos --natbib --template=pandoc/template-JASA-EL-prepress.tex --output=prepress.tex manuscript.md
+prepress.tex: manuscript.md bib/jasa-submission.bst pandoc/template-JASA-prepress.tex makefigs
+	ln -sf bib/jasa-submission.bst pupil-switching.bst
+	pandoc --filter pandoc-eqnos --natbib --template=pandoc/template-JASA-prepress.tex --output=prepress.tex manuscript.md
 
 bib/manuscript-numeric.bst: bib/manuscript-numeric.dbj bib/bst-patcher.py
 	cd bib; tex manuscript-numeric.dbj
 	cd bib; python bst-patcher.py manuscript-numeric-unpatched.bst manuscript-numeric.bst 
 	cd bib; rm manuscript-numeric-unpatched.bst manuscript-numeric.log
 
-makefigs: figures/fig-1.pdf figures/fig-2.pdf figures/fig-3.pdf
+bib/jasa-submission.bst: bib/jasa-submission.dbj bib/bst-patcher.py
+	cd bib; tex jasa-submission.dbj
+	cd bib; python bst-patcher.py jasa-submission-unpatched.bst jasa-submission.bst 
+	cd bib; rm jasa-submission-unpatched.bst jasa-submission.log
+
+makefigs: figures/fig-placeholder.pdf
 
 figures/fig-%.pdf: figures/fig-%.py
 	cd $(<D); python $(<F)
@@ -60,16 +65,16 @@ linkpdf:
 
 cleanweb: cleancommon
 	rm -f fig-*.pdf *manuscript.tex
-	bn="McCloyEtAl-pupil-deconvolution-manuscript"; for ext in $(EXTS); do rm -f "$$bn.$$ext"; done
+	bn="McCloyEtAl-pupil-deconvolution-manuscript"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
 
 cleansub: cleancommon
 	rm -f *.eps *-eps-converted-to.pdf submission.tex submission-temp.tex submission-temp.pdf
-	bn="submission-temp"; for ext in $(EXTS); do rm -f "$$bn.$$ext"; done
-	bn="McCloyEtAl-pupil-deconvolution"; for ext in $(EXTS); do rm -f "$$bn.$$ext"; done
+	bn="submission-temp"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
+	bn="McCloyEtAl-pupil-deconvolution"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
 
 cleanpre: cleancommon
 	rm -f fig-*.pdf *prepress.tex
-	bn="McCloyEtAl-pupil-deconvolution-prepress"; for ext in $(EXTS); do rm -f "$$bn.$$ext"; done
+	bn="McCloyEtAl-pupil-deconvolution-prepress"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
 
 cleancommon:
 	rm -f pupil-kernel.bst
@@ -81,4 +86,4 @@ EPSFIGS = figures/*.eps
 
 PDFFIGS = figures/*.pdf
 
-EXTS = bbl aux ent fff log lof lol lot toc blg out pyg ttt
+TEXEXTS = bbl aux ent fff log lof lol lot toc blg out pyg ttt
