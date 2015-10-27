@@ -16,13 +16,13 @@ fontsize: 12pt
 geometry:
 - letterpaper
 - margin=1in
-header: McCloy, JASA-EL
+header: McCloy, JASA
 pacs:
 - 43.71.Qr <!-- Neurophysiology of speech perception -->
 - 43.66.Ba <!-- Models and theories of auditory processes -->
 - 43.71.Sy <!-- Spoken language processing by humans -->
-biblio-style: bib/jasasty-ay-web
-biblio-files: bib/effort
+biblio-style: bib/manuscript-numeric
+biblio-files: bib/switching
 abstract: Successful speech communication requires selective attention to a target stream in the presence of competing sounds. An objective physiological measure that reflected *where* attention was directed or *when* an attentional switch had occurred would be a useful tool for studying the mechanisms underlying selective auditory attention. Two experiments were conducted to determine whether the pupillary response is sensitive to auditory attention switches. In both experiments, pupil dilation, performance accuracy, and reaction time were measured during a task requiring listeners to either maintain or switch attention between two concurrent speech streams. Task difficulty was modulated in various ways to explore its effect on the pupillary response during attention switching tasks. In Experiment I, spectral degradation and switch gap duration were manipulated; in Experiment II, temporal degradation and target/masker gender match were manipulated. Deconvolved pupil responses revealed greater dilation on trials that required a switch of attention in comparison to trials that did not, demonstrating that the attentional switch is reflected in the pupillary response. Furthermore, while the stimulus manipulations had an effect on behavioral performance, the pupillary response continued to index only the top-down attentional task.
 ---
 <!-- 43.66.Qp Localization of sound sources -->

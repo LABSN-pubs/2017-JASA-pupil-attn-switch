@@ -5,7 +5,7 @@ pre: makepre cleanpre
 
 .PHONY: linkeps linkpdf cleanweb cleansub cleanall cleancommon
 
-makeweb: bib/pupil-kernel.bib manuscript.tex pandoc/latex-postprocessor.py linkpdf
+makeweb: bib/switching.bib manuscript.tex pandoc/latex-postprocessor.py linkpdf
 	python pandoc/latex-postprocessor.py manuscript.tex McCloyEtAl-pupil-deconvolution-manuscript.tex
 	xelatex McCloyEtAl-pupil-deconvolution-manuscript.tex
 	bibtex8 McCloyEtAl-pupil-deconvolution-manuscript.aux
@@ -13,17 +13,16 @@ makeweb: bib/pupil-kernel.bib manuscript.tex pandoc/latex-postprocessor.py linkp
 	xelatex McCloyEtAl-pupil-deconvolution-manuscript.tex
 	xelatex McCloyEtAl-pupil-deconvolution-manuscript.tex
 
-makesub: bib/pupil-kernel.bib submission.tex pandoc/latex-postprocessor.py pandoc/latex-make-standalone.py pandoc/latex-suppress-figures.py linkeps
+makesub: bib/switching.bib submission.tex pandoc/latex-postprocessor.py pandoc/latex-make-standalone.py linkeps
 	python pandoc/latex-postprocessor.py -s submission.tex submission-temp.tex
 	pdflatex submission-temp.tex
 	bibtex8 submission-temp.aux
 	python ./pandoc/latex-make-standalone.py submission-temp.tex McCloyEtAl-pupil-deconvolution.tex
-	python ./pandoc/latex-suppress-figures.py McCloyEtAl-pupil-deconvolution.tex McCloyEtAl-pupil-deconv-no-figs.tex
 	pdflatex McCloyEtAl-pupil-deconvolution.tex
 	pdflatex McCloyEtAl-pupil-deconvolution.tex
 	pdflatex McCloyEtAl-pupil-deconvolution.tex
 
-makepre: bib/pupil-kernel.bib prepress.tex pandoc/latex-postprocessor.py linkpdf
+makepre: bib/switching.bib prepress.tex pandoc/latex-postprocessor.py linkpdf
 	python pandoc/latex-postprocessor.py prepress.tex McCloyEtAl-pupil-deconvolution-prepress.tex
 	xelatex McCloyEtAl-pupil-deconvolution-prepress.tex
 	bibtex8 McCloyEtAl-pupil-deconvolution-prepress.aux
@@ -73,7 +72,7 @@ cleanpre: cleancommon
 	bn="McCloyEtAl-pupil-deconvolution-prepress"; for ext in $(EXTS); do rm -f "$$bn.$$ext"; done
 
 cleancommon:
-	rm -f nonascii.txt pupil-kernel.bst
+	rm -f pupil-kernel.bst
 
 clean: cleanweb cleansub cleanpre
 	rm -f McCloyEtAl-pupil-deconvolution.pdf McCloyEtAl-pupil-deconvolution-manuscript.pdf $(EPSFIGS) $(PDFFIGS)
