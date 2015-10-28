@@ -6,29 +6,29 @@ pre: makepre cleanpre
 .PHONY: linkeps linkpdf cleanweb cleansub cleanall cleancommon
 
 makeweb: bib/switching.bib manuscript.tex pandoc/latex-postprocessor.py linkpdf
-	python pandoc/latex-postprocessor.py manuscript.tex McCloyEtAl-pupil-deconvolution-manuscript.tex
-	xelatex McCloyEtAl-pupil-deconvolution-manuscript.tex
-	bibtex8 McCloyEtAl-pupil-deconvolution-manuscript.aux
-	xelatex McCloyEtAl-pupil-deconvolution-manuscript.tex
-	xelatex McCloyEtAl-pupil-deconvolution-manuscript.tex
-	xelatex McCloyEtAl-pupil-deconvolution-manuscript.tex
+	python pandoc/latex-postprocessor.py manuscript.tex McCloyEtAl-pupil-switching-manuscript.tex
+	xelatex McCloyEtAl-pupil-switching-manuscript.tex
+	bibtex8 McCloyEtAl-pupil-switching-manuscript.aux
+	xelatex McCloyEtAl-pupil-switching-manuscript.tex
+	xelatex McCloyEtAl-pupil-switching-manuscript.tex
+	xelatex McCloyEtAl-pupil-switching-manuscript.tex
 
 makesub: bib/switching.bib submission.tex pandoc/latex-postprocessor.py pandoc/latex-make-standalone.py linkeps
 	python pandoc/latex-postprocessor.py -s submission.tex submission-temp.tex
 	pdflatex submission-temp.tex
 	bibtex8 submission-temp.aux
-	python ./pandoc/latex-make-standalone.py submission-temp.tex McCloyEtAl-pupil-deconvolution.tex
-	pdflatex McCloyEtAl-pupil-deconvolution.tex
-	pdflatex McCloyEtAl-pupil-deconvolution.tex
-	pdflatex McCloyEtAl-pupil-deconvolution.tex
+	python ./pandoc/latex-make-standalone.py submission-temp.tex McCloyEtAl-pupil-switching.tex
+	pdflatex McCloyEtAl-pupil-switching.tex
+	pdflatex McCloyEtAl-pupil-switching.tex
+	pdflatex McCloyEtAl-pupil-switching.tex
 
 makepre: bib/switching.bib prepress.tex pandoc/latex-postprocessor.py linkpdf
-	python pandoc/latex-postprocessor.py prepress.tex McCloyEtAl-pupil-deconvolution-prepress.tex
-	xelatex McCloyEtAl-pupil-deconvolution-prepress.tex
-	bibtex8 McCloyEtAl-pupil-deconvolution-prepress.aux
-	xelatex McCloyEtAl-pupil-deconvolution-prepress.tex
-	xelatex McCloyEtAl-pupil-deconvolution-prepress.tex
-	xelatex McCloyEtAl-pupil-deconvolution-prepress.tex
+	python pandoc/latex-postprocessor.py prepress.tex McCloyEtAl-pupil-switching-prepress.tex
+	xelatex McCloyEtAl-pupil-switching-prepress.tex
+	bibtex8 McCloyEtAl-pupil-switching-prepress.aux
+	xelatex McCloyEtAl-pupil-switching-prepress.tex
+	xelatex McCloyEtAl-pupil-switching-prepress.tex
+	xelatex McCloyEtAl-pupil-switching-prepress.tex
 
 manuscript.tex: manuscript.md bib/manuscript-numeric.bst pandoc/template-JASA-manuscript.tex makefigs
 	ln -sf bib/manuscript-numeric.bst pupil-switching.bst
@@ -52,7 +52,7 @@ bib/jasa-submission.bst: bib/jasa-submission.dbj bib/bst-patcher.py
 	cd bib; python bst-patcher.py jasa-submission-unpatched.bst jasa-submission.bst 
 	cd bib; rm jasa-submission-unpatched.bst jasa-submission.log
 
-makefigs: figures/fig-placeholder.pdf
+makefigs: figures/fig-1.pdf figures/fig-placeholder.pdf
 
 figures/fig-%.pdf: figures/fig-%.py
 	cd $(<D); python $(<F)
@@ -65,22 +65,22 @@ linkpdf:
 
 cleanweb: cleancommon
 	rm -f fig-*.pdf *manuscript.tex
-	bn="McCloyEtAl-pupil-deconvolution-manuscript"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
+	bn="McCloyEtAl-pupil-switching-manuscript"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
 
 cleansub: cleancommon
 	rm -f *.eps *-eps-converted-to.pdf submission.tex submission-temp.tex submission-temp.pdf
 	bn="submission-temp"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
-	bn="McCloyEtAl-pupil-deconvolution"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
+	bn="McCloyEtAl-pupil-switching"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
 
 cleanpre: cleancommon
 	rm -f fig-*.pdf *prepress.tex
-	bn="McCloyEtAl-pupil-deconvolution-prepress"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
+	bn="McCloyEtAl-pupil-switching-prepress"; for ext in $(TEXEXTS); do rm -f "$$bn.$$ext"; done
 
 cleancommon:
-	rm -f pupil-kernel.bst
+	rm -f pupil-switching.bst
 
 clean: cleanweb cleansub cleanpre
-	rm -f McCloyEtAl-pupil-deconvolution.pdf McCloyEtAl-pupil-deconvolution-manuscript.pdf $(EPSFIGS) $(PDFFIGS)
+	rm -f McCloyEtAl-pupil-switching.pdf McCloyEtAl-pupil-switching-manuscript.pdf $(EPSFIGS) $(PDFFIGS)
 
 EPSFIGS = figures/*.eps
 
