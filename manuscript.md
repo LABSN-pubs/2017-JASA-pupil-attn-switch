@@ -31,7 +31,7 @@ abstract: Successful speech communication requires selective attention to a targ
 <!-- 43.66.Pn Binaural hearing -->
 
 # Introduction
-The ability to selectively attend to a target speech stream in the presence of competing sounds is required to communicate in everyday listening environments. This ability varies across individuals with normal hearing [@GoldbergEtAl2014], and for listeners with peripheral hearing deficits, changes in the encoding of stimuli often result in impaired selective attention and consequent difficulty communicating in noisy environments [@BestShinnCunningham2008].
+The ability to selectively attend to a target speech stream in the presence of competing sounds is required to communicate in everyday listening environments. This ability varies across individuals with normal hearing [@GoldbergEtAl2014], and for listeners with peripheral hearing deficits, changes in the encoding of stimuli often result in impaired selective attention and consequent difficulty communicating in noisy environments [@ShinnCunninghamBest2008].
 
 Past findings show that directing auditory attention involves a complex interaction between endogenous control (conscious, top-down) and exogenous (re)orientation (involuntary, bottom-up) [@Carlyon2004; @ShammaEtAl2011].  Unfortunately, it is hard to tell which of two competing sounds a listener is attending to (other than through subjective report), making it difficult to segregate exogenous and endogenous aspects of attention experimentally. A physiological measure that could index the attended stimulus, or that could indicate when an attentional switch had occurred, would be a useful tool to complement psychophysical measures of auditory attention.
 
