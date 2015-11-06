@@ -1,0 +1,155 @@
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+$if(geometry)$\usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}$endif$
+$if(tables)$\usepackage{tabularx,array,booktabs,multirow}$endif$
+$if(natbib)$\usepackage[sort&compress,super,comma]{natbib}\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}$endif$
+
+$if(graphics)$
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+%% Scale images if necessary, so that they will not overflow the page
+%% margins by default, and it is still possible to overwrite the defaults
+%% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+$endif$
+
+\usepackage{hyperref}
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={$author-meta$},
+            pdftitle={$title-meta$},
+            colorlinks=false,
+            pdfborder={0 0 0}}
+
+%% TITLE PAGE FORMATTING
+\usepackage{titling}
+\setlength{\droptitle}{-4\baselineskip}
+\pretitle{\begin{center}\large\bfseries}
+\posttitle{\par\end{center}\smallskip}
+\preauthor{\begin{center}\begin{tabular}[t]{c}}
+\postauthor{\end{tabular}\par\end{center}\smallskip}
+\predate{\begin{center}}
+\postdate{\par\end{center}\smallskip}
+%% title page footnotes
+\thanksmarkseries{alph}
+\thanksheadextra{\thinspace}{)}
+\thanksfootextra{}{)}
+\setlength{\thanksmarkwidth}{1em}
+\setlength{\thanksmargin}{0em}
+\setlength{\footnotesep}{2em}
+%% author block
+\usepackage[blocks]{authblk}
+\renewcommand{\Authfont}{\bfseries} 
+\renewcommand{\Affilfont}{\normalfont\itshape} 
+\setlength{\affilsep}{0ex}
+
+%% HEADER AND FOOTER
+$if(header)$
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{$header$}
+\renewcommand{\headrulewidth}{0pt}
+$endif$
+
+%% LINE NUMBERS
+\usepackage{lineno}
+\renewcommand\linenumberfont{\normalfont\scriptsize}
+
+%%  LIST OF FIGURES 
+\usepackage{tocloft}
+%% list of figures spacing commands
+\setlength\cftbeforefigskip{1em}
+\setlength{\cftafterloftitleskip}{0.5\baselineskip}
+\setlength{\cftfignumwidth}{1em}
+\setlength{\cftfigindent}{0pt}
+\renewcommand{\cftpnumalign}{l}
+\renewcommand{\cftfigpresnum}{\bfseries}
+%% remove dots and page numbers from the list of figures
+\renewcommand{\cftdotsep}{\cftnodots}
+\cftpagenumbersoff{figure}
+
+%% SECTION HEADINGS
+\usepackage{titlesec}
+\titleformat{\section}[hang]{\bfseries}{\thesection}{0.5em}{}%
+\titleformat{\subsection}[hang]{\itshape}{\thesubsection}{0.5em}{}%
+\titlespacing*{\section}{0pt}{0.4\baselineskip}{0.2\baselineskip}%
+\titlespacing*{\subsection}{0pt}{0.4\baselineskip}{0.2\baselineskip}%
+\renewcommand{\thesection}{\arabic{section}.} 
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}} 
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+% format various headings to match the style of section headings 
+\renewcommand{\refname}{\bfseries{References}}
+\renewcommand{\listfigurename}{\bfseries{List of figures}}
+
+%% BIBLIOGRAPHY
+\makeatletter
+\renewcommand\@biblabel[1]{\textsuperscript{#1}}
+\makeatother
+
+%% TABLES
+\usepackage{siunitx}
+\sisetup{table-number-alignment=center}
+%% Table reference formatting
+\renewcommand*{\thetable}{\Roman{table}}
+%% line spacing in tables
+\usepackage{etoolbox}  % provides \AtBeginEnvironment and \apptocmd
+\AtBeginEnvironment{tabular}{\singlespacing}
+%% move all tables to end of document
+\usepackage[tablesonly, notablist, tablesfirst]{endfloat}
+
+%% OTHER CUSTOMIZATIONS
+\usepackage{setspace}  %% DOUBLE-SPACING
+\usepackage{xfrac}     %% VULGAR FRACTIONS
+\usepackage{fixltx2e}  %% FIX MATH IN CAPTIONS
+\usepackage{textcomp}  %% for symbols that could be proper unicode, but JASA doesn't use XeLaTeX
+\thickmuskip=5mu plus 3mu minus 1mu  %% ADJUST EQUATION SPACING AROUND BINARY OPERATORS LIKE =
+%% SET URLS IN WHATEVER FONT SURROUNDING TEXT USES
+\renewcommand{\url}{\begingroup \def\UrlLeft{}\def\UrlRight{}\urlstyle{same}\Url}
+
+%% TITLE PAGE
+$if(title)$\title{$title$$if(titlenote)$\thanks{$titlenote$}$endif$}$endif$
+$if(subtitle)$\subtitle{$subtitle$}$endif$
+$for(author)$\author{$author.name$}
+$if(author.affiliation)$\affil{$for(author.affiliation)$$author.affiliation$$sep$ \& $endfor$}$endif$
+$endfor$
+\affil{$for(author)$$author.email$$sep$, $endfor$}
+$if(date)$\date{$date$}$else$\date{\today}$endif$
+
+\begin{document}
+\doublespacing
+
+$if(title)$\maketitle$if(runningtitle)$\begin{center}Running title: $runningtitle$\end{center}$endif$$endif$
+\cleardoublepage
+\linenumbers
+$if(abstract)$\begin{abstract}\noindent $abstract$$if(copyrightyear)$\newline\bigskip \copyright~$copyrightyear$~Acoustical Society of America$endif$$if(keywords)$\newline\bigskip\bigskip Keywords: $for(keywords)$$keywords$$sep$, $endfor$$endif$\end{abstract}\cleardoublepage$endif$
+
+$for(include-before)$
+$include-before$
+$endfor$
+
+$body$
+
+%% ACKNOWLEDGMENTS MUST LATER BE MOVED BEFORE APPENDICES
+$if(acknowledgments)$\section*{acknowledgments}$acknowledgments$\cleardoublepage$endif$
+
+$if(natbib)$
+$if(biblio-files)$
+\bibliography{$biblio-files$}
+$endif$
+$endif$
+
+\cleardoublepage
+%\processdelayedfloats
+%\cleardoublepage
+\listoffigures
+
+$for(include-after)$
+$include-after$
+$endfor$
+
+\end{document}
