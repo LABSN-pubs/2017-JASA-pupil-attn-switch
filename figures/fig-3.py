@@ -71,7 +71,7 @@ xlim = [t_min, t_max]
 
 for t, data in zip([t_fit], [data_deconv]):
     # collapse across trials and experimental contrasts
-    # axis 1 is trials, 2 is gap dur, 3 is maint/switch, 4 is num voc channels
+    # axis 1 is trials, 2 is mm/mf, 3 is maint/switch, 4 is reverb/anechoic
     revb_vs_anech = np.nanmean(data, axis=(1, 2, 3))
     mm_vs_mf = np.nanmean(data, axis=(1, 3, 4))
     maint_vs_switch = np.nanmean(data, axis=(1, 2, 4))
