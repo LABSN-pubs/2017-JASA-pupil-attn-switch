@@ -20,7 +20,7 @@ use_font('source')
 
 # set up figure
 fig = plt.figure(figsize=(6.5, 1.75))
-ax = plt.Axes(fig, [0.025, 0.25, 0.9, 0.75])
+ax = plt.Axes(fig, [0.025, 0.2, 0.9, 0.8])
 ax.axis('off')
 fig.add_axes(ax)
 
@@ -68,8 +68,8 @@ _ = [plt.plot(x, y, linewidth=0.5, color=gapcol, solid_capstyle='butt',
               zorder=4) for x, y in zip(xx, yy)]
 ax.add_artist(rect)
 ax.set_clip_on(False)
-ax.text(2.8, -3.3, 'variable gap\n(200 ms or 600 ms)', ha='center',
-        va='top', fontsize=10, color=gapcol)
+ax.text(2.8, -3.3, 'switch gap', ha='center', va='top', fontsize=10,
+        color=gapcol)
 
 # captions
 ax.text(0.5, 3.5, 'Cue', color='k', fontsize=11, ha='center', va='center')
@@ -86,7 +86,7 @@ arr_xmax = 4.7
 tcklen = 0.25
 ticktimes = [0, 1, 1.5, 2.5, 3.1, 4.1]
 ticklabels = [str(tt) for tt in ticktimes]
-ticklabels[-2:] = [str(a - 0.4) + ' or ' + str(a) for a in ticktimes[-2:]]
+#ticklabels[-2:] = [str(a - 0.4) + ' or ' + str(a) for a in ticktimes[-2:]]
 _ = ax.vlines(ticktimes, arr_y - tcklen, arr_y + tcklen, linewidths=0.5,
               zorder=5)
 _ = [ax.text(x, y, s, ha='center', va='baseline', fontsize=9)
