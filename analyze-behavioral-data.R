@@ -62,9 +62,10 @@ voc$corr_rej <- 4 - voc$hits - voc$false_alarms
 agg_cols <- c("hits", "misses", "false_alarms", "corr_rej")
 by_cols_rev <- c("subj", "attn", "reverb", "gender")
 by_cols_voc <- c("subj", "attn", "bands", "gap_len")
-keep_cols <- c("subj", by_cols_voc, agg_cols, "reax_times")  # "block", "trial",
-rev2 <- rev[keep_cols]
-voc2 <- voc[keep_cols]
+keep_cols_rev <- c(by_cols_rev, agg_cols, "reax_times")  # "block", "trial",
+keep_cols_voc <- c(by_cols_voc, agg_cols, "reax_times")  # "block", "trial",
+rev2 <- rev[keep_cols_rev]
+voc2 <- voc[keep_cols_voc]
 rev_agg <- aggregate(rev2[agg_cols], by=rev2[by_cols_rev], FUN=sum, simplify=TRUE)
 voc_agg <- aggregate(voc2[agg_cols], by=voc2[by_cols_voc], FUN=sum, simplify=TRUE)
 
