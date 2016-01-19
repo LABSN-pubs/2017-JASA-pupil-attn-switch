@@ -20,12 +20,9 @@ from matplotlib import rcParams
 from matplotlib import pyplot as plt
 
 # file I/O
-data_dir = 'data-behavioral'
 work_dir = getcwd()
+data_dir = 'data-behavioral'
 fnames = ['rev-behdata-longform.tsv', 'voc-behdata-longform.tsv']
-
-# column selector shorthand
-hmfc = ['hits', 'misses', 'false_alarms', 'corr_rej']
 
 # rcparams
 rcp = {'font.sans-serif': ['M+ 1c'], 'font.style': 'normal',
@@ -33,6 +30,9 @@ rcp = {'font.sans-serif': ['M+ 1c'], 'font.style': 'normal',
        'pdf.fonttype': 42}
 plt.rcdefaults()
 rcParams.update(rcp)
+
+# column selector shorthand
+hmfc = ['hits', 'misses', 'false_alarms', 'corr_rej']
 
 # loop over experiments
 for ix, fname in enumerate(fnames):
@@ -57,7 +57,7 @@ for ix, fname in enumerate(fnames):
                                          ).values.astype(int).tolist()]
 
     # loop over manipulations
-    fig, axs = plt.subplots(3, 1, figsize=(2.5, 5.5))
+    fig, axs = plt.subplots(1, 3, figsize=(7.5, 2.5))
     aggv = [['subj', ['reverb', 'voc_chan'][ix]],
             ['subj', ['gender', 'gap_len'][ix]],
             ['subj', 'attn']]
@@ -65,63 +65,26 @@ for ix, fname in enumerate(fnames):
           ['vocoder channels', 'gap length', 'attention']][ix]
     sg = [['***', '*', '***'], ['***', '', '*']][ix]
     br = [[(0, 1)], [[(0, 1)], None][ix], [(0, 1)]]
-    for ax, aggvar, groupname, brack, signif in zip(axs, aggv, gn, br, sg):
+    for iix, (ax, aggvar, groupname, brack, signif) in \
+            enumerate(zip(axs, aggv, gn, br, sg)):
         agg = longform[aggvar + hmfc]
         agg = agg.groupby(aggvar)
         agg = agg.aggregate(np.sum)
         agg['dprime'] = efa.dprime(agg[hmfc])
         dpr = agg['dprime'].unstack(0)
+        if aggvar[-1] == 'voc_chan':
+            dpr = dpr.sort_index(0, ascending=False)
         ax, bar = efa.barplot(dpr, err_bars='se', ax=ax, groups=[[0, 1]],
                               group_names=groupname, brackets=brack,
                               bracket_text=[signif], bracket_inline=True)
         _ = ax.set_ylim(0, 3.25)
         _ = ax.yaxis.set_ticks(range(0, 4))
-        _ = ax.yaxis.set_label_text('d-prime')
+        if iix:
+            _ = ax.yaxis.set_visible(False)
+            _ = ax.spines['left'].set_visible(False)
+        else:
+            _ = ax.yaxis.set_label_text('d-prime')
     plt.tight_layout()
-    plt.subplots_adjust(hspace=0.6, bottom=0.1)
+    plt.subplots_adjust(wspace=0.5, bottom=0.25)
     fname = ['reverb.svg', 'vocoder.svg'][ix]
     plt.savefig(fname)
-
-"""
-# main effect of gender / gap length
-aggv = ['subj', ['gender', 'gap_len'][ix]]
-agg_attn = longform[aggv + hmfc]
-agg_attn = agg_attn.groupby(aggv)
-agg_attn = agg_attn.aggregate(np.sum)
-agg_attn['dprime'] = efa.dprime(agg_attn[hmfc])
-dp_attn = agg_attn['dprime'].unstack(0)
-ax, bar = efa.barplot(dp_attn, err_bars='se',
-                      bar_names=['maintain', 'switch'])
-
-# main effect of attention
-aggv = ['subj', 'attn']
-agg_attn = longform[aggv + hmfc]
-agg_attn = agg_attn.groupby(aggv)
-agg_attn = agg_attn.aggregate(np.sum)
-agg_attn['dprime'] = efa.dprime(agg_attn[hmfc])
-dp_attn = agg_attn['dprime'].unstack(0)
-ax, bar = efa.barplot(dp_attn, err_bars='se',
-                      bar_names=['maintain', 'switch'])
-agg = longform[aggvars + hmfc]
-agg = agg.groupby(aggvars)
-agg = agg.aggregate(np.sum)
-agg['dprime'] = efa.dprime(agg[hmfc])
-dpmat = agg['dprime'].unstack(0)
-gr = [[0, 1], [2, 3], [4, 5], [6, 7]]
-
-bar_names = 4 * [['MF', 'MM'], ['long', 'short']][ix]
-gr1_names = 2 * [['anechoic', 'reverberant'],
-                 ['10 channel', '20 channel']][ix]
-gr2_names = ['maintain', 'switch']
-ax, bar = efa.barplot(dpmat, err_bars='se', groups=gr,
-                             bar_names=bar_names, group_names=gr1_names)
-
-_ = ax.yaxis.set_label_text('d-prime')
-gr2_x = np.mean([[bar.patches[1].xy[0] + bar.patches[1].get_width(),
-                  bar.patches[2].xy[0]],
-                 [bar.patches[5].xy[0] + bar.patches[5].get_width(),
-                  bar.patches[6].xy[0]]], axis=-1)
-_ = [ax.text(x, -0.45, name, ha='center')
-     for name, x in zip(gr2_names, gr2_x)]
-#_ = ax.yaxis.set_tick_params('major', labelsize=12)
-"""
