@@ -1,11 +1,12 @@
 ---
 title: Pupil dilation indexes auditory spatial attention switching
 runningtitle: Pupillometry and attention switching
-titlenote: Portions of the research described here were previously presented at the 37th Annual MidWinter Meeting of the Association for Research in Otolaryngology.
+titlenote: Portions of the research described here were previously presented at the 37th Annual MidWinter Meeting of the Association for Research in Otolaryngology. Portions of this analysis were previously described in McCloy et al (2016), Temporal alignment of pupillary response with stimulus events via deconvolution, J. Acoust. Soc. Am. 139(3), EL57-EL62.
 author:
 - name: Daniel R. McCloy
 - name: Bonnie Lau
 - name: Eric D. Larson
+- name: Katherine Ingle
 - name: Adrian K. C. Lee
   email: akclee@uw.edu
   affiliation:
