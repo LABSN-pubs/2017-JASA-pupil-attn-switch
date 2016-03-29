@@ -30,7 +30,7 @@ makepre: bib/switching.bib prepress.tex pandoc/latex-postprocessor.py linkpdf
 	xelatex McCloyEtAl-pupil-switching-prepress.tex
 	xelatex McCloyEtAl-pupil-switching-prepress.tex
 
-manuscript.tex: manuscript.md bib/manuscript-numeric.bst pandoc/template-JASA-manuscript.tex makefigs
+manuscript.tex: manuscript/manuscript.md bib/manuscript-numeric.bst pandoc/template-JASA-manuscript.tex makefigs
 	ln -sf bib/manuscript-numeric.bst pupil-switching.bst
 	pandoc --filter pandoc-eqnos --natbib --no-tex-ligatures --template=pandoc/template-JASA-manuscript.tex --output=manuscript.tex manuscript.md
 
