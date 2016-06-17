@@ -54,11 +54,11 @@ decades to measure cognitive load [@KahnemanBeatty1966; @Beatty1982]. Pupil
 dilation is an involuntary, time-locked, externally-evoked physiological
 response that is present from infancy in humans and other animal species. In
 general, as the cognitive demands of a task increases, pupil dilation of up to
-about 5-6 mm can be observed up to 1 s after onset of relevant stimuli
+about 5-6 mm can be observed up to 1 second after onset of relevant stimuli
 [@KahnemanBeatty1966; @Beatty1982; @HoeksLevelt1993]. While pupil dilation is
 slow (~1 Hz), recent results show that tracking of attention and cognitive
 processes with high temporal resolution (~10 Hz) is possible with deconvolution
-of the pupillary response [@WierdaEtAl2012; @McCloyEtAl2015].
+of the pupillary response [@WierdaEtAl2012; @McCloyEtAl2016].
 
 Classic studies show that pupil dilation can be elicited with increases in
 cognitive load resulting from greater memory demands [@Taylor1981], sentence
@@ -85,9 +85,10 @@ listeners were asked to attend to both speech streams present in the stimulus
 compared to attending to only one stream.
 
 While there have been no previous pupillometry studies of attention switching,
-Larson and Lee [-@LarsonLee2013a] showed that when cueing listeners to maintain
-versus switch attention mid-trial regarding which of two letter streams to
-report, switching attention both reduced accuracy and led to longer response
+Larson and Lee [-@LarsonLee2013a] showed that when cueing listeners in a target
+detection task to either maintain attention to one stream or switch attention to
+the other stream mid-trial, switching attention both reduced accuracy and led to
+longer response  
 latency. The present study was designed to investigate whether the pupillary
 response is also sensitive to attention switches. Pupil dilation was measured
 while listeners heard two speech streams, with pre-trial cues instructing them
@@ -111,12 +112,13 @@ data and the results of past studies.
 
 # Experiment 1
 In addition to the behavioral maintain-versus-switch manipulation, Experiment 1
-included a stimulus manipulation known to cause variation in task demand:
+included a cued stimulus manipulation known to cause variation in task demand:
 spectral resolution of the stimuli (implemented as variation in number of
-noise-vocoder bands). Based on results from Winn and colleagues [-@WinnEtAl2015]
-mentioned above, greater pupil dilation was expected in the 10-channel
-condition. Additionally, the duration of the mid-trial temporal gap provided for
-attentional switching was varied (either 200 ms or 600 ms). Behavioral and
+noise-vocoder bands, 10 or 20). Based on results from Winn and colleagues
+[-@WinnEtAl2015] mentioned above, greater pupil dilation was expected in the
+10-channel condition. Additionally, the duration of the mid-trial temporal gap
+provided for attentional switching was varied (either 200 ms or 600 ms, uncued).
+Behavioral and
 neuroimaging research by Larson and Lee [-@LarsonLee2013a; -@LarsonLee2013b]
 suggest that the time course of attention switching in the auditory domain is
 around 300-400 ms; accordingly, we expected the 200 ms switch gap to be the more
@@ -139,7 +141,9 @@ frequencies of the unprocessed recordings were 103 Hz (male talker) and 193 Hz
 silence-padded to a uniform duration of 500 ms, RMS normalized, and windowed at
 the edges with a 5 ms cosine-squared envelope. Two streams of four letters each
 were generated for each trial, with a gap of either 200 or 600 ms between the
-second and third letters of each stream.
+second and third letters of each stream. The letters “A” and “U” were used only
+in the pre-trial cues (described below); the target letter was “O” and letters
+“DEGPV” were non-target items.
 
 Spectral degradation was implemented following a conventional noise vocoding
 strategy [@ShannonEtAl1995]. The stimuli were fourth-order bandpass filtered
@@ -159,9 +163,9 @@ follow-up neuroimaging experiments (required due to the acoustic conditions in
 the neuroimaging suite).
 
 ### Procedure
-Participants were instructed to maintain their gaze on a white fixation dot
-centered on a black screen throughout test blocks. Each trial began with a 1 s
-auditory cue (spoken letters “AA” or “AU”) indicating (by the sex of the talker)
+Participants were instructed to fixate on a white dot centered on a black screen
+and maintain such gaze throughout test blocks. Each trial began with a 1 second
+auditory cue (spoken letters “AA” or “AU”); the sex of the cue’s talker indicated
 whether to attend first to the male or female voice, and additionally indicating
 whether to maintain attention to that talker throughout the trial (“AA” cue) or
 to switch attention to the other talker at the mid-trial gap (“AU” cue). The cue
@@ -170,34 +174,30 @@ concurrent, diotic 4-letter streams (one male voice, one female voice), with a
 variable-duration gap between the second and third letters. The task was to
 respond by button press to the letter “O” spoken by the target talker (Figure
 2). To allow unambiguous attribution of button presses, the letter “O” was
-always separated from another “O” (in either stream) by at least 1 s, and its
-position in the letter sequence was balanced across trials and conditions.<!--
-TODO: copied verbatim from EL paper -->
+always separated from another “O” (in either stream) by at least 1 second, and
+its position in the letter sequence was balanced across trials and conditions.
 
-![(Color online) Illustration of trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AU” in a male voice, attend to the male voice (“EO”) for the first half of the trial and the female voice (“EU”) for the second half of the trial, and respond once (to the “O” occurring at 2–2.5 s). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“EOPO”) throughout the trial, and respond twice (once for each “O”).](fig-1.eps)<!-- TODO: copied verbatim from EL paper -->
+![(Color online) Illustration of trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AU” in a male voice, attend to the male voice (“EO”) for the first half of the trial and the female voice (“EU”) for the second half of the trial, and respond once (to the “O” occurring at 2–2.5 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“EOPO”) throughout the trial, and respond twice (once for each “O”).](fig-1.eps)
 
-Before starting the experimental task, there were 2 blocks of 10 trials where
-participants listened to the stimuli. In the first block, participants heard the
-two talker streams together and in the second block, a single talker was
-separated out. Next, there was a training phase, which consisted of 3 blocks of
-10 trials where participants learned the task. In the first training block, all
-trials were from the MAINTAIN condition where the target remained in the same
-stream. In the second training block, all trials were from the SWITCH condition
-where the target was in the other stream after the gap. In the last training
-block, the MAINTAIN and SWITCH conditions were randomized, as in test blocks. To
-pass the training phase, participants were required to reach 50% correct on the
-first two blocks and 40% correct on the third block. If participants did not
-reach the pass criteria, the training block was repeated. The three conditions
-for each trial (SWITCH vs. MAINTAIN, 10-CHANNEL vs. 20-CHANNEL, 200 ms vs. 600
-ms GAP) were counterbalanced and randomly presented in 10 blocks of 32 trials,
-for a total of 320 trials.
+Before starting the experimental task, participants heard 2 blocks of 10 trials
+for familiarization with noise-vocoded speech (one with the two simultaneous
+talkers, one with a single talker). Next, they did 3 training blocks of 10
+trials each (one block of “maintain” trials, one block of “switch” trials, and
+one block of randomly mixed “maintain” and “switch” trials). Training blocks
+were repeated until participants achieved ≥50% of trials correct on the
+homogenous blocks and ≥40% of trials correct on the mixed block. During testing,
+the three experimental conditions (maintain/switch, 10/20 channel vocoder, and
+200/600 ms gap duration) were counterbalanced and randomly presented in 10
+blocks of 32 trials each, for a total of 320 trials.
 
 ### Behavioral analysis
 Listener responses were labeled as “hits” if the button press occurred <!--
-TODO: verify this next bit, esp. the "onset" part -->within 1 s of the onset of
-the “O” stimulus in the target stream. Responses at any other time during the
-trial (including responses in the 1 s window following “O” stimuli in the masker
-stream) were labeled as “false alarms”.
+TODO: verify this next bit, esp. the "onset" part -->within 1 second of the
+onset of the “O” stimulus in the target stream. Responses at any other time
+during the trial (including responses in the 1 second window following “O”
+stimuli in the masker stream) were labeled as “false alarms”.
+
+<!-- TODO: resume here -->
 
 ### Analysis of pupil diameter
 Pupil diameter data for each trial were epoched from -0.5 s to 6 s, with 0 s
@@ -245,7 +245,7 @@ rapid button-press responses).  This auxiliary experiment is described further
 in the Appendix; it yielded a smaller estimate of tmax = 512 ms, which we used
 in our model of the pupil response kernel.
 
-<!-- TODO: no edits beyond here are done yet -->
+<!-- TODO: no edits at all beyond here are done yet -->
 ## Results
 ### Pupillometry
 Mean pupil response as a function of time split by attention, spectral channels,
@@ -303,7 +303,7 @@ duration. To further investigate, a second experiment with additional stimulus
 manipulations was conducted.
 
 # Experiment 2
-<!-- TODO: add some intro text -->
+<!-- TODO: add some intro text --> O AB IJKMQRUXY
 ## Methods
 ### Participants
 Sixteen adults (XXX female) aged 18 to 35 years (mean XXX) were recruited for
