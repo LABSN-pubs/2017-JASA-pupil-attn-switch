@@ -1,7 +1,7 @@
 #! /usr/bin/env Rscript
-# ============================
-# Script 'd-prime mixed model'
-# ============================
+# =======================================
+# Script 'voc/rev behavioral mixed model'
+# =======================================
 # This script reads in behavioral data from two psychoacoustics experiments
 # (vocoder/reverb) and models the conditions with mixed effects regression.
 #
@@ -9,7 +9,7 @@
 # License: BSD (3-clause)
 
 library(stringi)
-#library(lme4)
+library(lme4)
 library(ez)
 
 parse_py_list <- function(str) {
@@ -51,12 +51,35 @@ rev$reverb <- c("10"=TRUE, "20"=FALSE)[as.character(rev$band)]
 rev$attn <- c("1"="maint", "2"="switch")[as.character(rev$maint1_switch2)]
 rev$gender <- c("1"="MM", "2"="MF")[as.character(rev$cue_1u_2d)]
 rev$corr_rej <- 4 - rev$hits - rev$false_alarms
+columns <- c("subj", "block", "trial", "run_index", "attn", "gender", "reverb",
+             "hits", "misses", "false_alarms", "corr_rej", "reax_times")
+rev <- rev[columns]
+
 
 voc$reax_times <- lapply(voc$reax_times, parse_py_list)
 voc$attn <- c("1"="maint", "2"="switch")[as.character(voc$maint1_switch2)]
 voc$bands <- as.character(voc$band)
 voc$gap_len <- c("1"="short", "2"="long")[as.character(voc$cue_1u_2d)]
 voc$corr_rej <- 4 - voc$hits - voc$false_alarms
+columns <- c("subj", "block", "trial", "run_index", "attn", "gap_len", "bands",
+             "hits", "misses", "false_alarms", "corr_rej", "reax_times")
+voc <- voc[columns]
+
+
+
+
+stop()
+mm_zero <- glmer(press ~ (1|subj),
+                 data=wl, family=binomial(link="probit"),
+                 control=glmerControl(optCtrl=list(maxfun=20000)))
+mm_null <- glmer(press ~ truth + (1|subj),
+                 data=wl, family=binomial(link="probit"),
+                 control=glmerControl(optCtrl=list(maxfun=20000)))
+#relgrad <- with(mm_null@optinfo$derivs, solve(Hessian, gradient))
+#print(max(abs(relgrad)))
+
+
+
 
 ## aggregate
 agg_cols <- c("hits", "misses", "false_alarms", "corr_rej")
