@@ -11,6 +11,9 @@ and gender/reverb experiments.
 # Created on Wed Jan 13 16:40:10 2016
 # License: BSD (3-clause)
 
+
+from __future__ import print_function, division
+
 import numpy as np
 import pandas as pd
 from glob import glob
@@ -18,19 +21,79 @@ from os import getcwd
 from os import path as op
 from scipy.io import loadmat
 
+
 # params
 rev_subjects = ['1', '2', '3', '4', '5', '6', '7', '10',
                 '11', '13', '14', '15', '16', '18', '20', '91']
 voc_subjects = ['01', '02', '04', '55', '6', '7', '8', '10',
                 '11', '12', '13', '14', '96', '97', '98', '99']
-min_rt = 0.1  # minimum reaction time, 100 ms
-max_rt = 1.0
+min_rt = 0.  # minimum reaction time, relative to stimulus onset
+max_rt = 1.
 
 # file I/O
 data_dir = 'data-behavioral'
 data_subdirs = ['reverb-raw', 'vocoder-raw']
 param_subdirs = ['data-reverb', 'data-vocoder']
 work_dir = getcwd()
+
+
+def assign_presses_to_slots(df_row):
+    # applied to rows of a DataFrame, which should have elements
+    # onsets, targ_letters, mask_letters, press_times
+    onsets = df_row['onsets']
+    presses = df_row['press_times']
+    targs = df_row['targ_letters'] == 'O'
+    foils = df_row['mask_letters'] == 'O'
+    press_indices = np.zeros_like(presses, dtype=int) - 1
+    for ix, press in enumerate(presses):
+        # first pass: assign to targ if possible
+        for ix2, (onset, targ) in enumerate(zip(onsets, targs)):
+            if targ and (onset + min_rt <= press <= onset + max_rt):
+                press_indices[ix] = ix2
+                break
+        # second pass: assign to foil if possible...
+        if press_indices[ix] < 0:  # ...but only if not already assigned
+            for ix2, (onset, foil) in enumerate(zip(onsets, foils)):
+                if foil and (onset + min_rt <= press <= onset + max_rt):
+                    press_indices[ix] = ix2
+                    break
+        # third pass: assign to any timing slot with RT in resp. window
+        if press_indices[ix] < 0:
+            for ix2, onset in enumerate(onsets):
+                if (onset + min_rt <= press <= onset + max_rt):
+                    press_indices[ix] = ix2
+                    break
+        # fourth pass: assign to earliest targ with non-zero RT
+        if press_indices[ix] < 0:
+            for ix2, (onset, targ) in enumerate(zip(onsets, targs)):
+                if targ and (onset + min_rt <= press):
+                    press_indices[ix] = ix2
+                    break
+        # fifth pass: assign to earliest foil with non-zero RT
+        if press_indices[ix] < 0:
+            for ix2, (onset, foil) in enumerate(zip(onsets, foils)):
+                if foil and (onset + min_rt <= press):
+                    press_indices[ix] = ix2
+                    break
+        # last pass: assign to any timing slot with non-zero RT
+        if press_indices[ix] < 0:
+            for ix2, onset in enumerate(onsets):
+                if (onset + min_rt <= press):
+                    press_indices[ix] = ix2
+                    break
+    return press_indices.tolist()
+
+
+def assign_press_time_to_slot(df_row):
+    slot = df_row['slot']
+    press_ixs = np.array(df_row['press_indices'])
+    press_times = np.array(df_row['press_times'])
+    if slot in press_ixs:
+        pt = press_times[np.where(press_ixs == slot)]
+        return pt[0]  # only return first press (ignore double presses)
+    else:
+        return np.nan
+
 
 longforms = list()
 for ix, subdir in enumerate(data_subdirs):
@@ -141,11 +204,10 @@ for ix, subdir in enumerate(data_subdirs):
                      (longform.shape[0], 1))
     onsets[:, 2:] += gap
     longform['onsets'] = [x for x in onsets]
-    # TODO: next line broken; searchsorted won't work, look for lowest index(?)
-    # where (o + min_rt) < p < (o + max_rt)
-    longform['press_indices'] = [np.searchsorted(o + min_rt, p) - 1
-                                 for o, p in zip(longform['onsets'],
-                                                 longform['press_times'])]
+    # assign presses to timing slots
+    longform['press_indices'] = longform.apply(assign_presses_to_slots, axis=1)
+    assert all([y >= 0 for x in longform['press_indices'] for y in x])
+    # prepare for merge
     slots_df = pd.DataFrame(dict(attn_lett=targ_lett.ravel(),
                                  mask_lett=mask_lett.ravel(),
                                  onset=onsets.ravel(), slot=slots.ravel(),
@@ -156,37 +218,26 @@ for ix, subdir in enumerate(data_subdirs):
     xlongform = pd.merge(slots_df, longform, on=['subj', 'block', 'trial'],
                          how='left')
     # distribute press times to appropriate slots
-    slot_press_match = np.array([s in p for s, p in
-                                 zip(xlongform['slot'],
-                                     xlongform['press_indices'])])
-    slot_press_ix = [np.where(p == s)[0][0] for s, p in
-                     zip(xlongform['slot'][slot_press_match],
-                         xlongform['press_indices'][slot_press_match])]
-    temp = np.zeros(xlongform.shape[0]) * np.nan
-    temp[slot_press_match] = [t[i] for t, i in
-                              zip(xlongform['press_times'][slot_press_match],
-                                  slot_press_ix)]
-    xlongform['press_time'] = temp  # temp avoids pandas SettingWithCopy error
+    xlongform['press_time'] = xlongform.apply(assign_press_time_to_slot, 1)
+    orig_presses = longform['press_times'].apply(len).sum()
+    attributed_presses = np.sum(~np.isnan(xlongform['press_time']))
+    print('{} of {} presses retained'.format(attributed_presses, orig_presses))
+    # reaction time
     xlongform['reax_time'] = xlongform['press_time'] - xlongform['onset']
+    rt = xlongform['reax_time'][~np.isnan(xlongform['reax_time'])]
     # distribute hit/miss/fa counts to appropriate slots
-    xlongform['hit'] = (xlongform['targ'] & (xlongform['reax_time'] <= 1.) &
-                        ~np.isnan(xlongform['press_time']))  # analysis:ignore
-    xlongform['miss'] = (xlongform['targ'] & ((xlongform['reax_time'] > 1.) |
-                                              np.isnan(xlongform['press_time'])
-                                              ))
-    assert np.all(xlongform['hits'][xlongform['hit']] > 0)
-    assert np.all(xlongform['misses'][xlongform['miss']] > 0)
-    assert xlongform['hit'].sum() == longform['hits'].sum()
+    xlongform['hit'] = (~np.isnan(xlongform['press_time']) &
+                        xlongform['targ'] & (xlongform['reax_time'] <= max_rt))
+    xlongform['miss'] = xlongform['targ'] & ~xlongform['hit']
+    xlongform['fals'] = ~xlongform['targ'] & ~np.isnan(xlongform['press_time'])
+    xlongform['crej'] = ~xlongform['targ'] & np.isnan(xlongform['press_time'])
+
+    foo = xlongform.groupby(['subj', 'block', 'trial'])
+    bar = np.squeeze(foo.aggregate(dict(hit=np.sum)))
     raise RuntimeError
-    temp = np.zeros(xlongform.shape[0], dtype=int)
-    temp[slot_press_match] = [t[i] for t, i in
-                              zip(xlongform['press_times'][slot_press_match],
-                                  slot_press_ix)]
-    """
-    assert np.array_equal(xlongform['hit'],
-                          np.logical_and(~np.isnan(xlongform['press_time']),
-                                         xlongform['targ']))
-    """
+    sum(longform['hits'] < bar)
+    sum(longform['hits'] > bar)
+
     # save extra-long form
     output_columns = (['subj', 'block', 'trial', 'run_index'] +
                       [['reverb', 'gender'], ['voc_chan', 'gap_len']][ix] +
