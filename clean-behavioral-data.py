@@ -27,7 +27,7 @@ rev_subjects = ['1', '2', '3', '4', '5', '6', '7', '10',
                 '11', '13', '14', '15', '16', '18', '20', '91']
 voc_subjects = ['01', '02', '04', '55', '6', '7', '8', '10',
                 '11', '12', '13', '14', '96', '97', '98', '99']
-min_rt = 0.  # minimum reaction time, relative to stimulus onset
+min_rt = 0.1  # minimum reaction time, relative to stimulus onset
 max_rt = 1.
 
 # file I/O
@@ -44,7 +44,7 @@ def assign_presses_to_slots(df_row):
     presses = df_row['press_times']
     targs = df_row['targ_letters'] == 'O'
     foils = df_row['mask_letters'] == 'O'
-    press_indices = np.zeros_like(presses, dtype=int) - 1
+    press_indices = np.zeros_like(presses, dtype=int) - 999
     for ix, press in enumerate(presses):
         # first pass: assign to targ if possible
         for ix2, (onset, targ) in enumerate(zip(onsets, targs)):
@@ -111,6 +111,7 @@ for ix, subdir in enumerate(data_subdirs):
          '__header__', '__globals__', 'timeVecsHeader', 'respData', 'respList',
          '__version__', 'blockNum', 'respDataHeader']
         # respList is the button press times
+        # respData is the trial params & precalculated hit/miss/falsealarm
         """
         for key in ['timeVecs', 'respData', 'respList']:
             assert mat[key][0][0].shape == (1, 0)  # empty header
@@ -158,7 +159,7 @@ for ix, subdir in enumerate(data_subdirs):
               'press_times']
     longform = pd.DataFrame(rows, columns=header)
     longform['corr_rej'] = 4 - longform['hits'] - longform['false_alarms']
-    longform['attn'] = np.array(['maint.', 'switch']
+    longform['attn'] = np.array(['maint', 'switch']
                                 )[(longform['maint1_switch2'] == 2
                                    ).values.astype(int).tolist()]
     if ix:
@@ -206,7 +207,10 @@ for ix, subdir in enumerate(data_subdirs):
     longform['onsets'] = [x for x in onsets]
     # assign presses to timing slots
     longform['press_indices'] = longform.apply(assign_presses_to_slots, axis=1)
-    assert all([y >= 0 for x in longform['press_indices'] for y in x])
+    unattr_presses = sum(longform['press_indices'].apply(lambda x: -999 in x))
+    # assert all([y >= 0 for x in longform['press_indices'] for y in x])
+    print('{} unattributed press{}'.format(str(unattr_presses),
+                                           ['', 'es'][unattr_presses != 1]))
     # prepare for merge
     slots_df = pd.DataFrame(dict(attn_lett=targ_lett.ravel(),
                                  mask_lett=mask_lett.ravel(),
@@ -215,6 +219,7 @@ for ix, subdir in enumerate(data_subdirs):
                                  block=np.repeat(longform['block'].values, 4),
                                  trial=np.repeat(longform['trial'].values, 4)))
     slots_df['targ'] = slots_df['attn_lett'] == target_letter
+    slots_df['foil'] = slots_df['mask_lett'] == target_letter
     xlongform = pd.merge(slots_df, longform, on=['subj', 'block', 'trial'],
                          how='left')
     # distribute press times to appropriate slots
@@ -231,19 +236,15 @@ for ix, subdir in enumerate(data_subdirs):
     xlongform['miss'] = xlongform['targ'] & ~xlongform['hit']
     xlongform['fals'] = ~xlongform['targ'] & ~np.isnan(xlongform['press_time'])
     xlongform['crej'] = ~xlongform['targ'] & np.isnan(xlongform['press_time'])
-
-    foo = xlongform.groupby(['subj', 'block', 'trial'])
-    bar = np.squeeze(foo.aggregate(dict(hit=np.sum)))
-    raise RuntimeError
-    sum(longform['hits'] < bar)
-    sum(longform['hits'] > bar)
-
+    xlongform['frsp'] = (~np.isnan(xlongform['press_time']) &
+                         xlongform['foil'] &
+                         (xlongform['reax_time'] <= max_rt))
     # save extra-long form
     output_columns = (['subj', 'block', 'trial', 'run_index'] +
                       [['reverb', 'gender'], ['voc_chan', 'gap_len']][ix] +
-                      ['attn', 'hits', 'misses', 'false_alarms', 'corr_rej',
-                       'slot', 'attn_lett', 'mask_lett', 'targ', 'onset',
-                       'press_time', 'reax_time'])
+                      ['attn', 'hit', 'miss', 'fals', 'crej', 'frsp',
+                       'slot', 'attn_lett', 'mask_lett', 'targ', 'foil',
+                       'onset', 'press_time', 'reax_time'])
     fname = ['rev-behdata-xlongform.tsv', 'voc-behdata-xlongform.tsv'][ix]
     xlongform[output_columns].to_csv(op.join(work_dir, data_dir, fname),
                                      sep='\t', index=False)
