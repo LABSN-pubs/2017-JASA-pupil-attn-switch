@@ -8,78 +8,125 @@
 # Author: Dan McCloy <drmccloy@uw.edu>
 # License: BSD (3-clause)
 
+library(parallel)
 library(stringi)
 library(lme4)
 library(ez)
 
-parse_py_list <- function(str) {
-    if (str == "[]") return(NA)
-    else {
-        str <- stri_replace_all_fixed(str, pattern="[", replacement="")
-        str <- stri_replace_all_fixed(str, pattern="]", replacement="")
-        str <- stri_split_fixed(str, pattern=", ", simplify=TRUE)
-        return(as.numeric(str))
-    }
-}
-
+# file paths
 data_dir <- "data-behavioral"
-rev_fname <- file.path(data_dir, "rev-behdata-longform.tsv")
-voc_fname <- file.path(data_dir, "voc-behdata-longform.tsv")
+rev_fname <- file.path(data_dir, "rev-behdata-xlongform.tsv")
+voc_fname <- file.path(data_dir, "voc-behdata-xlongform.tsv")
+# data types
+common_cols <- c(subj="integer", block="integer", trial="integer",
+                 run_index="integer", attn="character", hit="logical",
+                 miss="logical", fals="logical", crej="logical", frsp="logical",
+                 slot="integer", attn_lett="character", mask_lett="character",
+                 targ="logical", foil="logical", press="logical", 
+                 onset="numeric", press_time="numeric", reax_time="numeric")
+# add in the experiment-specific variables
+rev_cols <- c(common_cols, reverb="character", gender="character")
+voc_cols <- c(common_cols, voc_chan="character", gap_len="character")
+# read in data
+rev <- read.delim(rev_fname, sep="\t", colClasses=rev_cols)
+voc <- read.delim(voc_fname, sep="\t", colClasses=voc_cols)
 
-rev <- read.delim(rev_fname, sep="\t",
-                  colClasses=c(subj="numeric", block="numeric", trial="numeric",
-                               t_start="numeric", t_audio="numeric",
-                               t_resp_check="numeric", t_done="numeric",
-                               is_training="numeric", run_index="numeric",
-                               band="numeric", cue_1u_2d="numeric",
-                               maint1_switch2="numeric", hits="numeric",
-                               misses="numeric", false_alarms="numeric",
-                               reax_times="character"))
+# SET FACTOR CONTRASTS
+# treatment
+txContrast <- function(x, ...) {
+    x <- factor(x, ...)
+    contrasts(x) <- contr.treatment
+    colnames(contrasts(x)) <- paste0("_", levels(x)[-1])
+    x
+}
+# sum-to-one
+sumContrast <- function(x, ...) {
+    x <- factor(x, ...)
+    stopifnot(length(levels(x)) == 2)
+    contrasts(x) <- contr.sum
+    contrasts(x) <- contrasts(x) * 0.5
+    colnames(contrasts(x)) <- paste0("_", levels(x)[1])
+    x
+}
+# common variables
+makeFactors <- function(df) {
+    df <- within(df, {
+        # truth
+        truth <- ifelse(targ, "target", ifelse(foil, "foil", "neither"))
+        truth <- txContrast(truth, levels=c("neither", "target", "foil"))
+        # attn
+        attn <- sumContrast(attn, levels=c("maint.", "switch"))
+        # half
+        half <- 1 + as.integer(slot > 1)
+        half <- sumContrast(as.character(half), levels=c("1", "2"))
+        # slot
+        slot <- txContrast(as.character(slot), levels=c("0", "1", "2", "3"))
+    })
+    df
+}
+rev <- makeFactors(rev)
+voc <- makeFactors(voc)
+# experiment-specific variables
+rev <- within(rev, {
+    reverb <- sumContrast(reverb, levels=c("anech.", "reverb"))
+    gender <- sumContrast(gender, levels=c("MF", "MM"))
+})
+voc <- within(voc, {
+    voc_chan <- sumContrast(voc_chan, levels=c("20", "10"))
+    gap_len <- sumContrast(gap_len, levels=c("long", "short"))
+})
+# make sure factor creation didn't generate NAs
+invisible(within(rev, {
+    for (var in c(reverb, gender, attn, slot, half)) stopifnot(all(!is.na(var)))
+}))
+invisible(within(voc, {
+    for (var in c(voc_chan, gap_len, attn, slot, half)) stopifnot(all(!is.na(var)))
+}))
 
-voc <- read.delim(voc_fname, sep="\t",
-                  colClasses=c(subj="numeric", block="numeric", trial="numeric",
-                               t_start="numeric", t_audio="numeric",
-                               t_resp_check="numeric", t_done="numeric",
-                               is_training="numeric", run_index="numeric",
-                               band="numeric", cue_1u_2d="numeric",
-                               maint1_switch2="numeric", hits="numeric",
-                               misses="numeric", false_alarms="numeric",
-                               reax_times="character"))
 
-rev$reax_times <- lapply(rev$reax_times, parse_py_list)
-rev$reverb <- c("10"=TRUE, "20"=FALSE)[as.character(rev$band)]
-rev$attn <- c("1"="maint", "2"="switch")[as.character(rev$maint1_switch2)]
-rev$gender <- c("1"="MM", "2"="MF")[as.character(rev$cue_1u_2d)]
-rev$corr_rej <- 4 - rev$hits - rev$false_alarms
-columns <- c("subj", "block", "trial", "run_index", "attn", "gender", "reverb",
-             "hits", "misses", "false_alarms", "corr_rej", "reax_times")
-rev <- rev[columns]
+# MODELS: REVERB
+# set up formulae to be tested
+formulae <- list(
+    null_model=formula(press ~ truth + (1|subj)),
+    full_model=formula(press ~ truth*reverb*gender*attn + attn*slot + (1|subj)),
+    half_model=formula(press ~ truth*reverb*gender*attn + attn*half + (1|subj))
+)
+# fit models
+rev_models <- mapply(function(formula_, name) {
+    mod <- glmer(formula_, data=rev, family=binomial(link="probit"),
+                 control=glmerControl(optCtrl=list(maxfun=25000)))
+    cat(paste("reverb", name, "finished\n"))
+    mod
+    }, formulae, names(formulae))
 
 
-voc$reax_times <- lapply(voc$reax_times, parse_py_list)
-voc$attn <- c("1"="maint", "2"="switch")[as.character(voc$maint1_switch2)]
-voc$bands <- as.character(voc$band)
-voc$gap_len <- c("1"="short", "2"="long")[as.character(voc$cue_1u_2d)]
-voc$corr_rej <- 4 - voc$hits - voc$false_alarms
-columns <- c("subj", "block", "trial", "run_index", "attn", "gap_len", "bands",
-             "hits", "misses", "false_alarms", "corr_rej", "reax_times")
-voc <- voc[columns]
-
-
+# MODELS: VOCODER
+# set up formulae to be tested
+formulae <- list(
+    null_model=formula(press ~ truth + (1|subj)),
+    full_model=formula(press ~ truth*voc_chan*gap_len*attn + attn*slot*gap_len
+                       + (1|subj))
+)
+# fit models
+voc_models <- mapply(function(formula_, name) {
+    mod <- glmer(formula_, data=voc, family=binomial(link="probit"),
+                 control=glmerControl(optCtrl=list(maxfun=25000)))
+    cat(paste("vocoder", name, "finished\n"))
+    mod
+    }, formulae, names(formulae))
 
 
 stop()
-mm_zero <- glmer(press ~ (1|subj),
-                 data=wl, family=binomial(link="probit"),
-                 control=glmerControl(optCtrl=list(maxfun=20000)))
-mm_null <- glmer(press ~ truth + (1|subj),
-                 data=wl, family=binomial(link="probit"),
-                 control=glmerControl(optCtrl=list(maxfun=20000)))
-#relgrad <- with(mm_null@optinfo$derivs, solve(Hessian, gradient))
-#print(max(abs(relgrad)))
 
+# COEFPLOTS
+library(dotwhisker)
+library(ggplot2)
+revplot <- dwplot(rev_models$full_model) + theme_bw()
+vocplot <- dwplot(voc_models$full_model) + theme_bw()
+comboplot <- dwplot(list(reverb=rev_models$full_model,
+                         vocoder=voc_models$full_model)) + theme_bw()
 
-
+stop()
 
 ## aggregate
 agg_cols <- c("hits", "misses", "false_alarms", "corr_rej")
