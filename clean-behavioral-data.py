@@ -159,7 +159,7 @@ for ix, subdir in enumerate(data_subdirs):
               'press_times']
     longform = pd.DataFrame(rows, columns=header)
     longform['corr_rej'] = 4 - longform['hits'] - longform['false_alarms']
-    longform['attn'] = np.array(['maint', 'switch']
+    longform['attn'] = np.array(['maint.', 'switch']
                                 )[(longform['maint1_switch2'] == 2
                                    ).values.astype(int).tolist()]
     if ix:
@@ -224,27 +224,27 @@ for ix, subdir in enumerate(data_subdirs):
                          how='left')
     # distribute press times to appropriate slots
     xlongform['press_time'] = xlongform.apply(assign_press_time_to_slot, 1)
+    xlongform['press'] = ~np.isnan(xlongform['press_time'])
     orig_presses = longform['press_times'].apply(len).sum()
-    attributed_presses = np.sum(~np.isnan(xlongform['press_time']))
+    attributed_presses = xlongform['press'].sum()
     print('{} of {} presses retained'.format(attributed_presses, orig_presses))
     # reaction time
     xlongform['reax_time'] = xlongform['press_time'] - xlongform['onset']
     rt = xlongform['reax_time'][~np.isnan(xlongform['reax_time'])]
     # distribute hit/miss/fa counts to appropriate slots
-    xlongform['hit'] = (~np.isnan(xlongform['press_time']) &
-                        xlongform['targ'] & (xlongform['reax_time'] <= max_rt))
+    xlongform['hit'] = (xlongform['press'] & xlongform['targ'] &
+                        (xlongform['reax_time'] <= max_rt))
     xlongform['miss'] = xlongform['targ'] & ~xlongform['hit']
-    xlongform['fals'] = ~xlongform['targ'] & ~np.isnan(xlongform['press_time'])
-    xlongform['crej'] = ~xlongform['targ'] & np.isnan(xlongform['press_time'])
-    xlongform['frsp'] = (~np.isnan(xlongform['press_time']) &
-                         xlongform['foil'] &
+    xlongform['fals'] = xlongform['press'] & ~xlongform['targ']
+    xlongform['crej'] = ~xlongform['press'] & ~xlongform['targ']
+    xlongform['frsp'] = (xlongform['press'] & xlongform['foil'] &
                          (xlongform['reax_time'] <= max_rt))
     # save extra-long form
     output_columns = (['subj', 'block', 'trial', 'run_index'] +
                       [['reverb', 'gender'], ['voc_chan', 'gap_len']][ix] +
                       ['attn', 'hit', 'miss', 'fals', 'crej', 'frsp',
                        'slot', 'attn_lett', 'mask_lett', 'targ', 'foil',
-                       'onset', 'press_time', 'reax_time'])
+                       'press', 'onset', 'press_time', 'reax_time'])
     fname = ['rev-behdata-xlongform.tsv', 'voc-behdata-xlongform.tsv'][ix]
     xlongform[output_columns].to_csv(op.join(work_dir, data_dir, fname),
                                      sep='\t', index=False)
