@@ -27,20 +27,18 @@ tick_label_size(10)
 
 # flags
 plot_stderr = True
-plot_signif = True
+plot_signif = False
 show_pval = False
-savefig = True
+savefig = False
 continuous_deconv = False
+use_deconv = False
 
 # file I/O
 work_dir = '..'
 voc_file = op.join(work_dir, 'voc_data.npz')
-#rev_file = op.join(work_dir, 'rev_data.npz')
 vv = np.load(voc_file)
-#rr = np.load(rev_file)
 data_deconv, t_fit, subjects = vv['fits'], vv['t_fit'], vv['subjects']
 data_zscore, fs, kernel = vv['zscores'], vv['fs'], vv['kernel']
-#data_rev, t_fit_rev = rr['fits'], rr['t_fit']
 if continuous_deconv:
     data_cont, t_cont = vv['fits_cont'], vv['t_cont']
 '''
@@ -58,10 +56,9 @@ t_zs = t_min + np.arange(data_zscore.shape[-1]) / float(fs)
 stat_fun = partial(ttest_1samp_no_p, sigma=1e-3)
 
 # colors
-#cue, msk, blu, red = '0.5', '0.75', '#332288', '#aa4499'
-cue, msk, blu, red = '0.4', '0.65', '#332288', '#aa4499'
+cue, msk, blu, red = '0.5', '0.75', '#332288', '#aa4499'
 grn, yel = '#44aa99', '#ddcc77'
-signifcol = '0.95'
+signifcol = '0.9'
 axiscol = '0.8'
 tickcol = '0.8'
 axislabcol = '0.3'
@@ -70,85 +67,106 @@ ticklabcol = '0.5'
 # set up figure
 fig, axs = plt.subplots(3, 1, figsize=(3, 6.5))
 xlim = [t_min, t_max]
-#signifs = list()
 
-for t, data in zip([t_fit], [data_deconv]):
+times = [t_fit] if use_deconv else [t_zs]
+datas = [data_deconv] if use_deconv else [data_zscore]
+for t, data in zip(times, datas):
     # collapse across trials and experimental contrasts
     # axis 1 is trials, 2 is gap dur, 3 is maint/switch, 4 is num voc channels
     chan_10_vs_20 = np.nanmean(data, axis=(1, 2, 3))
     gap_200_vs_600 = np.nanmean(data, axis=(1, 3, 4))
     maint_vs_switch = np.nanmean(data, axis=(1, 2, 4))
     # axis limits
-    ymax = np.ceil(np.max(np.mean(np.nanmean(data_deconv, axis=1), axis=0)))
+    ymax = np.max(np.nanmean(data, axis=(0, 1)))
+    ymax = 10 ** (np.sign(np.log10(ymax)) * np.trunc(np.abs(np.log10(ymax))) +
+                  int(ymax > 1))
     ylim = [-0.6 * ymax, ymax]
+    # y values for stim timecourse diagram
+    stim_ymin = ymax * -0.45
+    stim_ymax = ymax * -0.3
     for jj, (contrast, ax) in enumerate(zip([chan_10_vs_20, gap_200_vs_600,
                                              maint_vs_switch], axs)):
-        # TRIAL TIMECOURSE
-        labels = [['10 band', '20 band/'], ['short gap', 'long gap'],
-                  ['maintain', 'switch']][jj]
-        colors = [[cue, cue], [cue, cue], [blu, red]][jj]
-        gaps = [[0.6, 0.6], [0.2, 0.6], [0.6, 0.6]][jj]
-        # y values for stim timecourse diagram
-        stim_ymin = ymax * -0.45
-        stim_ymax = ymax * -0.3
-        stim_ymid = (stim_ymin + stim_ymax) / 2.
-        yvals = [[stim_ymid, stim_ymid], [stim_ymin, stim_ymax],
-                 [stim_ymin, stim_ymax]][jj]
-        thk = 0.0125 * ymax
-        off = 0.05 * ymax
-        for kk in [0, 1]:
-            col = colors[kk]
-            gap = gaps[kk]
-            textcol = [blu, red][kk]
-            stim_y = yvals[kk]
-            stim_c = [cue] * 2 + [col] * 4
-            stim_m = [msk] * 4
-            if jj == len(axs) - 1:  # maint / switch
-                stim_c = [cue] * 2 + [col] * 2 + [[col] * 2, [msk] * 2][kk]
-                stim_m = [msk] * 2 + [[msk] * 2, [col] * 2][kk]
-            stim_t = stim_times + np.array([0] * 4 + [gap] * 2)
-            if jj != 0 or kk != 1:  # only draw once for 10/20 chan plot
-                # cue and attended stims
-                for tt, cl in zip(stim_t, stim_c):
-                    stim_x = (tt, tt + stim_dur)
-                    _ = ax.fill_between(stim_x, stim_y+thk, stim_y-thk,
-                                        color=cl, edgecolor='none',
-                                        zorder=9)
-                # masker stims
-                for tt, mk in zip(stim_t[2:], stim_m):
-                    stim_x = (tt, tt + stim_dur)
-                    _ = ax.fill_between(stim_x, stim_y+thk-off,
-                                        stim_y-thk-off, color=mk,
-                                        edgecolor='none', zorder=9)
-            # timecourse labels
-            lab = labels[kk]
-            ytxt = [stim_ymin, stim_ymax][kk]
-            xyt = [(-6, 0), (-6, 0), (-6, 0)][jj]
-            _ = ax.annotate(lab, (0, ytxt), xytext=(-6, 0),
-                            textcoords='offset points', color=textcol,
-                            ha='right', va='center', fontsize=9,
-                            fontstyle='italic')
-        # cue label
-        _ = ax.annotate('cue', xy=(stim_times[1], stim_y + thk),
-                        xytext=(0, 1.5), textcoords='offset points',
-                        fontsize=9, fontstyle='italic', ha='center',
-                        va='bottom', color=cue)
         # within-subject difference between conditions
         contr_diff = (contrast[:, 1, :] - contrast[:, 0, :])[:, :, np.newaxis]
         # collapse across subjects (only for plotting, not stats)
         contr_std = np.std(contrast, axis=0) / np.sqrt(len(contrast) - 1)
         contr_mean = np.mean(contrast, axis=0)
+        # vars for trial timecourse
+        gaps = [[0.6, 0.6], [0.2, 0.6], [0.6, 0.6]][jj]
+        labels = [['10 band/', '20 band'], ['short gap/', 'long gap'],
+                  ['maintain', 'switch']][jj]
+        colors = [[cue, cue], [cue, cue], [blu, red]][jj]
         # plot curves
-        for mm, (cond, se) in enumerate(zip(contr_mean, contr_std)):
-            col = [blu, red][mm]
-            tcol = cc.to_rgb(col) + (0.4,)  # add alpha channel
-            zord = [2, 0][mm]
+        for kk, (cond, se) in enumerate(zip(contr_mean, contr_std)):
+            col = colors[kk]
+            linecol = [blu, red][kk]
+            tcol = cc.to_rgb(linecol) + (0.4,)  # add alpha channel
+            tcol_hex = '#' + ''.join('%02x' % int(x * 255) for x in tcol)
+            zord = [2, 0][kk]
             # plot standard error bands
             if plot_stderr:
-                _ = ax.fill_between(t, cond - se, cond + se, color=tcol,
+                _ = ax.fill_between(t, cond-se, cond+se, color=tcol,
                                     edgecolor='none', zorder=zord + 2)
             # plot mean lines
-            _ = ax.plot(t, cond, color=col, linewidth=1.5, zorder=zord + 3)
+            _ = ax.plot(t, cond, color=linecol, linewidth=1.5, zorder=zord + 3)
+            # TRIAL TIMECOURSE
+            thk = 0.04 * ymax
+            off = 0.15 * ymax
+            loff = 0.01 * ymax
+            stim_y = [stim_ymin, stim_ymax][kk]
+            label_y = [stim_ymax, stim_ymax-off][kk]
+            # lines beneath stim boxes
+            if kk:  # "switch" line
+                nodes = (1, 2.5, 2.7, 4.4) if jj == 1 else (1, 2.5, 3.1, 4.4)
+                ax.plot(nodes, (stim_y-loff, stim_y-loff, stim_y-off,
+                                stim_y-off), color=col, linewidth=1.5,
+                        linestyle='--', zorder=7)
+            else:  # "maintain" line
+                ax.plot((1, 4.4), (stim_ymax+loff, stim_ymax+loff),
+                        color=col, linewidth=1.5, solid_capstyle='butt',
+                        zorder=7)
+            # boxes
+            gap_offsets = np.array([0] * 4 + [gaps[kk]] * 2)
+            stim_t = stim_times + gap_offsets
+            box_x = np.r_[stim_t, stim_t[2:]]
+            box_y = np.array([stim_ymax] * 6 + [stim_ymin] * 4)
+            box_u = np.array([thk] * 10)
+            box_d = np.array([thk] * 10)
+            # colors must be tuples (not hex strings) for alpha to work
+            box_c = [cc.to_rgba(x) for x in [cue] * 2 + [msk] * 8]
+            if jj == 1:
+                box_u[4:6] *= (1 - kk)
+                box_u[8:] *= (1 - kk)
+                box_d[4:6] *= kk
+                box_d[8:] *= kk
+                box_c[4:6] = [cc.to_rgba(linecol)] * 2  # or [tcol]
+                box_c[8:] = [cc.to_rgba(linecol)] * 2
+                if not kk:
+                    indices = np.array([4, 5, 8, 9])
+                    box_x = box_x[indices]
+                    box_y = box_y[indices]
+                    box_u = box_u[indices]
+                    box_d = box_d[indices]
+                    box_c = np.array(box_c)[indices]
+            if jj == 1 or kk:
+                for x, y, c, u, d in zip(box_x, box_y, box_c, box_u, box_d):
+                    c = cc.to_rgba_array(c)
+                    ax.fill_between((x, x+stim_dur), y+u, y-d, color=c,
+                                    edgecolor='none', zorder=9)
+            # timecourse labels
+            ha = ['right', 'right', 'left'][jj]
+            xtxt = [0, 0, 4.4][jj]
+            ytxt = [stim_ymax, stim_ymin][kk]
+            xytxt = [(-6, 0), (-6, 0), (6, 0)][jj]
+            _ = ax.annotate(labels[kk], (xtxt, ytxt), xytext=xytxt,
+                            textcoords='offset points', color=linecol,
+                            ha=ha, va='center', fontsize=9,
+                            fontstyle='italic')
+        # cue label
+        _ = ax.annotate('cue', xy=(stim_times[1], stim_ymax + thk),
+                        xytext=(0, 1.5), textcoords='offset points',
+                        fontsize=9, fontstyle='italic', ha='center',
+                        va='bottom', color=cue)
         # stats
         if plot_signif:
             thresh = -1 * distributions.t.ppf(0.05 / 2, len(contr_diff) - 1)
@@ -173,34 +191,19 @@ for t, data in zip([t_fit], [data_deconv]):
                 pval_x = t[int(np.mean(clu[[0, -1]]))]
                 pval_y = -0.1 * ylim[1]
                 pval_ord = np.trunc(np.log10(pv)).astype(int)
+
                 _ = hatch_between(ax, 9, t[clu], cluster_ymin,
-                                  cluster_ymax, bgcolor=signifcol,
-                                  linewidth=1.25, color='w', zorder=1)
+                                  cluster_ymax, linewidth=1.25,
+                                  color=signifcol, zorder=1)
                 if show_pval:
                     pval_txt = '$p < 10^{{{}}}$'.format(pval_ord)
                     _ = ax.text(pval_x, pval_y, pval_txt, ha='center',
                                 va='baseline', fontdict=dict(size=10))
-                #signifs.append([ax, t, clu, cluster_ymin, cluster_ymax])
-        '''
-        # vertical lines
-        if plot_signif and ii == 0:
-            ax.plot((t[clu][0], t[clu][0]), (cluster_ymin[0], cluster_ymax[0]),
-                    linestyle=':', color='k')
-        else:
-            # arrows
-            arrow_col = [grn, yel][ii - 1]
-            dx = 0.05
-            dy = 0.025 * ymax
-            arrow_x = t[clu][0]
-            arrow_y = ylim[0] - 7*dy
-            arrow_dx = 0
-            arrow_dy = 6*dy
-            arr = ax.arrow(arrow_x, arrow_y, arrow_dx, arrow_dy, width=dx,
-                           head_width=5*dx, head_length=3*dy, fc=arrow_col,
-                           ec=(0., 0., 0., 0.2), linewidth=0.5, clip_on=False,
-                           length_includes_head=True)
-        '''
-
+            # vertical lines
+            if len(signif):
+                ax.plot((t[clu][0], t[clu][0]),
+                        (cluster_ymin[0], cluster_ymax[0]), linestyle=':',
+                        color='k', linewidth=1)
         # set axis limits
         xlim[1] = 1.001 * xlim[1]
         ylim[1] = 1.001 * ylim[1]
@@ -217,21 +220,18 @@ for t, data in zip([t_fit], [data_deconv]):
         _ = ax.tick_params(color=tickcol, width=0.5, labelcolor=ticklabcol)
 
         # annotations
-        yl = 'Effort (AU)'
+        yl = 'Effort (a.u.)' if use_deconv else 'Pupil size (z-score)'
         yo = 1 - np.diff(ytck) / np.diff(ylim) / 2.
         _ = ax.set_ylabel(yl, y=yo, color=axislabcol)
         _ = ax.set_xlabel('Time (s)', color=axislabcol)
 
         box_off(ax)
         ax.patch.set_facecolor('none')
+#fig.tight_layout(w_pad=2., rect=(0.02, 0, 1, 1))
 fig.tight_layout()
-
-'''
-# hatch_between must come after tight_layout to get same angle on all subplots
-for (ax, t, clu, cluster_ymin, cluster_ymax) in signifs:
-    _ = hatch_between(ax, 10, t[clu], cluster_ymin, cluster_ymax,
-                      linewidth=1.5, color='w', zorder=1)
-'''
+fig.text(0.01, 0.94, 'a)')
+fig.text(0.01, 0.64, 'b)')
+fig.text(0.01, 0.34, 'c)')
 
 if savefig:
     fig.savefig('fig-2.pdf')
