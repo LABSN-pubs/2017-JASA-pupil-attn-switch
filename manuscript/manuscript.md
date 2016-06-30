@@ -100,14 +100,14 @@ required attention switching.
 
 # General Methods
 All procedures were performed in a sound-treated booth; illumination was
-provided only by the LCD monitor that presented instructions, fixation points,
-etc. Auditory stimuli were sent via a TDT RP2 real-time processor (Tucker Davis
+provided only by the LCD monitor that presented instructions and fixation points.
+Auditory stimuli were sent via a TDT RP2 real-time processor (Tucker Davis
 Technologies, Alachula, FL) to Etymotic ER-2 insert earphones at a level of 65
 dB SPL. Pupil size was measured continuously during each block of trials at a
 1000 Hz sampling frequency using an EyeLink1000 infra-red eye tracker (SR
 Research, Kanata, ON). Participants’ heads were stabilized by a chin rest and
 forehead bar, fixing their eyes at a distance of 50 cm from the EyeLink camera.
-Accuracy and reaction time were also recorded for comparison with pupillometry
+Accuracy and response time were also recorded for comparison with pupillometry
 data and the results of past studies.
 
 # Experiment 1
@@ -116,9 +116,9 @@ included a cued stimulus manipulation known to cause variation in task demand:
 spectral resolution of the stimuli (implemented as variation in number of
 noise-vocoder bands, 10 or 20). Based on results from Winn and colleagues
 [-@WinnEtAl2015] mentioned above, greater pupil dilation was expected in the
-10-channel condition. Additionally, the duration of the mid-trial temporal gap
-provided for attentional switching was varied (either 200 ms or 600 ms, uncued).
-Behavioral and
+(lower-intelligibility) 10-channel condition. Additionally, the duration of the
+mid-trial temporal gap provided for attentional switching was varied (either
+200 ms or 600 ms, uncued). Behavioral and
 neuroimaging research by Larson and Lee [-@LarsonLee2013a; -@LarsonLee2013b]
 suggest that the time course of attention switching in the auditory domain is
 around 300-400 ms; accordingly, we expected the 200 ms switch gap to be the more
@@ -191,59 +191,35 @@ the three experimental conditions (maintain/switch, 10/20 channel vocoder, and
 blocks of 32 trials each, for a total of 320 trials.
 
 ### Behavioral analysis
-Listener responses were labeled as “hits” if the button press occurred <!--
-TODO: verify this next bit, esp. the "onset" part -->within 1 second of the
-onset of the “O” stimulus in the target stream. Responses at any other time
-during the trial (including responses in the 1 second window following “O”
-stimuli in the masker stream) were labeled as “false alarms”.
-
-<!-- TODO: resume here -->
+Listener responses were labeled as “hits” if the button press occurred between
+100 and 1000 ms of the onset of “O” stimuli in the target stream. Responses at
+any other time during the trial were considered “false alarms”. False alarm
+responses occurring between 100 and 1000 ms following the onset of “O” stimuli
+in the *masker stream* were additionally labeled as “responses to foils” to aid
+in assessing failures to selectively attend to the target stream.
 
 ### Analysis of pupil diameter
-Pupil diameter data for each trial were epoched from -0.5 s to 6 s, with 0 s
-being the onset of the pre-trial cue. Periods where eye blinks were detected by
-the EyeLink 1000 parser were linearly interpolated from 25 ms before the blink
-to 100 ms after. The data were then down-sampled from 1000 Hz to 20 Hz because
-there was little energy at frequencies above 10 Hz in both the raw pupil
-diameter recordings and the computed pupil response kernel. To assess the effect
-of switching attention on pupil dilation, <!-- TODO: verify this next bit
--->only data for responses in the third letter position immediately after the
-gap was analyzed.
+Recordings of pupil diameter for each trial were epoched from -0.5 to 6 seconds,
+with 0 seconds defined as the onset of the pre-trial cue. Periods where eye
+blinks were detected by the EyeLink software were linearly interpolated from
+25 ms before blink onset to 100 ms after blink offset. Epochs were normalized
+by subtracting the mean pupil size between -0.5 and 0 seconds on each trial, and
+dividing by the standard deviation of pupil size across all trials.
 
-Analysis of pupil diameter was done using normalized values, calculated by
-subtracting the mean dilation during baseline (the period from -0.5 s to 0 s on
-each trial) and dividing by the standard deviation of pupil dilation over the
-course of the experiment. In addition, analyses were carried out on the
-normalized pupil diameter time series data after deconvolution with a pupil
-response kernel (Hoeks and Levelt, 1993; Wierda et al 2012). This method is
-similar to analyses routinely used in fMRI studies to determine the BOLD
-response. Briefly, the input to a linear system is assumed to be a train of
-impulses of potentially varying amplitudes, which, when convolved with a fixed
-impulse response function (the pupil response kernel), yields the observed pupil
-dilation time series. Using this model, one can estimate the timing and
-magnitude of the input (impulse train) by deconvolution of the output (pupil
-diameter time series) with the pupil response kernel. In this case, rather than
-performing true deconvolution, estimated the magnitude of the input pulses by
-modeling the measured pupil diameter time series as a linear combination of
-pupil response kernels (one at each time sample). Since the pupil response
-kernel is by definition an impulse response, the coefficients of the linear
-model are equivalent to estimates of the magnitudes of the input pulses.
-
-<!-- TODO: fix refs and equations -->
-Following Hoeks and Levelt (1993) and Wierda and colleagues (2012), we modeled
-the pupil response kernel as an Erlang gamma function, "h=s∙" ("t" ^"n"  )"∙"
-e^(((-nt)/tmax) ),  with scaling factor s, time t, and empirically determined
-parameters n (the number of “layers” in the cascade of upstream neural events
-leading to the pupillary change) and tmax (the time of maximal response from an
-isolated impulse). Hoeks and Levelt experimentally estimated n = 10.1 and tmax =
-930 ms. However, they only analyzed data from trials involving button-press
-responses, which may have impacted their estimate of tmax due to effects of the
-preparatory motor response on pupil dilation (Hupé et al 2009). Consequently, we
-performed an auxilliary experiment to estimate tmax in our own lab, with a
-paradigm more similar to our main experiments (i.e., auditory stimuli without
-rapid button-press responses).  This auxiliary experiment is described further
-in the Appendix; it yielded a smaller estimate of tmax = 512 ms, which we used
-in our model of the pupil response kernel.
+Normalized pupil size data were then deconvolved with a pupil impulse response
+kernel.[@WierdaEtAl2012; @McCloyEtAl2016]. Briefly, the pupil response kernel
+represents the stereotypical time course of a pupillary response to an isolated
+stimulus, modeled as an Erlang gamma function with empirically-determined
+parameters $t_\mathrm{max}$ (latency of response maximum) and $n$ (Erlang shape
+parameter).[@HoeksLevelt1993] The parameters used here were
+$t_\mathrm{max}=0.512 s$ and $n=10.1$ following previous
+literature.[@HoeksLevelt1993; @WierdaEtAl2012; @McCloyEtAl2016] Fourier analysis
+of the subject-level mean pupil size data and the deconvolution kernel indicated
+virtually no energy at frequencies above 3 Hz, so for computational efficiency
+the deconvolution was realized as a best-fit linear sum of kernels spaced at
+100 ms intervals (similar to downsampling both signal and kernel to 10 Hz prior
+to deconvolution), as implemented in the pyeparse software.[@pyeparse]
+<!-- TODO: resume here -->
 
 <!-- TODO: no edits at all beyond here are done yet -->
 ## Results
@@ -303,14 +279,63 @@ duration. To further investigate, a second experiment with additional stimulus
 manipulations was conducted.
 
 # Experiment 2
-<!-- TODO: add some intro text --> O AB IJKMQRUXY
+<!-- TODO: summary of exp2 -->
+This experiment involved listening to spatially separated...
+
+In addition to the behavioral maintain-versus-switch manipulation,
+this experiment included a cued stimulus manipulation predicted to cause
+variation in task demand: temporal degradation of the stimuli via simulated
+reverberation. Additionally, an uncued manipulation
+<!--
+spectral resolution of the stimuli (implemented as variation in number of
+noise-vocoder bands, 10 or 20). Based on results from Winn and colleagues
+[-@WinnEtAl2015] mentioned above, greater pupil dilation was expected in the
+(lower-intelligibility) 10-channel condition. Additionally, the duration of the
+mid-trial temporal gap provided for attentional switching was varied (either
+200 ms or 600 ms, uncued). Behavioral and
+neuroimaging research by Larson and Lee [-@LarsonLee2013a; -@LarsonLee2013b]
+suggest that the time course of attention switching in the auditory domain is
+around 300-400 ms; accordingly, we expected the 200 ms switch gap to be the more
+challenging condition and thus predicted greater pupil dilation on short-gap
+trials.
+ -->
+
 ## Methods
 ### Participants
-Sixteen adults (XXX female) aged 18 to 35 years (mean XXX) were recruited for
-experiment 2. All participants had normal audiometric thresholds (20 dB HL or
+Sixteen adults (XXX female) aged 18 to 35 years (mean XXX) participated in
+Experiment 2. All participants had normal audiometric thresholds (20 dB HL or
 better at octave frequencies from 250 Hz to 8 kHz) and were compensated at an
 hourly rate. All participants gave informed consent to participate as overseen
 by the University of Washington Institutional Review Board.
+
+### Stimuli
+Stimuli were based on spoken alphabet letters ABIJKMOQRUXY from the ISOLET v1.3
+corpus [@ColeEtAl1990] from one female and one male talker. Mean fundamental
+frequencies of the unprocessed recordings were 103 Hz (male talker) and 193 Hz
+(female talker). Letter durations ranged from 351 to 478 ms, and were
+silence-padded to a uniform duration of 500 ms, RMS normalized, and windowed at
+the edges with a 5 ms cosine-squared envelope. Two streams of four letters each
+were generated for each trial, with a gap of either 200 or 600 ms between the
+second and third letters of each stream. The letters “A” and “B” were used only
+in the pre-trial cues (described below); the target letter was “O” and letters
+“IJKMQRUXY” were non-target items.
+
+Reverberation was implemented using binaural room impulse responses (BRIRs)
+recorded by Shinn-Cunningham and colleagues @ShinnCunninghamEtAl2005. Briefly,
+an “anechoic” condition was created by processing the stimuli with BRIRs
+truncated to include only the direct impulse response and exclude reverberant
+energy, while stimuli for the “reverberant” condition were processed with the
+full BRIRs. In both conditions, the BRIRs recorded at ±45° for each stream were
+used, simulating a separation of 90° azimuth between target and masker.
+
+A white-noise masker
+with π-interaural-phase was played continuously during experimental blocks at a
+level of 45 dB SPL, yielding a stimulus-to-noise ratio of 20 dB. The additional
+noise was included to provide masking of environmental sounds (e.g., friction
+between subject clothing and earphone tubes) and to provide consistency with
+follow-up neuroimaging experiments (required due to the acoustic conditions in
+the neuroimaging suite).
+
 
 ### Stimuli and procedure <!-- TODO: split into separate sections -->
 Two new stimulus manipulations were investigated in Experiment II.  First,
