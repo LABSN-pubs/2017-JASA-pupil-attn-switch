@@ -4,3 +4,4 @@ data-vocoder
 
 # files
 *.npz
+.Rhistory
