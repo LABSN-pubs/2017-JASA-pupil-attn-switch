@@ -26,30 +26,30 @@ from pyeparse.utils import pupil_kernel
 from expyfun.analyze import restore_values
 
 # flags
+downsample = False
 run_continuous_deconv = False
+n_jobs = 4  # for parallelizing epochs.resample and epochs.deconvolve
 
 # file I/O
 data_dir = 'data-vocoder'
 work_dir = getcwd()
-voc_data_file = op.join(data_dir, 'orderMain.mat')
+voc_param_file = op.join(data_dir, 'orderMain.mat')
 
 # params
-subjects = ['01', '02', '04', '55', '6', '7', '8', '10',
-            '11', '12', '13', '14', '96', '97', '98', '99']
-t_min, t_max = -0.5, 6.05
-peak_vals = [0.512]  # labsn_nobuttonpress
-fs = 1000.0
-runs = np.arange(10)
-
-# construct event dict (mapping between trial parameters and integer IDs)
-event_dict = dict()
-for sn, sw in zip([100, 200], ['M', 'S']):        # maintain / switch
-    for gn, gs in zip([10, 20], ['200', '600']):  # gap duration
-        for bn, bs in zip([1, 2], ['10', '20']):  # num vocoder channels
-            event_dict.update({'x'.join([sw, gs, bs]): sn + gn + bn})
+subjects = ['01', '02', '04', '6', '7', '8', '10', '11',
+            '12', '13', '14', '55', '96', '97', '98', '99']
+runs = 10
+t_min, t_max = -0.5, 6.05  # trial epoch extents
+deconv_time_pts = None
+peak_vals = [0.512]  # t_max of pupil response kernel estimated at LABS^N; see
+                     # http://dx.doi.org/10.1121/1.4943787    (analysis:ignore)
+fs_in = 1000.0
+fs_out = 25.  # based on characterize-freq-content.py; no appreciable energy
+              # above 3 Hz in average z-score data or kernel  (analysis:ignore)
+fs_out = fs_out if downsample else fs_in
 
 # load trial info
-bm = loadmat(voc_data_file)
+bm = loadmat(voc_param_file)
 run_inds = bm['runInds']
 big_mat = bm['bigMat']
 '''
@@ -58,17 +58,25 @@ bigMat = []; % Attn switch (0=no, 1=yes), midGapInd,
                initial target (talker index), inital masker (talker index),
                cueType, TargMod, MaskMod, Mask Multiplier, Targ pos, Mask pos
 '''
-assert len(run_inds) == len(runs)
+assert len(run_inds) == runs
 run_inds = [np.array([ridx[0][0], ridx[0][1]], int).T for ridx in run_inds]
 
-deconv_time_pts = None
+# construct event dict (mapping between trial parameters and integer IDs)
+event_dict = dict()
+for sn, sw in zip([100, 200], ['M', 'S']):        # maintain / switch
+    for gn, gs in zip([10, 20], ['200', '600']):  # gap duration
+        for bn, bs in zip([1, 2], ['10', '20']):  # num vocoder channels
+            event_dict.update({'x'.join([sw, gs, bs]): sn + gn + bn})
+
+# init some containers
 fits = list()
 zscores = list()
 fits_continuous = list()
 kernels = list()
+
 # pre-calculate kernels
 for peak in peak_vals:
-    kernel = pupil_kernel(fs, t_max=peak, dur=2.0, s=0.015)
+    kernel = pupil_kernel(fs_out, t_max=peak, dur=2.0)
     kernels.append(kernel)
 
 for subj in subjects:
@@ -91,13 +99,13 @@ for subj in subjects:
     for ri, fname in enumerate(fnames):
         print(str(ri + 1), end=' ')
         raw = read_raw(fname)
-        assert raw.info['sfreq'] == fs
+        assert raw.info['sfreq'] == fs_in
         raw.remove_blink_artifacts()
         raws.append(raw)
         # convert 1-based trial numbers (matlab) to 0-based
         stim_nums = run_inds[ri][:, 0] - 1
         small_mat = big_mat[stim_nums]
-        # TRIALID 3 = a real trial (0, 1, and 2 are types of training trials)
+        # TRIALID 3 -> a real trial (0, 1, and 2 are types of training trials)
         event = raw.find_events('TRIALID 3', 1)
         eyelink_stim_ord = [int(m[1].split(',')[3]) - 1
                             for m in raw.discrete['messages']
@@ -132,13 +140,19 @@ for subj in subjects:
 
     print('\n  Epoching...')
     epochs = Epochs(raws, events, event_dict, t_min, t_max)
+    if downsample:
+        print('  Downsampling...')
+        epochs.resample(fs_out, n_jobs=n_jobs)
+    zscore = epochs.pupil_zscores()
 
+    # init some containers
     kernel_fits = list()
     kernel_zscores = list()
     kernel_fits_continuous = list()
+
     for kernel in kernels:
         print('  Deconvolving...')
-        fit, time_pts = epochs.deconvolve(kernel=kernel, n_jobs=6)
+        fit, time_pts = epochs.deconvolve(kernel=kernel, n_jobs=n_jobs)
         zscore = epochs.pupil_zscores()
         if deconv_time_pts is None:
             deconv_time_pts = time_pts
@@ -175,27 +189,17 @@ for subj in subjects:
 
         # continuous deconvolution
         if run_continuous_deconv:
-            print('  Downsampling...')
-            fs_out = 25.  # no freq. content above 10 Hz in avg data or kernel
-            b, a = ss.butter(1, fs_out / fs)
-            signal_samp = np.round(
-                zscores_structured.shape[-1] * fs_out / float(fs)).astype(int)
-            ksamp = np.round(kernel.shape[-1] * fs_out / float(fs)).astype(int)
-            zscores_lowpass = ss.lfilter(b, a, zscores_structured)
-            zscores_downsamp, t_downsamp = ss.resample(zscores_lowpass,
-                                                       signal_samp,
-                                                       t=epochs.times, axis=-1)
-            kernel_lowpass = ss.lfilter(b, a, kernel)
-            kernel_downsamp = ss.resample(kernel_lowpass, ksamp)
             # zero padding
-            zeropad = np.zeros(zscores_downsamp.shape[:-1] + (ksamp,))
-            zscores_zeropadded = np.c_[zeropad, zscores_downsamp, zeropad]
+            kernel_nsamp = np.round(kernel.shape[-1]).astype(int)
+            zeropad = np.zeros(zscores_structured.shape[:-1] + (kernel_nsamp,))
+            zscores_zeropadded = np.c_[zeropad, zscores_structured, zeropad]
             print('  Continuous deconvolution...')
-            len_deconv = zscores_zeropadded.shape[-1] - ksamp + 1
-            t_cont = t_downsamp[:len_deconv - 2 * ksamp]  # don't zeropad
+            len_deconv = zscores_zeropadded.shape[-1] - kernel_nsamp + 1
+            t_cont = epochs.times[:len_deconv - 2 * kernel_nsamp]  # no zeropad
             fit_continuous_deconv = np.empty(zscores_zeropadded.shape[:-1] +
                                              (len_deconv,))
             fit_continuous_deconv[:] = np.inf
+            # do deconvolution
             for _trial in range(zscores_zeropadded.shape[0]):
                 for _gap in range(zscores_zeropadded.shape[1]):
                     for _attn in range(zscores_zeropadded.shape[2]):
@@ -204,11 +208,11 @@ for subj in subjects:
                                                         _band, :]
                             (fit_continuous_deconv[_trial, _gap, _attn,
                                                    _band, :],
-                             _) = ss.deconvolve(signal, kernel_downsamp)
+                             _) = ss.deconvolve(signal, kernel)
             assert not np.any(fit_continuous_deconv == np.inf)
             # remove zero padding
-            fit_continuous_deconv = fit_continuous_deconv[:, :, :, :,
-                                                          ksamp:-ksamp]
+            fit_continuous_deconv = \
+                fit_continuous_deconv[:, :, :, :, kernel_nsamp:-kernel_nsamp]
         # combine results from different kernels
         kernel_fits.append(fits_structured)
         kernel_zscores.append(zscores_structured)
@@ -226,7 +230,7 @@ zscores_nopress = np.array([z[0] for z in zscores])
 
 out_nopress = dict(kernel=kernels[0], fits=fits_nopress,
                    zscores=zscores_nopress)
-out_common = dict(fs=fs, subjects=subjects, t_fit=deconv_time_pts)
+out_common = dict(fs=fs_out, subjects=subjects, t_fit=deconv_time_pts)
 if run_continuous_deconv:
     out_common.update(dict(t_cont=t_cont))
 out_nopress.update(out_common)
