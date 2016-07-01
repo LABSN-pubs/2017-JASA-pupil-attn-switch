@@ -39,7 +39,7 @@ subjects = ['1', '2', '3', '4', '5', '6', '7', '10',
 t_min, t_max = -0.5, 6.05
 peak_vals = [0.512]  # labsn_nobuttonpress
 fs = 1000.0
-runs = np.arange(10)
+runs = 10
 
 # construct event dict (mapping between trial parameters and integer IDs)
 event_dict = dict()
@@ -52,7 +52,7 @@ for sn, sw in zip([100, 200], ['M', 'S']):
 bm = loadmat(voc_data_file)
 run_inds = bm['runInds']
 big_mat = bm['bigMat']
-assert len(run_inds) == len(runs)
+assert len(run_inds) == runs
 run_inds = [np.array([ridx[0][0], ridx[0][1]], int).T for ridx in run_inds]
 
 deconv_time_pts = None
@@ -62,7 +62,7 @@ fits_continuous = list()
 kernels = list()
 # pre-calculate kernels
 for peak in peak_vals:
-    kernel = pupil_kernel(fs, t_max=peak, dur=2.0, s=0.015)
+    kernel = pupil_kernel(fs, t_max=peak, dur=2.0)  # , s=0.015)
     kernels.append(kernel)
 
 for subj in subjects:
