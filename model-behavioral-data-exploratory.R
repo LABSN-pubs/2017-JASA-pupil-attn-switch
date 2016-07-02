@@ -58,7 +58,7 @@ models <- mcmapply(function(formula_, name, data_source) {
     cat(paste(name, "finished\n"))
     mod
     }, formulae, names(formulae), datas)
-save(models, file=file.path(out_dir, "all-models.RData"))
+save(models, file=file.path(out_dir, "exploratory-models.RData"))
 
 
 ################################################################################
