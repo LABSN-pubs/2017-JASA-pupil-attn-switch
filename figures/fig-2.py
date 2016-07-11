@@ -210,6 +210,7 @@ for t, data in zip(times, datas):
         ylim[1] = 1.001 * ylim[1]
         ax.set_ylim(*ylim)
         ax.set_xlim(*xlim)
+        ax.xaxis.set_ticks(np.arange(np.ceil(xlim[1])))
         # remove yaxis / ticks / ticklabels near bottom
         ytck = [-0.1 * ymax, 1.001 * ymax]
         ytl = ax.yaxis.get_ticklocs()
@@ -235,7 +236,7 @@ fig.text(0.01, 0.66, 'b)')
 fig.text(0.01, 0.34, 'c)')
 
 if savefig:
-    fig.savefig('fig-2.pdf')
+    fig.savefig('fig-pupil-vocoder.pdf')
 else:
     plt.ion()
     plt.show()
