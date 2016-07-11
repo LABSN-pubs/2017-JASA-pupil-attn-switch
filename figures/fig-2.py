@@ -27,11 +27,11 @@ tick_label_size(10)
 
 # flags
 plot_stderr = True
-plot_signif = False
+plot_signif = True
 show_pval = False
-savefig = False
+savefig = True
+use_deconv = True
 continuous_deconv = False
-use_deconv = False
 
 # file I/O
 work_dir = '..'
@@ -77,9 +77,8 @@ for t, data in zip(times, datas):
     gap_200_vs_600 = np.nanmean(data, axis=(1, 3, 4))
     maint_vs_switch = np.nanmean(data, axis=(1, 2, 4))
     # axis limits
-    ymax = np.max(np.nanmean(data, axis=(0, 1)))
-    ymax = 10 ** (np.sign(np.log10(ymax)) * np.trunc(np.abs(np.log10(ymax))) +
-                  int(ymax > 1))
+    ymax = np.max(np.mean(np.nanmean(data, axis=1), axis=0))  # ceil
+    ymax = 10 ** np.trunc(np.log10(ymax)) if ymax < 1 else np.ceil(ymax)
     ylim = [-0.6 * ymax, ymax]
     # y values for stim timecourse diagram
     stim_ymin = ymax * -0.45
@@ -108,7 +107,7 @@ for t, data in zip(times, datas):
                 _ = ax.fill_between(t, cond-se, cond+se, color=tcol,
                                     edgecolor='none', zorder=zord + 2)
             # plot mean lines
-            _ = ax.plot(t, cond, color=linecol, linewidth=1.5, zorder=zord + 3)
+            _ = ax.plot(t, cond, color=linecol, linewidth=1.2, zorder=zord + 3)
             # TRIAL TIMECOURSE
             thk = 0.04 * ymax
             off = 0.15 * ymax
@@ -117,14 +116,15 @@ for t, data in zip(times, datas):
             label_y = [stim_ymax, stim_ymax-off][kk]
             # lines beneath stim boxes
             if kk:  # "switch" line
-                nodes = (1, 2.5, 2.7, 4.4) if jj == 1 else (1, 2.5, 3.1, 4.4)
-                ax.plot(nodes, (stim_y-loff, stim_y-loff, stim_y-off,
-                                stim_y-off), color=col, linewidth=1.5,
+                xnodes = (1, 2.5, 2.7, 4.4) if jj == 1 else (1, 2.5, 3.1, 4.4)
+                ynodes = (stim_y-loff, stim_y-loff,
+                          stim_y-off+loff, stim_y-off+loff)
+                ax.plot(xnodes, ynodes, color=col, linewidth=1.,
                         linestyle='--', zorder=7)
             else:  # "maintain" line
-                ax.plot((1, 4.4), (stim_ymax+loff, stim_ymax+loff),
-                        color=col, linewidth=1.5, solid_capstyle='butt',
-                        zorder=7)
+                ynodes = (stim_ymax+loff, stim_ymax+loff)
+                ax.plot((1, 4.4), ynodes, color=col, linewidth=1.,
+                        solid_capstyle='butt', zorder=7)
             # boxes
             gap_offsets = np.array([0] * 4 + [gaps[kk]] * 2)
             stim_t = stim_times + gap_offsets
@@ -135,11 +135,11 @@ for t, data in zip(times, datas):
             # colors must be tuples (not hex strings) for alpha to work
             box_c = [cc.to_rgba(x) for x in [cue] * 2 + [msk] * 8]
             if jj == 1:
-                box_u[4:6] *= (1 - kk)
-                box_u[8:] *= (1 - kk)
+                box_u[4:6] *= (1 - kk) + 0.5
+                box_u[8:] *= (1 - kk) + 0.5
                 box_d[4:6] *= kk
                 box_d[8:] *= kk
-                box_c[4:6] = [cc.to_rgba(linecol)] * 2  # or [tcol]
+                box_c[4:6] = [cc.to_rgba(linecol)] * 2  # or tcol
                 box_c[8:] = [cc.to_rgba(linecol)] * 2
                 if not kk:
                     indices = np.array([4, 5, 8, 9])
@@ -192,45 +192,46 @@ for t, data in zip(times, datas):
                 pval_y = -0.1 * ylim[1]
                 pval_ord = np.trunc(np.log10(pv)).astype(int)
 
-                _ = hatch_between(ax, 9, t[clu], cluster_ymin,
-                                  cluster_ymax, linewidth=1.25,
-                                  color=signifcol, zorder=1)
+                hatch_between(ax, 9, t[clu], cluster_ymin,
+                              cluster_ymax, linewidth=1.25,
+                              color=signifcol, zorder=1)
                 if show_pval:
                     pval_txt = '$p < 10^{{{}}}$'.format(pval_ord)
-                    _ = ax.text(pval_x, pval_y, pval_txt, ha='center',
-                                va='baseline', fontdict=dict(size=10))
+                    ax.text(pval_x, pval_y, pval_txt, ha='center',
+                            va='baseline', fontdict=dict(size=10))
             # vertical lines
             if len(signif):
-                ax.plot((t[clu][0], t[clu][0]),
-                        (cluster_ymin[0], cluster_ymax[0]), linestyle=':',
-                        color='k', linewidth=1)
+                for ix in (0, -1):
+                    ax.plot((t[clu][ix], t[clu][ix]),
+                            (cluster_ymin[ix], cluster_ymax[ix]),
+                            linestyle=':', color=axiscol, linewidth=1)
         # set axis limits
         xlim[1] = 1.001 * xlim[1]
         ylim[1] = 1.001 * ylim[1]
-        _ = ax.set_ylim(*ylim)
-        _ = ax.set_xlim(*xlim)
+        ax.set_ylim(*ylim)
+        ax.set_xlim(*xlim)
         # remove yaxis / ticks / ticklabels near bottom
         ytck = [-0.1 * ymax, 1.001 * ymax]
         ytl = ax.yaxis.get_ticklocs()
-        _ = ax.spines['left'].set_bounds(*ytck)
+        ax.spines['left'].set_bounds(*ytck)
         for sp in ['left', 'bottom']:
-            _ = ax.spines[sp].set_color(axiscol)
-        _ = ax.yaxis.set_ticks(ytl[ytl > ytck[0]])
-        _ = ax.set_ylim(*ylim)  # have to do this twice
-        _ = ax.tick_params(color=tickcol, width=0.5, labelcolor=ticklabcol)
+            ax.spines[sp].set_color(axiscol)
+        ax.yaxis.set_ticks(ytl[ytl > ytck[0]])
+        ax.set_ylim(*ylim)  # have to do this twice
+        ax.tick_params(color=tickcol, width=0.5, labelcolor=ticklabcol)
 
         # annotations
         yl = 'Effort (a.u.)' if use_deconv else 'Pupil size (z-score)'
         yo = 1 - np.diff(ytck) / np.diff(ylim) / 2.
-        _ = ax.set_ylabel(yl, y=yo, color=axislabcol)
-        _ = ax.set_xlabel('Time (s)', color=axislabcol)
+        ax.set_ylabel(yl, y=yo, color=axislabcol)
+        ax.set_xlabel('Time (s)', color=axislabcol)
 
-        box_off(ax)
+        box_off(ax, ax_linewidth=0.5)
         ax.patch.set_facecolor('none')
 #fig.tight_layout(w_pad=2., rect=(0.02, 0, 1, 1))
 fig.tight_layout()
-fig.text(0.01, 0.94, 'a)')
-fig.text(0.01, 0.64, 'b)')
+fig.text(0.01, 0.98, 'a)')
+fig.text(0.01, 0.66, 'b)')
 fig.text(0.01, 0.34, 'c)')
 
 if savefig:
