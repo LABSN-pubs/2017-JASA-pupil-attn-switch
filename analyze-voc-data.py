@@ -152,7 +152,8 @@ for subj in subjects:
 
     for kernel in kernels:
         print('  Deconvolving...')
-        fit, time_pts = epochs.deconvolve(kernel=kernel, n_jobs=n_jobs)
+        fit, time_pts = epochs.deconvolve(kernel=kernel, n_jobs=n_jobs,
+                                          acc=1e-3)
         zscore = epochs.pupil_zscores()
         if deconv_time_pts is None:
             deconv_time_pts = time_pts
