@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ===============================================================================
-Script ''
+Script 'Analyze vocoder data'
 ===============================================================================
 
 This script cleans and epochs pupillometry data for the vocoder/switch-gap
@@ -33,7 +33,7 @@ n_jobs = 4  # for parallelizing epochs.resample and epochs.deconvolve
 # file I/O
 data_dir = 'data-vocoder'
 work_dir = getcwd()
-voc_param_file = op.join(data_dir, 'orderMain.mat')
+param_file = op.join(data_dir, 'orderMain.mat')
 
 # params
 subjects = ['01', '02', '04', '6', '7', '8', '10', '11',
@@ -49,7 +49,7 @@ fs_out = 25.  # based on characterize-freq-content.py; no appreciable energy
 fs_out = fs_out if downsample else fs_in
 
 # load trial info
-bm = loadmat(voc_param_file)
+bm = loadmat(param_file)
 run_inds = bm['runInds']
 big_mat = bm['bigMat']
 '''
