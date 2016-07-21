@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ===============================================================================
-Script ''
+Script 'plot-behavioral-data.py'
 ===============================================================================
 
 This script cleans and analyzes behavioral data for the vocoder/switch-gap
@@ -18,7 +18,7 @@ import seaborn as sns
 from os import path as op
 from expyfun import analyze as efa
 from ast import literal_eval
-from convenience_functions import use_font
+from convenience_functions import use_font, sort_desc
 
 # flags
 plt.ioff()
@@ -39,11 +39,11 @@ thin = 0.5
 gray = '0.7'
 plt.rcdefaults()
 plt.rc('xtick', top=True)
-use_font('source')
 style_dict = {'ytick.major.size': 3, 'lines.solid_capstyle': 'butt',
               'axes.linewidth': thin, 'ytick.linewidth': thin}
 sns.set_style('white', style_dict)
 sns.set_context('paper')
+use_font('mplus')
 
 # plot params
 qrtp = dict(color='none', facecolor=gray)                     # quartile box
@@ -67,37 +67,54 @@ def read_data(data_fname):
     return longform
 
 
-def aggregate_df(df, aggvars, datavars=hmfc, diff=False):
+def _agg(df, aggvars, datavars):
     agg = df[aggvars + datavars]
     agg = agg.groupby(aggvars).aggregate(np.sum)
     agg['dprime'] = efa.dprime(agg[hmfc])
-    df_wide = agg['dprime'].unstack()
+    if 'voc_chan' in agg.index.names:
+        # convert int to str
+        ix = agg.index.names.index('voc_chan')
+        agg.index.set_levels(agg.index.levels[ix].astype(str), level=ix,
+                             inplace=True)
+        # sort voc_chan backwards
+        agg = sort_desc(agg, 'voc_chan', axis=0)
+    return agg
+
+
+def aggregate_dprime(df, aggvars, datavars=hmfc, diff=None):
+    agg = _agg(df, aggvars, datavars)['dprime']
+    df_long = agg.reset_index([x for x in aggvars if x != 'subj'])
+    df_wide = agg.unstack('subj').T
     if 'voc_chan' in df_wide.columns.names:
-        df_wide.rename(columns=lambda x: str(x), inplace=True)
-        df_wide.sortlevel(axis=1, ascending=False, inplace=True)
-    if diff:
-        data = {'dprime': np.subtract(*df_wide.T.values),
-                df_wide.columns.name: u' \u2212 '.join(df_wide.columns)}
-        df_long = pd.DataFrame(data, index=df_wide.index)
-        name = list(set(df_long.columns.tolist()) - set(['dprime']))
-        df_wide = df_long.set_index(name, append=True, inplace=False)
-        df_wide = df_wide.unstack(0).T
-    df_long = pd.melt(df_wide, value_name='dprime',
-                      value_vars=df_wide.columns.tolist())
-    return (agg, df_wide, df_long)
+        df_wide = sort_desc(df_wide, 'voc_chan', axis=1)
+    if diff is not None:
+        df_diff = agg.unstack(diff)
+        if diff == 'voc_chan':
+            df_diff = sort_desc(df_diff, diff, axis=1)
+        dpdiff = np.subtract(*df_diff.T.values)
+        newname = u'\u2009\u2212\u2009'.join(df_diff.columns)
+        columns = pd.Index([newname], name=df_diff.columns.name)
+        df_wide = pd.DataFrame(dpdiff, index=df_diff.index, columns=columns)
+        idvars = [x for x in df_diff.index.names if x != 'subj']
+        idvals = df_diff.reset_index(idvars)
+        datadict = {var: idvals[var] for var in idvars}
+        datadict.update({'dprime': dpdiff, df_diff.columns.name: newname})
+        df_long = pd.DataFrame(datadict, index=idvals.index)
+        while len(df_wide.index.names) > 1:
+            df_wide = df_wide.unstack()
+    return df_wide, df_long
 
 
-def plot_main_effect(data_fname, contrast, xlabel, signif=None, diff=True,
-                     fig=None, ax=None, despine_y=False):
+def box_and_swarm_plot(data, contrast, xlabel=None, signif=None,
+                       diff=None, fig=None, ax=None, despine_y=False):
     # load / parse / aggregate data  # hue=df_wide.columns.names[1]
-    longform = read_data(data_fname)
-    _, df_wide, df_long = aggregate_df(longform, contrast, diff=diff)
-    data_kwargs = dict(x=df_wide.columns.names[0], y='dprime', data=df_long)
+    df_wide, df_long = aggregate_dprime(data, contrast, diff=diff)
+    data_kwargs = dict(x=df_wide.columns.names[-1], y='dprime', data=df_long)
     # initialize figure
     fig = plt.figure(figsize=(1.25, 2.5)) if fig is None else fig
     ax = fig.add_subplot(111, top_margin=0.25) if ax is None else ax
     # must set axis lims before plotting (at least for swarmplot)
-    yrange = np.array([-1.25, 1.5]) if diff else np.array([0, 5])
+    yrange = np.array([-2, 2]) if diff else np.array([0, 5])
     bracket_offset = np.abs(np.diff(yrange)) / 25.
     ax.set_ylim(*(yrange + [0, 2.5 * bracket_offset]))
     # plot underlying boxplot
@@ -129,70 +146,17 @@ def plot_main_effect(data_fname, contrast, xlabel, signif=None, diff=True,
         ax.yaxis.set_ticks([])
     else:
         sns.despine(bottom=True, ax=ax)
-        yticks = range(-1, 2) if diff else range(0, 6)
+        yticks = range(-2, 3) if diff else range(0, 6)
         ax.yaxis.set_ticks(yticks)
-        ax.yaxis.set_label_text(u'difference in d\u2032')
-        ax.yaxis.labelpad = 1
+        ax.yaxis.set_label_text(u'within-subject difference in d\u2032')
+        ax.yaxis.labelpad = 2
         # draw line at zero across all 3 subplots
         xmax = fig.transFigure.transform([0.98, 0])
         xmax = ax.transAxes.inverted().transform(xmax)[0]
         ax.axhline(color='k', linewidth=thin, xmax=xmax, clip_on=False)
-    ax.set_title(xlabel, y=1.1)
-    ax.xaxis.set_label_text('')
-    ax.xaxis.tick_top()
-    return fig
-
-
-def plot_twoway(data_fname, contrast, xlabel, signif=None, diff=True,
-                fig=None, ax=None, despine_y=False):
-    # load / parse / aggregate data  # hue=df_wide.columns.names[1]
-    longform = read_data(data_fname)
-    _, df_wide, df_long = aggregate_df(longform, contrast, diff=diff)
-    data_kwargs = dict(x=df_long.index.names[-1], y='dprime', data=df_long)
-    # initialize figure
-    fig = plt.figure(figsize=(1.25, 2.5)) if fig is None else fig
-    ax = fig.add_subplot(111, top_margin=0.25) if ax is None else ax
-    # must set axis lims before plotting (at least for swarmplot)
-    yrange = np.array([-1.25, 1.5]) if diff else np.array([0, 5])
-    bracket_offset = np.abs(np.diff(yrange)) / 25.
-    ax.set_ylim(*(yrange + [0, 2.5 * bracket_offset]))
-    # plot underlying boxplot
-    box_kwargs = data_kwargs.copy()
-    box_kwargs.update(boxp)
-    ax = sns.boxplot(ax=ax, **box_kwargs)
-    # overplot data points
-    overplot_kwargs = data_kwargs.copy()
-    overplot_kwargs.update(ptsp)
-    if plot_type == 'strip':
-        sns.stripplot(ax=ax, jitter=True, **overplot_kwargs)
-    elif plot_type == 'swarm':
-        sns.swarmplot(ax=ax, split=True, **overplot_kwargs)
-    # significance brackets
-    _max = df_long['dprime'].max()
-    brack = np.tile(_max, 3) + np.array([1.2, 2., 2.2]) * bracket_offset
-    if signif:
-        if not diff:
-            ax.plot([0, 0], brack[:2], **sigp)
-            ax.plot([1, 1], brack[:2], **sigp)
-            ax.plot([0, 1], 2 * [brack[1]], **sigp)
-        star_y = brack[0] if diff else brack[2]
-        ax.annotate(signif, xy=(ax.xaxis.get_ticklocs().mean(), star_y),
-                    ha='center', color=sigp['color'])
-    # garnishes
-    if despine_y:
-        sns.despine(bottom=True, left=True, ax=ax)
-        ax.yaxis.set_label_text('')
-        ax.yaxis.set_ticks([])
-    else:
-        sns.despine(bottom=True, ax=ax)
-        yticks = range(-1, 2) if diff else range(0, 6)
-        ax.yaxis.set_ticks(yticks)
-        ax.yaxis.set_label_text(u'difference in d\u2032')
-        ax.yaxis.labelpad = 1
-        # draw line at zero across all 3 subplots
-        xmax = fig.transFigure.transform([0.98, 0])
-        xmax = ax.transAxes.inverted().transform(xmax)[0]
-        ax.axhline(color='k', linewidth=thin, xmax=xmax, clip_on=False)
+    if xlabel is None:
+        ix = df_wide.columns.names.index(diff)
+        xlabel = df_wide.columns.levels[ix][0]
     ax.set_title(xlabel, y=1.1)
     ax.xaxis.set_label_text('')
     ax.xaxis.tick_top()
@@ -209,6 +173,8 @@ all_signif = [['***', '**', '***'], ['*', '***', '***']]
 # plot main effects
 for data_fname, contrasts, groupnames, signifs in \
         zip(data_fnames, all_contrasts, all_groupnames, all_signif):
+    # load data
+    data = read_data(data_fname)
     # init figure
     figname = 'fig-{}-main.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
@@ -217,8 +183,9 @@ for data_fname, contrasts, groupnames, signifs in \
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, signifs, axs)):
         ax.patch.set_alpha(0)
-        fig = plot_main_effect(data_fname, contrast, groupname,  # signif,
-                               diff=True, fig=fig, ax=ax, despine_y=ix)
+        fig = box_and_swarm_plot(data, contrast, groupname, signif,
+                                 diff=contrast[-1], fig=fig, ax=ax,
+                                 despine_y=ix)
     # finish
     if savefig:
         plt.savefig(figname)
@@ -229,22 +196,25 @@ for data_fname, contrasts, groupnames, signifs in \
 
 # setup subplot info for two-way interactions
 all_contrasts = [[['subj', 'attn', 'reverb'],
-                  ['subj', 'attn', 'gender'],
-                  ['subj', 'reverb', 'gender']],
+                  ['subj', 'reverb', 'gender'],
+                  ['subj', 'gender', 'attn']],
                  [['subj', 'attn', 'voc_chan'],
-                  ['subj', 'attn', 'gap_len'],
-                  ['subj', 'voc_chan', 'gap_len']]]
-all_groupnames = [[u'attn. \u00D7 reverb.',
-                   u'attn. \u00D7 gender',
-                   u'reverb. \u00D7 gender'],
-                  [u'attn. \u00D7 vocoder ch.',
-                   u'attn. \u00D7 gap dur.',
-                   u'vocoder ch. \u00D7 gap dur.']]
-# all_signif = [['***', '**', '***'], ['*', '***', '***']]
+                  ['subj', 'voc_chan', 'gap_len'],
+                  ['subj', 'gap_len', 'attn']]]
+#all_groupnames = [[u'attn.\u2009\u00D7\u2009revb.',
+#                   u'attn.\u2009\u00D7\u2009gend.',
+#                   u'revb.\u2009\u00D7\u2009gend.'],
+#                  [u'attn.\u2009\u00D7\u2009voc.ch.',
+#                   u'attn.\u2009\u00D7\u2009gap dur.',
+#                   u'voc.ch.\u2009\u00D7\u2009gap dur.']]
+all_signif = [['', '**', ''], ['', '***', '***']]
+boxp.update(dict(width=0.6))
 
 # plot two-way interactions
 for data_fname, contrasts, groupnames, signifs in \
         zip(data_fnames, all_contrasts, all_groupnames, all_signif):
+    # load data
+    data = read_data(data_fname)
     # init figure
     figname = 'fig-{}-twoway.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
@@ -253,8 +223,9 @@ for data_fname, contrasts, groupnames, signifs in \
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, signifs, axs)):
         ax.patch.set_alpha(0)
-        fig = plot_main_effect(data_fname, contrast, groupname,  # signif,
-                               diff=True, fig=fig, ax=ax, despine_y=ix)
+        fig = box_and_swarm_plot(data, contrast, signif=signif,  # groupname
+                                 diff=contrast[1], fig=fig, ax=ax,
+                                 despine_y=ix)
     # finish
     if savefig:
         plt.savefig(figname)
