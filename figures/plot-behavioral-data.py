@@ -16,15 +16,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from os import path as op
+from scipy.stats import ttest_1samp, ttest_rel
 from expyfun import analyze as efa
 from ast import literal_eval
 from convenience_functions import use_font, sort_desc
 
 # flags
 plt.ioff()
-savefig = True
+savefig = False
 plot_type = 'swarm'  # box, strip, swarm
 notch = False
+ttest = True
 
 # file I/O
 work_dir = '..'
@@ -123,16 +125,18 @@ def agg_rt(data, aggvars, datavars=['reax_time', 'targ'],
 
 
 def box_and_swarm_plot(data, contrast, aggfunc, datalabel, xlabel=None,
-                       ylabel=None, signif=None, diff=None, fig=None,
+                       ylabel=None, signif=[], diff=None, fig=None, hue=None,
                        ax=None, despine_y=False, ylim=None, ytick=None):
     # load / parse / aggregate data  # hue=df_wide.columns.names[1]
     df_wide, df_long = aggfunc(data, contrast, diff=diff, datalabel=datalabel)
-    data_kwargs = dict(x=df_wide.columns.names[-1], y=datalabel, data=df_long)
+    data_kwargs = dict(x=df_wide.columns.names[-1], y=datalabel, hue=hue,
+                       data=df_long)
     # initialize figure
     fig = plt.figure(figsize=(1.25, 2.5)) if fig is None else fig
     ax = fig.add_subplot(111, top_margin=0.25) if ax is None else ax
     # must set axis lims before plotting (at least for swarmplot)
-    bracket_offset = 0. if signif is None else np.abs(np.diff(ylim)) / 25.
+    bracket_offset = (0. if signif is None and not ttest else
+                      np.abs(np.diff(ylim)) / 25.)
     ax.set_ylim(*(ylim + [0, 2.5 * bracket_offset]))
     # plot underlying boxplot
     box_kwargs = data_kwargs.copy()
@@ -142,21 +146,52 @@ def box_and_swarm_plot(data, contrast, aggfunc, datalabel, xlabel=None,
     overplot_kwargs = data_kwargs.copy()
     overplot_kwargs.update(ptsp)
     if plot_type == 'strip':
-        sns.stripplot(ax=ax, jitter=True, **overplot_kwargs)
+        ax = sns.stripplot(ax=ax, jitter=True, **overplot_kwargs)
     elif plot_type == 'swarm':
-        sns.swarmplot(ax=ax, split=True, **overplot_kwargs)
-    # significance brackets
+        ax = sns.swarmplot(ax=ax, split=True, **overplot_kwargs)
+    # handle legends
+    handles, labels = ax.get_legend_handles_labels()
+    plt.legend(handles[2:], labels[2:], bbox_to_anchor=(0.88, 1), loc=2,
+               borderaxespad=0.)
+    # calc significance (if not provided manually)
+    if ttest:
+        if df_wide.shape[1] == 1:
+            tval, pval = ttest_1samp(df_wide.values, 0)
+        elif df_wide.shape[1] == 2:
+            tval, pval = ttest_rel(*df_wide.T.values)
+        elif diff:
+            # 3-way interaction with diff
+            _df = df_long.set_index(contrast[1:], append=True)
+            _ix = _df.index.names.index(contrast[-2])
+            _lv = _df.index.levels[_ix]
+            vals = [df_wide.xs(lev, axis=1, level=_ix).values for lev in _lv]
+            tval, pval = ttest_rel(*np.array(vals).T)
+        else:
+            # 2-way interaction w/o diff
+            _df = df_long.set_index(contrast[1:], append=True).unstack()
+            tval, pval = ttest_rel(*_df.T.values)
+        signif = efa.format_pval(pval, latex=False, scheme='stars')
+        signif = np.atleast_1d(signif)
+        # convert unary arrays / lists to bare strings
+    # draw significance brackets
     _max = df_long[datalabel].max()
     brack = np.tile(_max, 3) + np.array([1.2, 2., 2.2]) * bracket_offset
-    if signif:
-        star_y = brack[0]
-        if len(contrast) > 2 or not diff:
-            ax.plot([0, 0], brack[:2], **sigp)
-            ax.plot([1, 1], brack[:2], **sigp)
-            ax.plot([0, 1], 2 * [brack[1]], **sigp)
-            star_y = brack[2]
-        ax.annotate(signif, xy=(ax.xaxis.get_ticklocs().mean(), star_y),
-                    ha='center', color=sigp['color'])
+    for _ix, _s in enumerate(signif):
+        if _s:
+            star_y = brack[0]
+            star_x = (ax.xaxis.get_ticklocs().mean() if data_kwargs['hue']
+                      is None else ax.xaxis.get_ticklocs()[_ix])
+            brac_x = (0.5 if data_kwargs['hue'] is None else
+                      boxp['width'] / 4.)
+            if len(contrast) > 2 or not diff:
+                _l = star_x - brac_x
+                _r = star_x + brac_x
+                ax.plot([_l, _l], brack[:2], **sigp)
+                ax.plot([_r, _r], brack[:2], **sigp)
+                ax.plot([_l, _r], 2 * [brack[1]], **sigp)
+                star_y = brack[2]
+            ax.annotate(_s, xy=(star_x, star_y), ha='center',
+                        color=sigp['color'])
     # garnishes
     if despine_y:
         sns.despine(bottom=True, left=True, ax=ax)
@@ -216,7 +251,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
     # init RT figure
     figname = 'fig-{}-main-rt.svg'.format(rt_data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
-    plt.subplots_adjust(top=0.8, right=0.98, left=0.152)
+    plt.subplots_adjust(top=0.8, right=0.98, left=0.153)
     # load RT data
     data = read_data(rt_data_fname, False)
     ylab = u'within-subject difference in RT (s)'
@@ -280,7 +315,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
     # init RT figure
     figname = 'fig-{}-twoway-rt.svg'.format(rt_data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
-    plt.subplots_adjust(top=0.8, right=0.98, left=0.152)
+    plt.subplots_adjust(top=0.8, right=0.98, left=0.153)
     # load RT data
     data = read_data(rt_data_fname, False)
     ylab = u'within-subject difference in RT (s)'
@@ -295,6 +330,64 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
                                  diff=contrast[1], fig=fig,  # signif=signif,
                                  ax=ax, despine_y=ix, aggfunc=agg_rt,
                                  ylim=ylim, ytick=ytick)
+    # savefig
+    if savefig:
+        plt.savefig(figname)
+
+# setup subplot info for three-way interactions
+all_contrasts = [[['subj', 'gender', 'attn', 'reverb']],
+                 [['subj', 'gap_len', 'attn', 'voc_chan']]]
+all_groupnames = [[u'\u2009\u00D7\u2009'.join(['attn.', 'revb.', 'gend.'])],
+                  [u'\u2009\u00D7\u2009'.join(['attn.', 'voc.ch.',
+                                               'gap dur.'])]]
+# all_signif = [['', '**', ''], ['', '***', '***']]
+boxp.update(dict(width=0.8))
+
+# plot three-way interactions
+for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
+        zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
+            all_signif):
+    # init figure
+    figname = 'fig-{}-threeway.svg'.format(data_fname[:3])
+    fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
+    axs = np.atleast_1d(axs)
+    plt.subplots_adjust(top=0.8, right=0.88)
+    # load data
+    data = read_data(data_fname)
+    ylab = u'within-subject difference in d\u2032'
+    ylim = np.array([-2, 2])  # np.array([0, 5]) if not doing differences
+    ytick = range(ylim[0], ylim[1] + 1)
+    # iterate over (sub)plots
+    for ix, (contrast, groupname, signif, ax) in \
+            enumerate(zip(contrasts, groupnames, signifs, axs)):
+        ax.patch.set_alpha(0)
+        fig = box_and_swarm_plot(data, contrast, datalabel='dprime',
+                                 ylabel=ylab,  # xlabel=groupname,
+                                 diff=contrast[1], fig=fig, signif=signif,
+                                 ax=ax, despine_y=ix, aggfunc=agg_dprime,
+                                 ylim=ylim, ytick=ytick, hue=contrast[-1])
+    # savefig
+    if savefig:
+        plt.savefig(figname)
+    # init RT figure
+    figname = 'fig-{}-threeway-rt.svg'.format(rt_data_fname[:3])
+    fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
+    axs = np.atleast_1d(axs)
+    plt.subplots_adjust(top=0.8, right=0.88, left=0.153)
+    # load RT data
+    data = read_data(rt_data_fname, False)
+    ylab = u'within-subject difference in RT (s)'
+    ylim = np.array([-0.3, 0.15])
+    ytick = np.linspace(-0.3, 0.1, 5)
+    # iterate over (sub)plots
+    for ix, (contrast, groupname, signif, ax) in \
+            enumerate(zip(contrasts, groupnames, signifs, axs)):
+        ax.patch.set_alpha(0)
+        fig = box_and_swarm_plot(data, contrast, datalabel='reax_time',
+                                 ylabel=ylab,  # xlabel=groupname,
+                                 diff=contrast[1], fig=fig,  # signif=signif,
+                                 ax=ax, despine_y=ix, aggfunc=agg_rt,
+                                 ylim=ylim, ytick=ytick, hue=contrast[-1])
     # savefig
     if savefig:
         plt.savefig(figname)
