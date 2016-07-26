@@ -23,10 +23,10 @@ from convenience_functions import use_font, sort_desc
 
 # flags
 plt.ioff()
-savefig = False
+savefig = True
 plot_type = 'swarm'  # box, strip, swarm
 notch = False
-ttest = True
+ttest = False
 
 # file I/O
 work_dir = '..'
@@ -39,7 +39,6 @@ hmfc = ['hits', 'misses', 'false_alarms', 'corr_rej']
 
 # plot styles
 thin = 0.5
-gray = '0.7'
 plt.rcdefaults()
 plt.rc('xtick', top=True)
 style_dict = {'ytick.major.size': 3, 'lines.solid_capstyle': 'butt',
@@ -49,11 +48,11 @@ sns.set_context('paper')
 use_font('mplus')
 
 # plot params
-qrtp = dict(color='none', facecolor=gray)                     # quartile box
+qrtp = dict(color='none', facecolor='0.7')                    # quartile box
 whsp = dict(color='k', linestyle='solid')                     # whisker
-medp = dict(color='w', linewidth=1.5)                         # median line
+medp = dict(color='w', linewidth=1.6)                         # median line
 sigp = dict(color='r', linewidth=0.8)                         # signif. bracket
-ptsp = dict(size=4, color='k', linewidth=thin, edgecolor=gray)  # data pts
+ptsp = dict(size=4, color='k', linewidth=thin, edgecolor='0.5')  # data pts
 boxp = dict(showcaps=False, showfliers=False, boxprops=qrtp, medianprops=medp,
             width=0.5)
 # hide whiskers if overplotting all data points
@@ -61,6 +60,17 @@ wp = whsp if plot_type == 'box' else dict(linewidth=0)
 boxp.update(dict(whiskerprops=wp))
 if notch:
     boxp.update(dict(notch=True, bootstrap=10000))
+# things we want consistent across plots
+axis_lab_dp = u'within-subject difference in d\u2032'
+axis_lab_rt = u'within-subject difference in RT (ms)'
+ylim_dp = np.array([-2, 2])  # np.array([0, 5]) if not doing differences
+ytick_dp = range(ylim_dp[0], ylim_dp[1] + 1)
+ylim_rt = np.array([-0.32, 0.12])
+ytick_rt = np.linspace(-0.3, 0.1, 5)
+exts_dp = dict(bottom=0.1, top=0.8, right=0.98)
+exts_rt = dict(bottom=0.1, top=0.8, right=0.98, left=0.153)
+exts_dp_threeway = dict(bottom=0.1, top=0.8, right=0.88)
+exts_rt_threeway = dict(bottom=0.1, top=0.8, right=0.88, left=0.153)
 
 
 # functions
@@ -126,7 +136,8 @@ def agg_rt(data, aggvars, datavars=['reax_time', 'targ'],
 
 def box_and_swarm_plot(data, contrast, aggfunc, datalabel, xlabel=None,
                        ylabel=None, signif=[], diff=None, fig=None, hue=None,
-                       ax=None, despine_y=False, ylim=None, ytick=None):
+                       ax=None, despine_y=False, ylim=None, ytick=None,
+                       sec_to_ms=False):
     # load / parse / aggregate data  # hue=df_wide.columns.names[1]
     df_wide, df_long = aggfunc(data, contrast, diff=diff, datalabel=datalabel)
     data_kwargs = dict(x=df_wide.columns.names[-1], y=datalabel, hue=hue,
@@ -145,6 +156,8 @@ def box_and_swarm_plot(data, contrast, aggfunc, datalabel, xlabel=None,
     # overplot data points
     overplot_kwargs = data_kwargs.copy()
     overplot_kwargs.update(ptsp)
+    if hue is not None:
+        overplot_kwargs.update(dict(palette=['0.8', '0.2']))
     if plot_type == 'strip':
         ax = sns.stripplot(ax=ax, jitter=True, **overplot_kwargs)
     elif plot_type == 'swarm':
@@ -171,9 +184,8 @@ def box_and_swarm_plot(data, contrast, aggfunc, datalabel, xlabel=None,
             _df = df_long.set_index(contrast[1:], append=True).unstack()
             tval, pval = ttest_rel(*_df.T.values)
         signif = efa.format_pval(pval, latex=False, scheme='stars')
-        signif = np.atleast_1d(signif)
-        # convert unary arrays / lists to bare strings
     # draw significance brackets
+    signif = np.atleast_1d(signif)
     _max = df_long[datalabel].max()
     brack = np.tile(_max, 3) + np.array([1.2, 2., 2.2]) * bracket_offset
     for _ix, _s in enumerate(signif):
@@ -200,6 +212,9 @@ def box_and_swarm_plot(data, contrast, aggfunc, datalabel, xlabel=None,
     else:
         sns.despine(bottom=True, ax=ax)
         ax.yaxis.set_ticks(ytick)
+        if sec_to_ms:
+            ax.yaxis.set_ticklabels([int(np.round(1000 * x, 0)) for x in
+                                     ytick])
         ax.yaxis.set_label_text(ylabel)
         ax.yaxis.labelpad = 2
         # draw line at zero across all 3 subplots
@@ -221,20 +236,21 @@ all_contrasts = [[['subj', 'attn'], ['subj', 'reverb'], ['subj', 'gender']],
 all_groupnames = [['attention', 'reverberation', 'talker genders'],
                   ['attention', 'vocoder channels', 'gap duration']]
 all_signif = [['***', '**', '***'], ['*', '***', '***']]
+all_rt_signif = [['*', '', ''], ['', '', '***']]
 
 # plot main effects
-for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
+for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
         zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
-            all_signif):
+            all_signif, all_rt_signif):
     # init figure
     figname = 'fig-{}-main.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
-    plt.subplots_adjust(top=0.8, right=0.98)
+    plt.subplots_adjust(**exts_dp)
     # load beh data
     data = read_data(data_fname)
-    ylab = u'within-subject difference in d\u2032'
-    ylim = np.array([-2, 2])  # np.array([0, 5]) if not doing differences
-    ytick = range(ylim[0], ylim[1] + 1)
+    ylab = axis_lab_dp
+    ylim = ylim_dp
+    ytick = ytick_dp
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, signifs, axs)):
@@ -251,21 +267,21 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
     # init RT figure
     figname = 'fig-{}-main-rt.svg'.format(rt_data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
-    plt.subplots_adjust(top=0.8, right=0.98, left=0.153)
+    plt.subplots_adjust(**exts_rt)
     # load RT data
     data = read_data(rt_data_fname, False)
-    ylab = u'within-subject difference in RT (s)'
-    ylim = np.array([-0.3, 0.15])
-    ytick = np.linspace(-0.3, 0.1, 5)
+    ylab = axis_lab_rt
+    ylim = ylim_rt
+    ytick = ytick_rt
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
-            enumerate(zip(contrasts, groupnames, signifs, axs)):
+            enumerate(zip(contrasts, groupnames, rt_signifs, axs)):
         ax.patch.set_alpha(0)
         fig = box_and_swarm_plot(data, contrast, datalabel='reax_time',
                                  xlabel=groupname, ylabel=ylab,
-                                 diff=contrast[-1], fig=fig,  # signif=signif,
+                                 diff=contrast[-1], fig=fig, signif=signif,
                                  ax=ax, despine_y=ix, aggfunc=agg_rt,
-                                 ylim=ylim, ytick=ytick)
+                                 ylim=ylim, ytick=ytick, sec_to_ms=True)
     # savefig
     if savefig:
         plt.savefig(figname)
@@ -285,21 +301,22 @@ all_groupnames = [[u'attn.\u2009\u00D7\u2009revb.',
                    u'attn.\u2009\u00D7\u2009gap dur.',
                    u'voc.ch.\u2009\u00D7\u2009gap dur.']]
 all_signif = [['', '**', ''], ['', '***', '***']]
+all_rt_signif = [['', '', ''], ['', '', '']]
 boxp.update(dict(width=0.7))
 
 # plot two-way interactions
-for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
+for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
         zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
-            all_signif):
+            all_signif, all_rt_signif):
     # init figure
     figname = 'fig-{}-twoway.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
-    plt.subplots_adjust(top=0.8, right=0.98)
+    plt.subplots_adjust(**exts_dp)
     # load data
     data = read_data(data_fname)
-    ylab = u'within-subject difference in d\u2032'
-    ylim = np.array([-2, 2])  # np.array([0, 5]) if not doing differences
-    ytick = range(ylim[0], ylim[1] + 1)
+    ylab = axis_lab_dp
+    ylim = ylim_dp
+    ytick = ytick_dp
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, signifs, axs)):
@@ -315,21 +332,21 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
     # init RT figure
     figname = 'fig-{}-twoway-rt.svg'.format(rt_data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
-    plt.subplots_adjust(top=0.8, right=0.98, left=0.153)
+    plt.subplots_adjust(**exts_rt)
     # load RT data
     data = read_data(rt_data_fname, False)
-    ylab = u'within-subject difference in RT (s)'
-    ylim = np.array([-0.3, 0.15])
-    ytick = np.linspace(-0.3, 0.1, 5)
+    ylab = axis_lab_rt
+    ylim = ylim_rt
+    ytick = ytick_rt
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
-            enumerate(zip(contrasts, groupnames, signifs, axs)):
+            enumerate(zip(contrasts, groupnames, rt_signifs, axs)):
         ax.patch.set_alpha(0)
         fig = box_and_swarm_plot(data, contrast, datalabel='reax_time',
                                  ylabel=ylab,  # xlabel=groupname,
                                  diff=contrast[1], fig=fig,  # signif=signif,
                                  ax=ax, despine_y=ix, aggfunc=agg_rt,
-                                 ylim=ylim, ytick=ytick)
+                                 ylim=ylim, ytick=ytick, sec_to_ms=True)
     # savefig
     if savefig:
         plt.savefig(figname)
@@ -340,23 +357,24 @@ all_contrasts = [[['subj', 'gender', 'attn', 'reverb']],
 all_groupnames = [[u'\u2009\u00D7\u2009'.join(['attn.', 'revb.', 'gend.'])],
                   [u'\u2009\u00D7\u2009'.join(['attn.', 'voc.ch.',
                                                'gap dur.'])]]
-# all_signif = [['', '**', ''], ['', '***', '***']]
+all_signif = [[''], ['*']]
+all_rt_signif = [[''], ['']]
 boxp.update(dict(width=0.8))
 
 # plot three-way interactions
-for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
+for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
         zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
-            all_signif):
+            all_signif, all_rt_signif):
     # init figure
     figname = 'fig-{}-threeway.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
     axs = np.atleast_1d(axs)
-    plt.subplots_adjust(top=0.8, right=0.88)
+    plt.subplots_adjust(**exts_dp_threeway)
     # load data
     data = read_data(data_fname)
-    ylab = u'within-subject difference in d\u2032'
-    ylim = np.array([-2, 2])  # np.array([0, 5]) if not doing differences
-    ytick = range(ylim[0], ylim[1] + 1)
+    ylab = axis_lab_dp
+    ylim = ylim_dp
+    ytick = ytick_dp
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, signifs, axs)):
@@ -373,21 +391,22 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs in \
     figname = 'fig-{}-threeway-rt.svg'.format(rt_data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
     axs = np.atleast_1d(axs)
-    plt.subplots_adjust(top=0.8, right=0.88, left=0.153)
+    plt.subplots_adjust(**exts_rt_threeway)
     # load RT data
     data = read_data(rt_data_fname, False)
-    ylab = u'within-subject difference in RT (s)'
-    ylim = np.array([-0.3, 0.15])
-    ytick = np.linspace(-0.3, 0.1, 5)
+    ylab = axis_lab_rt
+    ylim = ylim_rt
+    ytick = ytick_rt
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
-            enumerate(zip(contrasts, groupnames, signifs, axs)):
+            enumerate(zip(contrasts, groupnames, rt_signifs, axs)):
         ax.patch.set_alpha(0)
         fig = box_and_swarm_plot(data, contrast, datalabel='reax_time',
                                  ylabel=ylab,  # xlabel=groupname,
-                                 diff=contrast[1], fig=fig,  # signif=signif,
+                                 diff=contrast[1], fig=fig, signif=signif,
                                  ax=ax, despine_y=ix, aggfunc=agg_rt,
-                                 ylim=ylim, ytick=ytick, hue=contrast[-1])
+                                 ylim=ylim, ytick=ytick, hue=contrast[-1],
+                                 sec_to_ms=True)
     # savefig
     if savefig:
         plt.savefig(figname)
