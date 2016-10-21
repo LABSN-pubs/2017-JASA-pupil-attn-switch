@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 """
 ===============================================================================
-Script 'fig-1.py'
+Script 'fig-x.py'
 ===============================================================================
 
-This script plots a trial diagram for the pupil vocoder switching task.
+This script plots a trial diagram for the pupil reverb/gender switching task.
 """
 # @author: Dan McCloy (drmccloy@uw.edu)
 # Created on Wed Sep 23 16:57:41 2015
 # License: BSD (3-clause)
 
+# this is needed for embedding OpenType font in postscript output (which then
+# gets converted to EPS by ps2eps in the makefile)
+import matplotlib
+matplotlib.use('cairo')
 
 from numpy import linspace
 import matplotlib.pyplot as plt
@@ -47,12 +51,13 @@ centers_x = [0.23, 0.75, 1.75, 2.25, 3.35, 3.85, 1.75, 2.25, 3.35, 3.85]
 centers_y = [2] * 6 + [0] * 4
 box_x = [(0, 0, 1, 1)] + [(1.5, 1.5, 2.5, 2.5), (3.1, 3.1, 4.1, 4.1)] * 2
 box_y = [(1.5, 2.5, 2.5, 1.5)] * 3 + [(-0.5, 0.5, 0.5, -0.5)] * 2
-# cue AB target O foils DEGPUV
-box_l = ['AA', 'AU', 'E', 'O', 'P', 'O', 'P', 'V', 'D', 'E']
+# cue AB target O foils IJKMQRUXY
+box_l = ['AA', 'AB', 'Q', 'U', 'J', 'R', 'K', 'O', 'O', 'M']  # stim #156
+
 color = [maintcol, switchcol] + [lettercol] * 8
 bcolor = [cuecol] + [malecol] * 2 + [femalecol] * 2
 ecolor = ['k'] + ['none'] * 4
-wt = ['normal'] * 2 + ['bold'] * 8  # ['bold'] * 10
+wt = ['normal'] * 2 + ['bold'] * 8
 ha = ['left', 'right'] + ['center'] * 8
 for x, y, b, e in zip(box_x, box_y, bcolor, ecolor):
     ax.fill(x, y, b, alpha=1, zorder=4, edgecolor=e, linewidth=0.5)
@@ -101,4 +106,4 @@ plt.annotate('time (s)', (arr_xmax, arr_y),  xytext=(3, 0), fontsize=9,
 # finalize
 plt.ylim(-2.8, 4.8)
 plt.xlim(-0.1, 5)
-fig.savefig('fig-1.pdf')
+fig.savefig('fig-rev-trial-diagram.ps')

@@ -236,7 +236,7 @@ fig.text(0.01, 0.66, 'b)')
 fig.text(0.01, 0.34, 'c)')
 
 if savefig:
-    fig.savefig('fig-pupil-vocoder.pdf')
+    fig.savefig('pupil-fig-voc.pdf')
 else:
     plt.ion()
     plt.show()

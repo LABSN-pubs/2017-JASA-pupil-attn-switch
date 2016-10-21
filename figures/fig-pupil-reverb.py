@@ -222,7 +222,7 @@ fig.text(0.01, 0.66, 'b)')
 fig.text(0.01, 0.34, 'c)')
 
 if savefig:
-    fig.savefig('fig-pupil-reverb.pdf')
+    fig.savefig('pupil-fig-rev.pdf')
 else:
     plt.ion()
     plt.show()

@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
 This script assembles a standalone LaTeX file with bibliography and list of
