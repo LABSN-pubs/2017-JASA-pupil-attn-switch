@@ -447,65 +447,6 @@ effect of the bottom-up manipulations of spectral resolution and switch gap
 duration. To further investigate, a second experiment with additional stimulus
 manipulations was conducted.
 
-# Experiment 1
-
-
-### Stimuli and procedure <!-- TODO: split into separate sections -->
-Two new stimulus manipulations were investigated in Experiment II.  First,
-temporal degradation was introduced by adding reverberation to the letter
-streams. The same original natural speech tokens were used from Experiment I.
-Binaural room impulse responses (BRIR) measured in an ordinary classroom from
-Shinn-Cunningham et al. (2005) were used to create a REVERBERANT and an ANACHOIC
-listening environment. The reverberant condition was generated with the BRIRs
-measured from the corner of the classroom with a source distance of 0.15 m and
-source azimuth of 45°. The anechoic condition was generated with the BRIRs
-measured from the center location removed of all reverberant energy by
-time-windowing the BRIRs to include only the portion with the direct impulse
-response. Further details regarding the two listening environments can be found
-in Shinn-Cunningham et al. (2005).
-
-Second, the effect of male versus female masker was investigated by varying the
-talker in the masker stream. In experiment 2, the target stream was always the
-male speaker. In the MALE-MALE trials, the masker stream was also the same male
-speaker and in the MALE-FEMALE trials, the masker stream was the female speaker.
-These three conditions for each trial (SWITCH vs. MAINTAIN, REVERBERANT vs.
-ANACHOIC, and MALE-MALE vs. MALE-FEMALE) were counterbalanced and randomly
-presented in 10 blocks of 32 trials for a total of 320 trials. All other aspects
-of testing including the listening and training phases were the same as in
-experiment 1.
-
-## Results
-### Pupillometry
-Mean pupil response as a function of time split by attention, reverberation, and
-male versus female masker trials are shown in Figure 4. Pairwise contrasts were
-performed for all three main contrasts to generate multiple-comparisons
-corrected FWER p-values as in Experiment I. This confirmed that significantly
-greater pupil dilation (p<0.001) was also seen on SWITCH trials for both
-normalized and deconvolved pupil responses. This increase in dilation was
-observed soon after the auditory switch cue was presented (t = 1 s). Finally,
-greater pupil dilation was also observed later in the trial (t= 4s) in the
-REVERBERANT trials (p=0.038), only with the deconvolved pupil responses.
-
-![Mean normalized and deconvolved pupil response across subjects for (A) SWITCH and MAINTAIN, (B) REVERBERANT and ANECHOIC, and (C) MALE-MALE and MALE-FEMALE. The onset of the auditory cue (“AA” or “AB”) is at 0 s with a 500 ms gap before the onset of the letter streams. \label{fig-4}](pupil-fig-rev.eps)
-
-### Sensitivity analysis
-Mean performance across conditions is shown in Figure 5, with accuracy on the
-left and reaction time on the right. As expected, decreased accuracy and
-increased reaction times was seen on the SWITCH trials. Overall accuracy also
-appears greater in the ANECHOIC versus the REVERVERANT trials. Two RMANOVAs with
-attention, reverberation and male vs. female masker as factors were conducted
-for d-prime and reaction time. For d-prime, the RMANOVA revealed a significant
-main effect of switching attention (F(1,15)=11.20, p=0.004) and reverberation
-(F(1,15)=16.25, p=0.001), with no significant interactions. This analysis
-confirmed that performance accuracy reflected the increased difficulty
-associated with switching attention as well as with reverberation. For reaction
-time, the RMANOVA revealed only a significant main effect of reverberation
-(F(1,15)=11.88, p=0.004) and no significant interaction. Neither d-prime nor
-reaction time was affected by having a male-male versus male-female
-target-masker combination.
-
-![(A) Mean d-prime as a function of attention, reverberation, and male versus female masker. Error bars are 1 SEM across participants. (B) Mean reaction time as a function of attention, reverberation, and voice pitch. Error bars are 1 SEM across participants. \label{fig-5}](fig-rev-main.eps)
-
 ## Discussion
 <!-- TODO: this should not be empty -->
 
@@ -655,7 +596,7 @@ further investigations of the underlying physiology of the pupillary response,
 especially as elicited by auditory attention are also a priority.
 
 # Acknowledgments
-This research was supported by NIH grant R01-DC013260 to AKCL and NIH  LRP
+This research was supported by NIH grant R01-DC013260 to AKCL and NIH LRP
 awards to EDL and DRM. The authors are grateful to two anonymous reviewers and
 the members of *[LABS]^N^* for helpful suggestions on earlier drafts of this
 paper.
