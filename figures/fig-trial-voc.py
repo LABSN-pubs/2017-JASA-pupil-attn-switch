@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 ===============================================================================
-Script 'fig-x.py'
+Script 'fig-1.py'
 ===============================================================================
 
-This script plots a trial diagram for the pupil reverb/gender switching task.
+This script plots a trial diagram for the pupil vocoder switching task.
 """
 # @author: Dan McCloy (drmccloy@uw.edu)
 # Created on Wed Sep 23 16:57:41 2015
@@ -51,13 +51,12 @@ centers_x = [0.23, 0.75, 1.75, 2.25, 3.35, 3.85, 1.75, 2.25, 3.35, 3.85]
 centers_y = [2] * 6 + [0] * 4
 box_x = [(0, 0, 1, 1)] + [(1.5, 1.5, 2.5, 2.5), (3.1, 3.1, 4.1, 4.1)] * 2
 box_y = [(1.5, 2.5, 2.5, 1.5)] * 3 + [(-0.5, 0.5, 0.5, -0.5)] * 2
-# cue AB target O foils IJKMQRUXY
-box_l = ['AA', 'AB', 'Q', 'U', 'J', 'R', 'K', 'O', 'O', 'M']  # stim #156
-
+# cue AB target O foils DEGPUV
+box_l = ['AA', 'AU', 'E', 'O', 'P', 'O', 'P', 'V', 'D', 'E']
 color = [maintcol, switchcol] + [lettercol] * 8
 bcolor = [cuecol] + [malecol] * 2 + [femalecol] * 2
 ecolor = ['k'] + ['none'] * 4
-wt = ['normal'] * 2 + ['bold'] * 8
+wt = ['normal'] * 2 + ['bold'] * 8  # ['bold'] * 10
 ha = ['left', 'right'] + ['center'] * 8
 for x, y, b, e in zip(box_x, box_y, bcolor, ecolor):
     ax.fill(x, y, b, alpha=1, zorder=4, edgecolor=e, linewidth=0.5)
@@ -74,7 +73,7 @@ _ = [plt.plot(x, y, linewidth=0.5, color=gapcol, solid_capstyle='butt',
               zorder=4) for x, y in zip(xx, yy)]
 ax.add_artist(rect)
 ax.set_clip_on(False)
-ax.text(2.8, -3.3, 'switch gap', ha='center', va='top', fontsize=10,
+ax.text(2.8, -3.3, 'variable switch gap', ha='center', va='top', fontsize=10,
         color=gapcol)
 
 # captions
@@ -92,7 +91,7 @@ arr_xmax = 4.7
 tcklen = 0.25
 ticktimes = [0, 1, 1.5, 2.5, 3.1, 4.1]
 ticklabels = [str(tt) for tt in ticktimes]
-#ticklabels[-2:] = [str(a - 0.4) + ' or ' + str(a) for a in ticktimes[-2:]]
+ticklabels[-2:] = [str(a - 0.4) + ' or ' + str(a) for a in ticktimes[-2:]]
 _ = ax.vlines(ticktimes, arr_y - tcklen, arr_y + tcklen, linewidths=0.5,
               zorder=5)
 _ = [ax.text(x, y, s, ha='center', va='baseline', fontsize=9)
@@ -106,4 +105,4 @@ plt.annotate('time (s)', (arr_xmax, arr_y),  xytext=(3, 0), fontsize=9,
 # finalize
 plt.ylim(-2.8, 4.8)
 plt.xlim(-0.1, 5)
-fig.savefig('fig-rev-trial-diagram.ps')
+fig.savefig('fig-trial-voc.ps')

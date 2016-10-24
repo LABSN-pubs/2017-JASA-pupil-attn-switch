@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import svgutils as svgu
 from os import path as op
 from scipy.stats import ttest_1samp, ttest_rel
 from expyfun import analyze as efa
@@ -243,7 +244,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
         zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
             all_signif, all_rt_signif):
     # init figure
-    figname = 'fig-{}-main.eps'.format(data_fname[:3])
+    figname = 'fig-{}-main.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
     plt.subplots_adjust(**exts_dp)
     # load beh data
@@ -265,7 +266,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
         plt.savefig(figname)
 
     # init RT figure
-    figname = 'fig-{}-main-rt.eps'.format(rt_data_fname[:3])
+    figname = 'fig-{}-main-rt.svg'.format(rt_data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
     plt.subplots_adjust(**exts_rt)
     # load RT data
@@ -309,7 +310,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
         zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
             all_signif, all_rt_signif):
     # init figure
-    figname = 'fig-{}-twoway.eps'.format(data_fname[:3])
+    figname = 'fig-{}-twoway.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
     plt.subplots_adjust(**exts_dp)
     # load data
@@ -330,7 +331,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
     if savefig:
         plt.savefig(figname)
     # init RT figure
-    figname = 'fig-{}-twoway-rt.eps'.format(rt_data_fname[:3])
+    figname = 'fig-{}-twoway-rt.svg'.format(rt_data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
     plt.subplots_adjust(**exts_rt)
     # load RT data
@@ -366,7 +367,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
         zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
             all_signif, all_rt_signif):
     # init figure
-    figname = 'fig-{}-threeway.eps'.format(data_fname[:3])
+    figname = 'fig-{}-threeway.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
     axs = np.atleast_1d(axs)
     plt.subplots_adjust(**exts_dp_threeway)
@@ -388,7 +389,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
     if savefig:
         plt.savefig(figname)
     # init RT figure
-    figname = 'fig-{}-threeway-rt.eps'.format(rt_data_fname[:3])
+    figname = 'fig-{}-threeway-rt.svg'.format(rt_data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
     axs = np.atleast_1d(axs)
     plt.subplots_adjust(**exts_rt_threeway)
@@ -411,7 +412,21 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
     if savefig:
         plt.savefig(figname)
 
-# finish
-if not savefig:
+# combine figs
+if savefig:
+    for exp in ['voc', 'rev']:
+        for rt in ['', '-rt']:
+            fig = svgu.transform.SVGFigure('3in', '5.75in')
+            for kind, ypos, txt in zip(['main', 'twoway', 'threeway'],
+                                       [0, 175, 350], ['a)', 'b)', 'c)']):
+                fname = 'fig-{}-{}{}.svg'.format(exp, kind, rt)
+                subfig = svgu.transform.fromfile(fname).getroot()
+                subfig.moveto(10, ypos, scale=3/3.2)
+                args = dict(size=12, font='Source Sans Pro', weight='bold')
+                text = svgu.transform.TextElement(4, ypos + 12, txt, **args)
+                fig.append(subfig)
+                fig.append(text)
+            fig.save('fig-beh-{}{}.svg'.format(exp, rt))
+else:
     plt.ion()
     plt.show()

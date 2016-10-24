@@ -172,7 +172,7 @@ presses, the letter “O” was always separated from another “O” (in either
 stream) by at least 1 second, and its position in the letter sequence was
 balanced across trials and conditions.
 
-![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.](fig-rev-trial-diagram.eps)
+![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.](fig-trial-rev.eps)
 
 Before starting the experimental task, participants heard 2 blocks of 10 trials
 for familiarization with anechoic and reverberant speech (one with a single
@@ -266,14 +266,14 @@ Box-and-swarm plots showing median, quartile, and individual $d^\prime$ values
 for each listener are shown in Figure \ref{fig-rev-dprime}.  ***TODO: polish
 this text.***  Mixed model results show that XXX and YYY were significant.
 
-![(Color online) .\label{fig-rev-dprime}](fig-placeholder.eps)
+![(Color online) .\label{fig-rev-dprime}](fig-beh-rev.eps)
 
 ### Reaction time
 Box-and-swarm plots showing median, quartile, and individual reaction time
 values for each listener are shown in Figure \ref{fig-rev-rt}.  ***TODO: polish
 this text.***  Mixed model results show that XXX and YYY were significant.
 
-![(Color online) .\label{fig-rev-rt}](fig-placeholder.eps)
+![(Color online) .\label{fig-rev-rt}](fig-beh-rev-rt.eps)
 
 ## Discussion
 ***TODO: polish this text.*** all main effects significant and in expected
@@ -425,10 +425,11 @@ switching attention and gap duration (F(1,15)=4.910, p=0.043), consistent with
 the fact that gap duration only matters when a switch is required was also
 observed.
 
-![(A) Mean d-prime as a function of attention, gap duration, and spectral degradation. Error bars are 1 standard error of the mean (SEM) across participants. (B) Mean reaction time as a function of attention, gap duration, and spectral degradation. Error bars are 1 SEM across participants. \label{fig-voc-dprime}](fig-voc-main.eps)
+![(A) D-prime as a function of attention, gap duration, and spectral degradation. \label{fig-voc-dprime}](fig-beh-voc.eps)
 
 ### Reaction time
 
+![(Color online) .\label{fig-voc-rt}](fig-beh-voc-rt.eps)
 
 ## Discussion
 The results of this experiment demonstrate that pupil dilation is a sensitive
