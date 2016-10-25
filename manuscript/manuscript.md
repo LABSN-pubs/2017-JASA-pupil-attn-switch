@@ -172,10 +172,9 @@ was followed by 0.5 s of silence, followed by the main portion of the trial:
 two concurrent 4-letter streams with simulated spatial separation (either the
 same male voice in both streams, or one male and one female voice), with a 600
 ms gap between the second and third letters. The task was to respond by button
-press to the letter “O” spoken by the target talker (Figure
-\ref{fig-rev-trial-diagram}).
+press to the letter “O” spoken by the target talker (Figure \ref{fig-rev-trial}).
 
-![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.\label{fig-rev-trial-diagram}](fig-trial-rev.eps)
+![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.\label{fig-rev-trial}](fig-trial-rev.eps)
 
 Before starting the experimental task, participants heard 2 blocks of 10 trials
 for familiarization with anechoic and reverberant speech (one with a single
@@ -391,7 +390,7 @@ reaction time used the same approach as was used in Experiment 1.
 
 ### Analysis of pupil diameter
 Analysis of pupil diameter was carried out as in Experiment 1: trials epoched
-from -0.5 to 6 seconds, linear interpolation of eye blinks, trial-wise baseline
+from −0.5 to 6 seconds, linear interpolation of eye blinks, trial-wise baseline
 subtraction and experiment-wise division by standard deviation of pupil size.
 Deconvolution and statistical analysis of normalized pupil size data was also
 carried out identically to Experiment 1.
