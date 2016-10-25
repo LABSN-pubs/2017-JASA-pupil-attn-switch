@@ -1,7 +1,9 @@
 EPS = fig-trial-rev.eps fig-trial-voc.eps fig-beh-rev.eps fig-beh-voc.eps \
 fig-beh-rev-rt.eps fig-beh-voc-rt.eps fig-placeholder.eps
 
-all: $(EPS)
+.SECONDARY:
+
+all: $(EPS) ;
 
 fig-trial-%.eps: fig-trial-%.ps
 	ps2eps -f $(<F)
@@ -24,4 +26,4 @@ pupil-fig-%.pdf: fig-pupil-%.py
 	echo "UPDATE PUPIL FIGURES IN ILLUSTRATOR TO AVOID RASTERIZATION"
 
 clean:
-	rm -f fig*.eps *.svg *.ps
+	rm -f fig*.eps *.svg *.pyc *.ps
