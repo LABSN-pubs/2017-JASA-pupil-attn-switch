@@ -198,19 +198,20 @@ in the *masker stream* were additionally labeled as “responses to foils” to 
 in assessing failures to selectively attend to the target stream.
 
 In both experiments, response accuracy and latency were analyzed with
-(generalized) linear mixed-effects regression models, using
-`lme4`[@BatesEtAl2015] version `1.1.12` in the `R` statistical computing
-environment.[@R3.3.1]  A model for listener sensitivity was constructed to
-predict probability of button press at each timing slot of the trial (one
-timing slot per stimulus letter), given fixed-effect predictors specifying
-trial parameters (maintain/switch, anechoic/reverberant, and gender
+(generalized) linear mixed-effects regression models, using `afex` version
+`0.16.1`[@afex] and `lme4`[@BatesEtAl2015] version `1.1.12` in the `R`
+statistical computing environment.[@R3.3.1]  A model for listener sensitivity
+was constructed to predict probability of button press at each timing slot of
+the trial (one timing slot per stimulus letter), given fixed-effect predictors
+specifying trial parameters (maintain/switch, anechoic/reverberant, and gender
 match/mismatch) and a random intercept estimated for each listener.  An inverse
 probit link function was used to transform button press probabilities (bounded
 between 0 and 1) into unbounded continuous values suitable for linear modeling.
 The general form of this model is given in (@eq-mod-probit), where $\Phi^{-1}$
 is the inverse probit link function, $Pr(Y = 1)$ is the probability of button
 press, $X$ is the design matrix of trial parameters, and $\beta$ is the vector
-of parameter coefficients to be estimated.
+of parameter coefficients to be estimated.  <!-- TODO: add crossref to
+supplementary -->
 
 (@eq-mod-probit)  $\Phi^{-1}(Pr(Y = 1 \mid X)) = X^\prime \beta$
 
@@ -219,6 +220,12 @@ interpretable as differences in $d^\prime$ between different experimental
 conditions.[@DeCarlo1998; @SheuEtAl2008; @McCloyLee2015]  Reaction time was
 analyzed using linear mixed-effects regression (i.e., without a link function)
 but was otherwise similar to the analysis of response accuracy / sensitivity.
+Significance of predictors in the reaction time model was computed using
+F-tests and the Kenward-Roger approximation for degrees of freedom;
+significance in the sensitivity model was determined by likelihood ratio tests
+between models with and without the predictor of interest (as the Kenward-Roger
+approximation has not been demonstrated to work with non-normally-distributed
+response variables, i.e., when modeling probabilities).
 
 ### Analysis of pupil diameter
 Recordings of pupil diameter for each trial were epoched from −0.5 to 6 seconds,
