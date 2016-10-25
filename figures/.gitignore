@@ -1,3 +1,15 @@
 # files
 *.eps
 *.pdf
+*.svg
+
+submission.pdf
+submission.tex
+submission-no-figs.tex
+pandoc/author-signature.pdf
+pandoc/letterhead-banner.pdf
+
+# directories
+deprecated
+review
+cover-letter
