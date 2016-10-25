@@ -422,7 +422,7 @@ if savefig:
                 fname = 'fig-{}-{}{}.svg'.format(exp, kind, rt)
                 subfig = svgu.transform.fromfile(fname).getroot()
                 subfig.moveto(10, ypos, scale=3/3.2)
-                args = dict(size=12, font='Source Sans Pro', weight='bold')
+                args = dict(size=12, font='Source Sans Pro', weight='normal')
                 text = svgu.transform.TextElement(4, ypos + 12, txt, **args)
                 fig.append(subfig)
                 fig.append(text)
