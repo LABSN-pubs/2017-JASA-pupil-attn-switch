@@ -281,7 +281,7 @@ foils between anechoic and reverberant trials.  For talker gender (mis)match,
 the model indicates both better target detection and fewer responses to
 foils when the target and masker talkers had different genders.  The model also
 indicates a two-way interaction between reverberation and talker gender, seen
-in Figure \ref{fig-beh-rev}b: somewhat paradoxically, the difference between
+in Figure \ref{fig-rev-dprime}b: somewhat paradoxically, the difference between
 anechoic and reverberant trials was smaller when the target and masker talkers
 were of different genders.  The three-way interaction among attention,
 reverberation, and talker gender was not significant.
