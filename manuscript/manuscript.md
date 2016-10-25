@@ -270,14 +270,14 @@ with “switch attention” trials showing greater effort than “maintain atten
 trials, diverging as soon as listeners have heard the cue and remaining higher
 throughout the rest of the trial.
 
-![(Color online) Mean ± 1 standard error across subjects of deconvolved pupil size for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
+![(Color online) Mean ±1 standard error across subjects of deconvolved pupil size for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
 
 ### Sensitivity analysis
 Box-and-swarm plots showing median, quartile, and individual $d^\prime$ values
 for each listener are shown in Figure \ref{fig-rev-dprime}.  ***TODO: polish
 this text.***  Mixed model results show that XXX and YYY were significant.
 
-![(Color online) Box-and-swarm plots of listener sensitivity for Experiment 1. (a) Main effects of attention, reverberation, and talker gender (mis)match.  (b) Two-way interactions.  (c) Three-way interaction.  Asterisks indicate differences between conditions corresponding to coefficients in the statistical model that were significantly different from zero.\label{fig-rev-dprime}](fig-beh-rev.eps)
+![(Color online) Box-and-swarm plots of between-condition differences in listener sensitivity for Experiment 1.  Boxes show first & third quartile and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (higher sensitivity in maintain than switch trials), reverberation (higher sensitivity in anechoic than reverberant trials), and talker gender (mis)match (higher sensitivity in trials with different gendered target and masker talkers).  (b) Two-way interactions; the difference between anechoic and reverberant trials was higher in the gender-match (MM) condition.  (c) Three-way interaction (no statistically significant differences).  ** = _p_<0.01; *** = _p_<0.001; MM = matching talker genders; MF = mismatched talker genders.\label{fig-rev-dprime}](fig-beh-rev.eps)
 
 ### Reaction time
 Box-and-swarm plots showing median, quartile, and individual reaction time
@@ -436,7 +436,7 @@ switching attention and gap duration (F(1,15)=4.910, p=0.043), consistent with
 the fact that gap duration only matters when a switch is required was also
 observed.
 
-![(A) D-prime as a function of attention, gap duration, and spectral degradation. \label{fig-voc-dprime}](fig-beh-voc.eps)
+![(Color online) Box-and-swarm plots of between-condition differences in listener sensitivity for Experiment 2.  Boxes show first & third quartile and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (higher sensitivity in maintain than switch trials), spectral degradation (higher sensitivity in 20-channel than 10-channel vocoded trials), and switch gap duration (higher sensitivity in trials with a short gap).  (b) Two-way interactions: the difference between 20- and 10-channel vocoded trials was greater in the long-gap condition, and the difference between long- and short-gap trials was greater (more negative) in the maintain-attention condition.  (c) Three-way interaction: the difference between long- and short-gap trials in the maintain attention condition was greater (more negative) in the 10-channel vocoded trials than in the 20-channel vocoded trials.  * = _p_<0.05; ** = _p_<0.01; *** = _p_<0.001.\label{fig-voc-dprime}](fig-beh-voc.eps)
 
 ### Reaction time
 
