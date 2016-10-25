@@ -137,22 +137,28 @@ the edges with a 5 ms cosine-squared envelope. Two streams of four letters each
 were generated for each trial, with a gap of 600 ms between the
 second and third letters of each stream. The letters “A” and “B” were used only
 in the pre-trial cues (described below); the target letter was “O” and letters
-“IJKMQRUXY” were non-target items.
+“IJKMQRUXY” were non-target items.  To allow unambiguous attribution of button
+presses, the letter “O” was always separated from another “O” (in either
+stream) by at least 1 second; thus there were between zero and two “O” tokens
+per trial.  The position of “O” tokens in the letter sequence was
+balanced across trials and conditions, with XX% of all “O” tokens occuring in
+the third letter slot (just after the switch gap, since that slot is most
+likely to be affected by attention switches). <!-- TODO: fill in percentage
+of doping the 3rd slot. -->
 
 Reverberation was implemented using binaural room impulse responses (BRIRs)
-recorded by Shinn-Cunningham and colleagues.[@ShinnCunninghamEtAl2005]
-Briefly, an “anechoic” condition was created by processing the stimuli with
-BRIRs truncated to include only the direct impulse response and exclude
-reverberant energy, while stimuli for the “reverberant” condition were
-processed with the full BRIRs. In both conditions, the BRIRs recorded at ±45°
-for each stream were used, simulating a separation of 90° azimuth between
-target and masker. A white-noise masker with π-interaural-phase was played
-continuously during experimental blocks at a level of 45 dB SPL, yielding a
-stimulus-to-noise ratio of 20 dB. The additional noise was included to provide
-masking of environmental sounds (e.g., friction between subject clothing and
-earphone tubes) and to provide consistency with follow-up neuroimaging
-experiments (required due to the acoustic conditions in the neuroimaging
-suite).
+recorded by Shinn-Cunningham and colleagues.[@ShinnCunninghamEtAl2005] Briefly,
+an “anechoic” condition was created by processing the stimuli with BRIRs
+truncated to include only the direct impulse response and exclude reverberant
+energy, while stimuli for the “reverberant” condition were processed with the
+full BRIRs. In both conditions, the BRIRs recorded at ±45° for each stream were
+used, simulating a separation of 90° azimuth between target and masker streams.
+A white-noise masker with π-interaural-phase was played continuously during
+experimental blocks at a level of 45 dB SPL, yielding a stimulus-to-noise ratio
+of 20 dB. The additional noise was included to provide masking of environmental
+sounds (e.g., friction between subject clothing and earphone tubes) and to
+provide consistency with follow-up neuroimaging experiments (required due to
+the acoustic conditions in the neuroimaging suite).
 
 ### Procedure
 Participants were instructed to fixate on a white dot centered on a black
@@ -167,10 +173,7 @@ two concurrent 4-letter streams with simulated spatial separation (either the
 same male voice in both streams, or one male and one female voice), with a 600
 ms gap between the second and third letters. The task was to respond by button
 press to the letter “O” spoken by the target talker (Figure
-\ref{fig-rev-trial-diagram}). To allow unambiguous attribution of button
-presses, the letter “O” was always separated from another “O” (in either
-stream) by at least 1 second, and its position in the letter sequence was
-balanced across trials and conditions.
+\ref{fig-rev-trial-diagram}).
 
 ![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.\label{fig-rev-trial-diagram}](fig-trial-rev.eps)
 
@@ -218,11 +221,11 @@ analyzed using linear mixed-effects regression (i.e., without a link function)
 but was otherwise similar to the analysis of response accuracy / sensitivity.
 
 ### Analysis of pupil diameter
-Recordings of pupil diameter for each trial were epoched from -0.5 to 6 seconds,
+Recordings of pupil diameter for each trial were epoched from −0.5 to 6 seconds,
 with 0 seconds defined as the onset of the pre-trial cue. Periods where eye
 blinks were detected by the EyeLink software were linearly interpolated from
 25 ms before blink onset to 100 ms after blink offset. Epochs were normalized
-by subtracting the mean pupil size between -0.5 and 0 seconds on each trial, and
+by subtracting the mean pupil size between −0.5 and 0 seconds on each trial, and
 dividing by the standard deviation of pupil size across all trials.
 
 Normalized pupil size data were then deconvolved with a pupil impulse response
@@ -232,21 +235,22 @@ stimulus, modeled as an Erlang gamma function with empirically-determined
 parameters $t_\mathrm{max}$ (latency of response maximum) and $n$ (Erlang shape
 parameter).[@HoeksLevelt1993]  The parameters used here were
 $t_\mathrm{max}=0.512 s$ and $n=10.1$ following previous
-literature.[@McCloyEtAl2016]  Fourier analysis of the subject-level mean pupil
-size data and the deconvolution kernel indicated virtually no energy at
-frequencies above 3 Hz, so for computational efficiency the deconvolution was
-realized as a best-fit linear sum of kernels spaced at 100 ms intervals
-(similar to downsampling both signal and kernel to 10 Hz prior to
-deconvolution), as implemented in the pyeparse software.[@pyeparse]  After
-deconvolution, the resulting time series can be thought of as an indicator of
-listener arousal or effort that is time-aligned to the stimulus (i.e., the
-response latency of the pupil has been effectively removed).
+literature.[@McCloyEtAl2016]  
 
-Statistical comparison of effort (deconvolved pupil dilation) time series was
-performed using a non-parametric cluster-level one-sample T-test on the
-within-subject differences in deconvolved pupil size between experimental
-conditions (clustering across time only),[@MarisOostenveld2007], as implemented
-in `mne-python`.[@GramfortEtAl2013]
+Fourier analysis of the subject-level mean pupil size data and the
+deconvolution kernel indicated virtually no energy at frequencies above 3 Hz,
+so for computational efficiency the deconvolution was realized as a best-fit
+linear sum of kernels spaced at 100 ms intervals (similar to downsampling both
+signal and kernel to 10 Hz prior to deconvolution), as implemented in the
+pyeparse software.[@pyeparse]  After deconvolution, the resulting time series
+can be thought of as an indicator of listener arousal or effort that is
+time-aligned to the stimulus (i.e., the response latency of the pupil has been
+effectively removed).  Statistical comparison of effort (i.e., deconvolved
+pupil dilation) time series was performed using a non-parametric cluster-level
+one-sample T-test on the within-subject differences in deconvolved pupil size
+between experimental conditions (clustering across time
+only),[@MarisOostenveld2007], as implemented in
+`mne-python`.[@GramfortEtAl2013]
 
 ## Results
 
@@ -259,14 +263,14 @@ with “switch attention” trials showing greater effort than “maintain atten
 trials, diverging as soon as listeners have heard the cue and remaining higher
 throughout the rest of the trial.
 
-![(Color online) Mean ± 1 standard error across subjects of deconvolved pupil size for (a) reverberant versus anechoic trials, (b) talker gender-match versus gender-mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
+![(Color online) Mean ± 1 standard error across subjects of deconvolved pupil size for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
 
 ### Sensitivity analysis
 Box-and-swarm plots showing median, quartile, and individual $d^\prime$ values
 for each listener are shown in Figure \ref{fig-rev-dprime}.  ***TODO: polish
 this text.***  Mixed model results show that XXX and YYY were significant.
 
-![(Color online) .\label{fig-rev-dprime}](fig-beh-rev.eps)
+![(Color online) Box-and-swarm plots of listener sensitivity for Experiment 1. (a) Main effects of attention, reverberation, and talker gender (mis)match.  (b) Two-way interactions.  (c) Three-way interaction.  Asterisks indicate differences between conditions corresponding to coefficients in the statistical model that were significantly different from zero.\label{fig-rev-dprime}](fig-beh-rev.eps)
 
 ### Reaction time
 Box-and-swarm plots showing median, quartile, and individual reaction time
@@ -402,7 +406,7 @@ s), prior to the switch gap when the attentional switch actually occurred.
 Finally, greater dilation was also observed later in the trial (p=0.009
 normalized, p=0.005 deconvolved) with the longer 600 ms GAP duration.
 
-![Mean normalized and deconvolved pupil response across subjects for (A) SWITCH and MAINTAIN, (B) 10-CHANNEL and 20-CHANNEL, and (C) 200 ms and 600 ms GAP. The onset of the auditory cue (“AA” or “AB”) is at 0 s with a 500 ms gap before the onset of the letter streams. \label{fig-voc-pupil}](pupil-fig-voc.eps)
+![(Color online) Mean ± 1 standard error across subjects of deconvolved pupil size for (a) 10- versus 20-band vocoded stimuli, (b) short versus long mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-voc-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Fig. \ref{fig-rev-pupil}c). a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-voc-pupil}](pupil-fig-voc.eps)
 
 ### Sensitivity analysis
 Mean performance across conditions is shown in Figure \ref{fig-voc-dprime},
