@@ -172,7 +172,7 @@ presses, the letter “O” was always separated from another “O” (in either
 stream) by at least 1 second, and its position in the letter sequence was
 balanced across trials and conditions.
 
-![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.](fig-trial-rev.eps)
+![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.\label{fig-rev-trial-diagram}](fig-trial-rev.eps)
 
 Before starting the experimental task, participants heard 2 blocks of 10 trials
 for familiarization with anechoic and reverberant speech (one with a single
@@ -357,7 +357,7 @@ unambiguous attribution of button presses, the letter “O” was always separat
 from another “O” (in either stream) by at least 1 second, and its position in
 the letter sequence was balanced across trials and conditions.
 
-![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 2. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AU” in a male voice, attend to the male voice (“EO”) for the first half of the trial and the female voice (“DE”) for the second half of the trial, and respond once (to the “O” occurring at 2–2.5 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“EOPO”) throughout the trial, and respond twice (once for each “O”).](fig-voc-trial-diagram.eps)
+![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 2. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AU” in a male voice, attend to the male voice (“EO”) for the first half of the trial and the female voice (“DE”) for the second half of the trial, and respond once (to the “O” occurring at 2–2.5 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“EOPO”) throughout the trial, and respond twice (once for each “O”).\label{fig-voc-trial-diagram}](fig-trial-voc.eps)
 
 Before starting the experimental task, participants heard 2 blocks of 10 trials
 for familiarization with noise-vocoded speech (one with a single talker, one
