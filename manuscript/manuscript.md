@@ -194,37 +194,43 @@ Listener responses were labeled as “hits” if the button press occurred betwe
 at any other time during the trial were considered “false alarms”. False alarm
 responses occurring between 100 and 1000 ms following the onset of “O” stimuli
 in the *masker stream* were additionally labeled as “responses to foils” to aid
-in assessing failures to selectively attend to the target stream.
+in assessing failures to selectively attend to the target stream.  In analyzing
+reaction time, only responses to targets and foils were considered.
 
 In both experiments, response accuracy and latency were analyzed with
-(generalized) linear mixed-effects regression models, using `afex` version
-`0.16.1`[@afex] and `lme4`[@BatesEtAl2015] version `1.1.12` in the `R`
-statistical computing environment.[@R3.3.1]  A model for listener sensitivity
-was constructed to predict probability of button press at each timing slot of
-the trial (one timing slot per stimulus letter), given fixed-effect predictors
+(generalized) linear mixed-effects regression models, using packages
+`afex`[@afex] (version `0.16.1`) and `lme4`[@BatesEtAl2015] (version `1.1.12`)
+in the `R` statistical computing environment.[@R3.3.1]  A model for listener
+sensitivity was constructed to predict probability of button press at each
+timing slot of the trial (four timing slots per trial, see Figure
+\ref{fig-rev-trial}) from the interaction among the fixed-effect predictors
 specifying trial parameters (maintain/switch, anechoic/reverberant, and gender
-match/mismatch) and a random intercept estimated for each listener.  An inverse
-probit link function was used to transform button press probabilities (bounded
-between 0 and 1) into unbounded continuous values suitable for linear modeling.
-The general form of this model is given in (@eq-mod-probit), where $\Phi^{-1}$
-is the inverse probit link function, $Pr(Y = 1)$ is the probability of button
-press, $X$ is the design matrix of trial parameters, and $\beta$ is the vector
-of parameter coefficients to be estimated.  <!-- TODO: add crossref to
-supplementary -->
+match/mismatch) and an indicator variable encoding whether a target, foil, or
+neither was present in the timing slot.  A random intercept was also estimated
+for each listener.  An inverse probit link function was used to transform
+button press probabilities (bounded between 0 and 1) into unbounded continuous
+values suitable for linear modeling. The general form of this model is given in
+(@eq-mod-probit), where $\Phi^{-1}$ is the inverse probit link function, $Pr(Y =
+1)$ is the probability of button press, $X$ is the design matrix of trial
+parameters and indicator variables, and $\beta$ is the vector
+of parameter coefficients to be estimated.
 
 (@eq-mod-probit)  $\Phi^{-1}(Pr(Y = 1 \mid X)) = X^\prime \beta$
 
 This model has the convenient advantage that coefficient estimates are
-interpretable as differences in $d^\prime$ between different experimental
-conditions.[@DeCarlo1998; @SheuEtAl2008; @McCloyLee2015]  Reaction time was
-analyzed using linear mixed-effects regression (i.e., without a link function)
-but was otherwise similar to the analysis of response accuracy / sensitivity.
-Significance of predictors in the reaction time model was computed using
-F-tests and the Kenward-Roger approximation for degrees of freedom;
-significance in the sensitivity model was determined by likelihood ratio tests
-between models with and without the predictor of interest (as the Kenward-Roger
-approximation has not been demonstrated to work with non-normally-distributed
-response variables, i.e., when modeling probabilities).
+interpretable as differences in bias and sensitivity on a $d^\prime$ scale
+resulting from the various experimental manipulations.[@DeCarlo1998;
+@SheuEtAl2008; @McCloyLee2015]  Full model specification is given
+in the supplementary material.<!-- TODO: add crossref to supplementary
+material -->  Reaction time was analyzed using linear mixed-effects regression
+(i.e., without a link function) but was otherwise analyzed similarly to
+listener sensitivity.  Significance of predictors in the reaction time model
+was computed using F-tests and the Kenward-Roger approximation for degrees of
+freedom; significance in the sensitivity model was determined by likelihood
+ratio tests between models with and without the predictor of interest (as the
+Kenward-Roger approximation has not been demonstrated to work with
+non-normally-distributed response variables, i.e., when modeling
+probabilities).
 
 ### Analysis of pupil diameter
 Recordings of pupil diameter for each trial were epoched from −0.5 to 6 seconds,
@@ -272,52 +278,97 @@ throughout the rest of the trial.
 ![(Color online) Mean ±1 standard error across subjects of deconvolved pupil size for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
 
 ### Sensitivity analysis
-Box-and-swarm plots showing median, quartile, and individual $d^\prime$ values
-for each listener are shown in Figure \ref{fig-rev-dprime}.  ***TODO: polish
-this text.***  Mixed model results show that XXX and YYY were significant.
+
+Box-and-swarm plots displaying quartile and individual $d^\prime$ values are
+shown in Figure \ref{fig-rev-dprime}.  The statistical model indicated
+significant main effects for all three trial type manipulations, as seen in
+Figure \ref{fig-rev-dprime}a, with effect sizes around 0.2 to 0.3 on a
+$d^\prime$ scale.  Model results indicate that the attentional manipulation led
+to more responses to both targets and foils in maintain- versus
+switch-attention trials, though the net effect was an increase in $d^\prime$ in
+the maintain attention condition for nearly all listeners.  For the reverberant
+trials, the model indicates that listeners were better at detecting targets
+in the anechoic trials, but there was no significant difference in response to
+foils between anechoic and reverberant trials.  For talker gender (mis)match,
+the model indicates both better target detection and fewer responses to
+foils when the target and masker talkers had different genders.  The model also
+indicates a two-way interaction between reverberation and talker gender, seen
+in Figure \ref{fig-beh-rev}b: somewhat paradoxically, the difference between
+anechoic and reverberant trials was smaller when the target and masker talkers
+were of different genders.  The three-way interaction among attention,
+reverberation, and talker gender was not significant.
 
 ![(Color online) Box-and-swarm plots of between-condition differences in listener sensitivity for Experiment 1.  Boxes show first & third quartile and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (higher sensitivity in maintain than switch trials), reverberation (higher sensitivity in anechoic than reverberant trials), and talker gender (mis)match (higher sensitivity in trials with different gendered target and masker talkers).  (b) Two-way interactions; the difference between anechoic and reverberant trials was higher in the gender-match (MM) condition.  (c) Three-way interaction (no statistically significant differences).  ** = _p_<0.01; *** = _p_<0.001; MM = matching talker genders; MF = mismatched talker genders.\label{fig-rev-dprime}](fig-beh-rev.eps)
 
 ### Reaction time
-Box-and-swarm plots showing median, quartile, and individual reaction time
-values for each listener are shown in Figure \ref{fig-rev-rt}.  ***TODO: polish
-this text.***  Mixed model results show that XXX and YYY were significant.
+Box-and-swarm plots showing quartile and individual reaction time values are
+shown in Figure \ref{fig-rev-rt}.  The statistical model indicated a
+significant main effect of attentional condition, with faster response times
+(by approximately 14 ms on average) to targets in maintain-attention trials
+versus switch-attention trials.  No other significant differences in reaction
+time were indicated by the statistical model.
 
-![(Color online) .\label{fig-rev-rt}](fig-beh-rev-rt.eps)
+![(Color online) Box-and-swarm plots of between-condition differences in reaction time for Experiment 1.  Boxes show first & third quartile and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (faster reaction time in maintain than switch trials), reverberation, and talker gender (mis)match.  (b) Two-way interactions (no statistically significant differences).  (c) Three-way interaction (no statistically significant differences).  * = _p_<0.05; MM = matching talker genders; MF = mismatched talker genders.\label{fig-rev-rt}](fig-beh-rev-rt.eps)
 
 ## Discussion
-***TODO: polish this text.*** all main effects significant and in expected
-direction for sensitivity.  Only attention is significant for reaction time.
-There is a significant interaction between reverberation and talker gender
-(mis)match that is expected: when both talkers are male, the difference between
-anechoic and reverberant performance is bigger (i.e., reverberation hurts more
-when both talkers are male).  No interactions were seen in the reaction time
-data.
+The model of listener sensitivity showed main effects in the expected
+directions for all three manipulations: put simply, listener sensitivity was
+better when the talkers had different voices, when there was no reverberation,
+and when mid-trial switching of attention was not required.  Somewhat
+paradoxically, the difference between anechoic and reverberant trials was
+*smaller* in trials where the talkers had different voices, suggesting that the
+advantage due to absence of reverberation and the advantage due to talker voice
+differences are not strictly additive.  A possible explanation for this finding
+is that *either* talker voice difference *or* anechoic conditions are
+sufficient to support auditory source separation and streaming, but the
+presence of both conditions is not enough to overcome difficulty arising from
+other aspects of the task.  Equivalently, *both* segregating two talkers with
+the same voice *and* segregating two talkers in highly reverberant conditions
+are hard tasks, which when combined make for a task even more difficult than
+would be expected if the manipulations were additive (i.e., reverberation hurts
+performance more when both talkers are male).
 
-***TODO: polish this text.*** The pupillary response was only sensitive to
-attention condition.  This may be because, for normal hearing listeners,
-reverberation is not a serious enough degradation to really cause extra effort
-or load (even though there is a small performance hit).
+The model of reaction time showed a main effect of attention, with slightly
+faster reaction times in maintain-attention trials than in switch-attention
+trials.  The mean difference between these conditions was approximately 14 ms.
+No other comparisions showed statistically significant differences in reaction
+time.
+
+In contrast to listener sensitivity (and congruent with the reaction time
+results), the pupillary response was only sensitive to the attentional
+manipulation.  This situation might arise if, for normal hearing listeners,
+reverberation and talker gender mismatch are not serious enough degradations to
+cause sufficient extra effort or load to be observable in the pupillary
+response (in other words, the pupil may not be as sensitive as the behavioral
+measures).  However, the magnitude of the effect size in $d^\prime$ is roughly
+equal for the three main effects (see Figure \ref{fig-beh-rev}a), making this
+explanation unlikely.  Another possibility is that the pupil dilation only
+reflects certain kinds of effort or load, and that stimulus degradations that
+mainly affect listener ability to form and select auditory streams are not
+reflected in the pupillary response, whereas differences in listener
+attentional state (such as preparing for a mid-trial attention switch) are
+reflected in the pupil.  Experiment 2 further tests this latter explanation.
 
 # Experiment 2
 Since no effect of talker gender on pupil dilation was seen in Experiment 1, in
 Experiment 2 the target and masker talkers were always of opposite gender, and
-their status as target or masker was counterbalanced across trials. Since no
+their status as target or masker was counterbalanced across trials.  Since no
 effect of reverberation on pupillary response was seen in Experiment 1,
 Experiment 2 also removed the simulated spatial separation of talkers and
 involved a more severe cued stimulus degradation known to cause variation in
 task demand: spectral degradation (implemented as variation in number of
-noise-vocoder bands, 10 or 20).  Based on results from Winn and
-colleagues[@WinnEtAl2015] mentioned above, greater pupil dilation was expected
-in the (lower-intelligibility) 10-channel condition. The cued behavioral
-maintain-versus-switch manipulation from Experiment 1 was retained in
-Experiment 2, and additionally, the duration of the mid-trial temporal gap
-provided for attentional switching was varied (either 200 ms or 600 ms,
-uncued). Behavioral and neuroimaging research by Larson and Lee suggest that
+noise-vocoder channels, 10 or 20).  Based on results from Winn and colleagues
+showing increased dilation for low versus high numbers of vocoder channels with
+full-sentence stimuli,[@WinnEtAl2015] greater pupil dilation was expected here
+in the (more difficult, lower-intelligibility) 10-channel condition.  The cued
+behavioral maintain-versus-switch manipulation from Experiment 1 was retained
+in Experiment 2, and additionally, the duration of the mid-trial temporal gap
+provided for attention switching was varied (either 200 ms or 600 ms,
+uncued).  Behavioral and neuroimaging research by Larson and Lee suggest that
 the time course of attention switching in the auditory domain is around 300-400
 ms;[@LarsonLee2013a; @LarsonLee2013b] accordingly, we expected the 200 ms
-switch gap to be the more challenging condition and thus predicted greater
-pupil dilation on short-gap trials.
+switch gap to be challenging and thus predicted greater pupil dilation on
+short-gap trials.
 
 ## Methods
 ### Participants
