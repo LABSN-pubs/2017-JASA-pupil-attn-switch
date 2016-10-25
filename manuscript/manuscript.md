@@ -266,19 +266,7 @@ only),[@MarisOostenveld2007], as implemented in
 
 ## Results
 
-### Pupillometry
-Mean effort as a function of time for the three stimulus manipulations
-(reverberant/anechoic trials, talker gender match/mismatch trials, and
-maintain/switch attention trials) are shown in Figure \ref{fig-rev-pupil}. Only
-the attentional manipulation shows a significant difference between conditions,
-with “switch attention” trials showing greater effort than “maintain attention”
-trials, diverging as soon as listeners have heard the cue and remaining higher
-throughout the rest of the trial.
-
-![(Color online) Mean ±1 standard error across subjects of deconvolved pupil size for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
-
 ### Sensitivity analysis
-
 Box-and-swarm plots displaying quartile and individual $d^\prime$ values are
 shown in Figure \ref{fig-rev-dprime}.  The statistical model indicated
 significant main effects for all three trial type manipulations, as seen in
@@ -309,6 +297,17 @@ versus switch-attention trials.  No other significant differences in reaction
 time were indicated by the statistical model.
 
 ![(Color online) Box-and-swarm plots of between-condition differences in reaction time for Experiment 1.  Boxes show first & third quartile and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (faster reaction time in maintain than switch trials), reverberation, and talker gender (mis)match.  (b) Two-way interactions (no statistically significant differences).  (c) Three-way interaction (no statistically significant differences).  * = _p_<0.05; MM = matching talker genders; MF = mismatched talker genders.\label{fig-rev-rt}](fig-beh-rev-rt.eps)
+
+### Pupillometry
+Mean effort as a function of time for the three stimulus manipulations
+(reverberant/anechoic trials, talker gender match/mismatch trials, and
+maintain/switch attention trials) are shown in Figure \ref{fig-rev-pupil}. Only
+the attentional manipulation shows a significant difference between conditions,
+with “switch attention” trials showing greater effort than “maintain attention”
+trials, diverging as soon as listeners have heard the cue and remaining higher
+throughout the rest of the trial.
+
+![(Color online) Mean ±1 standard error across subjects of deconvolved pupil size for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
 
 ## Discussion
 The model of listener sensitivity showed main effects in the expected
