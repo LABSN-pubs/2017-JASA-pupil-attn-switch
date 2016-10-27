@@ -12,10 +12,10 @@ This script plots a trial diagram for the pupil vocoder switching task.
 
 # this is needed for embedding OpenType font in postscript output (which then
 # gets converted to EPS by ps2eps in the makefile)
-import matplotlib
-matplotlib.use('cairo')
+# import matplotlib
+# matplotlib.use('cairo')
 
-from numpy import linspace
+from numpy import linspace, tile
 import matplotlib.pyplot as plt
 from convenience_functions import use_font
 
@@ -30,8 +30,9 @@ fig.add_axes(ax)
 
 # color defs
 gapcol = '#999933'
-malecol = '0.6'
-femalecol = '0.75'
+slotcol = '#44aaaa'
+malecol = '0.5'
+femalecol = '0.7'
 cuecol = 'w'
 maintcol = '#332288'
 switchcol = '#aa4499'
@@ -65,16 +66,33 @@ for x, y, s, c, h, w in zip(centers_x, centers_y, box_l, color, ha, wt):
 ax.text(0.5, 2, '/', color=slashcol, ha='center', va='center', zorder=5)
 
 # switch gap
-rect = plt.Rectangle((2.5, -2.8), width=0.6, height=0.5, zorder=4,
-                     fill=False, linewidth=0.5, edgecolor=gapcol)
-yy = [(-2.55, -2.8)] + [(-2.3, -2.8)] * 5 + [(-2.3, -2.55)]
-xx = [(2.5, 2.6)] + [(x, x + 0.2) for x in linspace(2.5, 2.9, 5)] + [(3, 3.1)]
-_ = [plt.plot(x, y, linewidth=0.5, color=gapcol, solid_capstyle='butt',
-              zorder=4) for x, y in zip(xx, yy)]
+bot = -3.
+ht = 1.
+top = bot + ht
+lwd = 0.4
+rect = plt.Rectangle((2.5, bot), width=0.6, height=ht, zorder=4, fill=False,
+                     linewidth=lwd, edgecolor=gapcol, clip_on=False)
+yy = tile([bot + ht, bot], (6, 1))
+# yy[0, 0] = yy[-1, -1] = bot + ht / 2
+xx = [(x, x + 0.1) for x in linspace(2.5, 3., 6)]
+_ = [plt.plot(x, y, linewidth=lwd, color=gapcol, solid_capstyle='butt',
+              zorder=4, clip_on=False) for x, y in zip(xx, yy)]
 ax.add_artist(rect)
 ax.set_clip_on(False)
-ax.text(2.8, -3.3, 'variable switch gap', ha='center', va='top', fontsize=10,
-        color=gapcol)
+ax.text(2.8, -3.1, 'variable-length\nswitch gap', ha='center', va='top',
+        fontsize=10, color=gapcol)
+
+# timing slots
+for ix, x in enumerate([1.6, 2.1, 3.2, 3.7]):
+    offset = -0.2 * (ix % 2)
+    rect = plt.Rectangle((x, -2.8 + offset), width=0.9, height=0.5, zorder=3,
+                         facecolor=slotcol, alpha=0.5,
+                         edgecolor='none', fill=True, clip_on=False)
+    ax.text(x + 0.05, -2.555 + offset, str(ix + 1), ha='left', va='center',
+            weight='bold', fontsize=7.5, color='w', zorder=4)
+    ax.add_artist(rect)
+ax.text(1.6, -3.1, 'response\ntiming slots', ha='left', va='top',
+        fontsize=10, color=slotcol, zorder=4)
 
 # captions
 ax.text(0.5, 3.5, 'Cue', color='k', fontsize=11, ha='center', va='center')
@@ -105,4 +123,4 @@ plt.annotate('time (s)', (arr_xmax, arr_y),  xytext=(3, 0), fontsize=9,
 # finalize
 plt.ylim(-2.8, 4.8)
 plt.xlim(-0.1, 5)
-fig.savefig('fig-trial-voc.ps')
+fig.savefig('fig-trial-voc.pdf')
