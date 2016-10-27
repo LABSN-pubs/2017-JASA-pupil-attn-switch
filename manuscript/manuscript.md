@@ -24,6 +24,7 @@ pacs:
 - 43.71.Sy <!-- Spoken language processing by humans -->
 biblio-style: bibstyle
 bibliography: bib/switching
+possible-reviewers: Thomas Koelewijn, Matt Winn
 abstract: Successful speech communication often requires selective attention to a target stream in the presence of competing sounds, as well as the ability to switch attention among multiple interlocutors. An objective physiological measure that reflected *where* attention was directed or *when* an attentional switch had occurred would be a useful tool for studying the mechanisms underlying selective auditory attention. Two experiments were conducted to determine whether the pupillary response is sensitive to auditory attention switches. In both experiments, pupil dilation, performance accuracy, and reaction time were measured during a task requiring listeners to either maintain or switch attention between two concurrent speech streams. Task difficulty was modulated in various ways to explore its effect on the pupillary response during attention switching tasks. In Experiment 1, spatially distinct stimuli were manipulated by simulating reverberation (affecting the integrity of temporal segregation cues), and target/masker gender match was also manipulated.  In Experiment 2, non-spatial stimuli were manipulated by spectral degradation and altering the duration of the mid-trial switch gap. Pupil responses showed greater dilation on trials requiring switching attention between talkers, demonstrating that the attentional switch is reflected in the pupillary response. Furthermore, while the stimulus manipulations had an effect on behavioral performance, the pupillary response was affected only by the top-down attentional task.
 ---
 <!-- 43.66.Qp Localization of sound sources -->
@@ -283,12 +284,12 @@ $d^\prime$ scale.  Model results indicate that the attentional manipulation led
 to more responses to both targets and foils in maintain- versus
 switch-attention trials, though the net effect was an increase in $d^\prime$ in
 the maintain attention condition for nearly all listeners.  For the reverberant
-trials, the model indicates that listeners were better at detecting targets
+trials, the model indicated that listeners were better at detecting targets
 in the anechoic trials, but there was no significant difference in response to
 foils between anechoic and reverberant trials.  For talker gender (mis)match,
-the model indicates both better target detection and fewer responses to
+the model indicated both better target detection and fewer responses to
 foils when the target and masker talkers had different genders.  The model also
-indicates a two-way interaction between reverberation and talker gender, seen
+indicated a two-way interaction between reverberation and talker gender, seen
 in Figure \ref{fig-rev-dprime}b: somewhat paradoxically, the difference between
 anechoic and reverberant trials was smaller when the target and masker talkers
 were of different genders.  The three-way interaction among attention,
@@ -312,7 +313,7 @@ Mean effort as a function of time for the three stimulus manipulations
 maintain/switch attention trials) are shown in Figure \ref{fig-rev-pupil}. Only
 the attentional manipulation shows a significant difference between conditions,
 with “switch attention” trials showing greater effort than “maintain attention”
-trials, diverging as soon as listeners have heard the cue and remaining higher
+trials.  Effort diverges as soon as listeners have heard the cue and remains higher
 throughout the rest of the trial.
 
 ![(Color online) Mean ±1 standard error across subjects of deconvolved pupil size for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
@@ -380,6 +381,7 @@ switch gap to be challenging and thus predicted greater pupil dilation in
 short-gap trials (though only in the post-gap portion of the trial).
 
 ## Methods
+
 ### Participants
 Sixteen adults (eight female) aged 19 to 35 years (mean 25.5) participated in
 Experiment 2. All participants had normal audiometric thresholds (20 dB HL or
@@ -457,66 +459,58 @@ Deconvolution and statistical analysis of normalized pupil size data was also
 carried out identically to Experiment 1.
 
 ## Results
-### Pupillometry
-***TODO: this section not yet edited***  
-Mean pupil response as a function of time split by attention, spectral channels,
-and gap duration trials are shown in Figure \ref{fig-voc-pupil}. It appears that greater pupil
-dilation was seen on SWITCH compared to MAINTAIN trials and on 600 ms GAP
-compared to 200 ms GAP trials but not on 10-CHANNEL compared to 20-CHANNEL
-trials. Pairwise contrasts were performed for all three main contrasts to
-generate multiple-comparisons corrected family-wise error rate (FWER) p-values
-through temporal clustering with maximal statistics. This confirmed that
-switching attention evoked significantly greater pupil dilation (p<0.001) for
-both normalized and deconvolved pupil responses. Furthermore, this increase in
-dilation was observed soon after the auditory switch cue was presented (t = 1
-s), prior to the switch gap when the attentional switch actually occurred.
-Finally, greater dilation was also observed later in the trial (p=0.009
-normalized, p=0.005 deconvolved) with the longer 600 ms GAP duration.
-
-![(Color online) Mean ± 1 standard error across subjects of deconvolved pupil size for (a) 10- versus 20-band vocoded stimuli, (b) short versus long mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-voc-trial-diagram}). Hatched region shows temporal span of statistically significant differences between time series. The divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Fig. \ref{fig-rev-pupil}c). a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-voc-pupil}](pupil-fig-voc.eps)
 
 ### Sensitivity analysis
-Mean performance across conditions is shown in Figure \ref{fig-voc-dprime},
-with accuracy on the
-left and reaction time on the right. As expected, overall accuracy appears
-greater on MAINTAIN versus SWITCH trials and 20-CHANNEL versus 10-CHANNEL
-trials. Longer reaction times were also observed on SWITCH, 10-CHANNEL, and the
-200 ms GAP trials. Two repeated measures analysis of variance (RMANOVA) with
-attention, spectral channels, and gap duration as factors were conducted for
-d-prime and reaction time. For d-prime, the RMANOVA revealed a significant main
-effect of switching attention (F(1,15)=11.21, p=0.004) and the number of vocoder
-channels (F(1,15)=16.25, p=0.001), with no significant interactions. This
-analysis confirmed that performance accuracy captured the increased difficulty
-associated with switching attention as well as with spectral degradation. For
-reaction time, the RMANOVA also revealed a significant main effect of switching
-attention (F(1,15)=13.96, p=0.002) and number of vocoder channels
-(F(1,15)=38.89, p<0.001). However, an additional significant main effect of gap
-duration (F(1,15)=7.029, p=0.018) and a significant interaction between
-switching attention and gap duration (F(1,15)=4.910, p=0.043), consistent with
-the fact that gap duration only matters when a switch is required was also
-observed.
+Box-and-swarm plots displaying quartile and individual $d^\prime$ values are
+shown in Figure \ref{fig-voc-dprime}.  The statistical model indicated
+significant main effects for all three trial type manipulations, as seen in
+Figure \ref{fig-voc-dprime}a, with effect sizes between 0.2 to 0.5 on a
+$d^\prime$ scale.  Model results indicate no significant difference in target
+detection between maintain- and switch-attention trials, but did show fewer
+responses to foils in maintain-attention trials; a corresponding increase in
+$d^\prime$ in the maintain attention condition is seen for nearly all listeners
+in Figure \ref{fig-voc-dprime}a.  The model also indicated that listeners were
+better at detecting targets in 20-channel trials, but there was no significant
+difference in response to foils for the vocoder band manipulation.  For the
+switch gap length manipulation, the model indicated much greater response to
+foil items in the long gap trials.  The model also indicated a two-way
+interaction between gap duration and number of vocoder channels, seen in the
+middle column of Figure \ref{fig-voc-dprime}b: the difference in target
+detection between 20- and 10-channel trials was greater in the long-gap trials
+than in the short-gap trials.  There was also a two-way interaction between gap
+duration and the attentional manipulation, seen in the right column of Figure
+\ref{fig-voc-dprime}b, and a three-way interaction, shown in Figure
+\ref{fig-voc-dprime}c.  These interactions indicated that there were
+significantly more responses to foil items in the 10-channel, long-gap,
+maintain-attention trials than would be expected in the absence of a three-way
+interaction, and both more foil responses and fewer target responses in the
+long-gap maintain-attention trials than would be expected if the effects of gap
+duration and the attentional manipulation were independent.
 
 ![(Color online) Box-and-swarm plots of between-condition differences in listener sensitivity for Experiment 2.  Boxes show first & third quartile and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (higher sensitivity in maintain than switch trials), spectral degradation (higher sensitivity in 20-channel than 10-channel vocoded trials), and switch gap duration (higher sensitivity in trials with a short gap).  (b) Two-way interactions: the difference between 20- and 10-channel vocoded trials was greater in the long-gap condition, and the difference between long- and short-gap trials was greater (more negative) in the maintain-attention condition.  (c) Three-way interaction: the difference between long- and short-gap trials in the maintain attention condition was greater (more negative) in the 10-channel vocoded trials than in the 20-channel vocoded trials.  * = _p_<0.05; ** = _p_<0.01; *** = _p_<0.001.\label{fig-voc-dprime}](fig-beh-voc.eps)
 
 ### Reaction time
+Box-and-swarm plots showing quartile and individual reaction time values are
+shown in Figure \ref{fig-voc-rt}.  The statistical model indicated a a bias
+toward faster responses generally (by 70 ms on average) in long-gap trials, and
+a main effect of gap duration on responses to target items, with faster
+response times (by an additional 76 ms on average) to targets in long-gap
+trials.  No other significant differences in reaction time were observed.
 
-![(Color online) .\label{fig-voc-rt}](fig-beh-voc-rt.eps)
+![(Color online) Box-and-swarm plots of between-condition differences in reaction time for Experiment 2.  Boxes show first & third quartile and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention, spectral degradation, and gap duration (faster response time in long-gap trials).  (b) Two-way interactions (no statistically significant differences).  (c) Three-way interaction (no statistically significant differences).  *** = _p_<0.001.\label{fig-voc-rt}](fig-beh-voc-rt.eps)
 
-## Discussion
-The results of this experiment demonstrate that pupil dilation is a sensitive
-measure for the switching of attention. For both normalized and deconvolved
-pupil responses, greater pupil dilation was seen on SWITCH trials compared to
-MAINTAIN trials. An unexpected finding was that no difference in pupil response
-was observed between the 20-CHANNEL versus 10-CHANNEL vocoded trials, which were
-predicted to affect pupil dilation. These results are inconsistent with the
-results of Winn et al. (2014), which found increased pupil dilation as the
-spectral resolution of speech decreased. One difference between Winn et al. and
-this current study is that the participants were instructed to perform a
-top-down attentional switch task. A possible reason for these results is that
-sensitivity of the pupil response to the explicit top-down task overrode the
-effect of the bottom-up manipulations of spectral resolution and switch gap
-duration. To further investigate, a second experiment with additional stimulus
-manipulations was conducted.
+### Pupillometry
+Mean effort as a function of time for the three stimulus manipulations (10/20
+vocoder channels, gap duration, and maintain/switch attention trials) are shown
+in Figure \ref{fig-voc-pupil}. As in Experiment 1, the attentional manipulation
+shows a significant difference between conditions, with switch-attention trials
+showing greater effort than maintain-attention trials.  Also as in Experiment
+1, effort diverges as soon as listeners have heard the cue and remains higher
+throughout the rest of the trial.  There is also a significant difference in
+the time course of effort between long- and short-gap trials, though it
+manifests as a delay rather than a vertical shift.
+
+![(Color online) Mean ±1 standard error across subjects of deconvolved pupil size for (a) 10- versus 20-band vocoded stimuli, (b) short versus long mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-voc-trial}). Hatched region shows temporal span of statistically significant differences between time series. The late-trial divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Fig. \ref{fig-rev-pupil}c). a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-voc-pupil}](pupil-fig-voc.eps)
 
 ## Discussion
 <!-- TODO: this should not be empty -->
