@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ===============================================================================
-Script 'plot-behavioral-data.py'
+Script 'fig-behavioral.py'
 ===============================================================================
 
 This script cleans and analyzes behavioral data for the vocoder/switch-gap
