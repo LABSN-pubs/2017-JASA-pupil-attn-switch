@@ -74,6 +74,7 @@ def plot_hist_chsq(x, bins, fig, color, linsp, lcolor=None, histalpha=0.25,
 # load data
 longform = read_data(rt_data_fnames[0])
 longform_voc = read_data(rt_data_fnames[1])
+nonans = longform.dropna()
 
 # distribution of targets by slot
 byslot = longform.groupby(['slot']).aggregate(dict(targ=np.sum))
@@ -81,27 +82,11 @@ print(byslot / byslot.sum())
 byslot = longform_voc.groupby(['slot']).aggregate(dict(targ=np.sum))
 print(byslot / byslot.sum())
 
+
 # voc exp foil responses by slot
 foilbyslot = longform_voc.groupby(['slot', 'gap_len']).agg(dict(frsp=np.sum))
 # voc exp hits by slot
 hitbyslot = longform_voc.groupby(['slot', 'gap_len']).agg(dict(hit=np.sum))
-
-# is RT generally different by slot?  YES
-nonans = longform.dropna()
-slot0 = nonans.loc[nonans.slot == 0]['reax_time']
-slot1 = nonans.loc[nonans.slot == 1]['reax_time']
-slot2 = nonans.loc[nonans.slot == 2]['reax_time']
-slot3 = nonans.loc[nonans.slot == 3]['reax_time']
-f_val, aov_p_val = ss.f_oneway(slot0, slot1, slot2, slot3)
-comps = [(slot0, slot1), (slot0, slot2), (slot0, slot3),
-         (slot1, slot2), (slot1, slot3), (slot2, slot3)]
-print(f_val, aov_p_val)
-for comp in comps:
-    t_val, p_val = ss.ttest_ind(*comp, equal_var=False)
-    p_val = p_val / len(comps)  # bonferroni
-    print([slot.mean() for slot in comp])
-    print([slot.std() for slot in comp])
-    print(p_val)
 
 
 # is maint/switch RT difference localized by slot?  YES
@@ -132,6 +117,24 @@ ax, bar = efa.barplot(means.values, err_bars=stdev.values,
 # in the maintain condition.
 presses = longform.loc[longform.press].groupby(['attn']).count()['reax_time']
 targ_resps = longform.loc[longform.hit].groupby(['attn']).count()['reax_time']
+
+
+# is RT generally different by slot?  YES
+slot0 = nonans.loc[nonans.slot == 0]['reax_time']
+slot1 = nonans.loc[nonans.slot == 1]['reax_time']
+slot2 = nonans.loc[nonans.slot == 2]['reax_time']
+slot3 = nonans.loc[nonans.slot == 3]['reax_time']
+f_val, aov_p_val = ss.f_oneway(slot0, slot1, slot2, slot3)
+comps = [(slot0, slot1), (slot0, slot2), (slot0, slot3),
+         (slot1, slot2), (slot1, slot3), (slot2, slot3)]
+print(f_val, aov_p_val)
+for comp in comps:
+    t_val, p_val = ss.ttest_ind(*comp, equal_var=False)
+    p_val = p_val / len(comps)  # bonferroni
+    print([slot.mean() for slot in comp])
+    print([slot.std() for slot in comp])
+    print(p_val)
+
 
 # # # # # # # # # # # # # # # # # #
 # REACTION TIME HISTOGRAM BY SLOT #
