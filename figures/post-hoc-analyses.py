@@ -83,6 +83,8 @@ print(byslot / byslot.sum())
 
 # voc exp foil responses by slot
 foilbyslot = longform_voc.groupby(['slot', 'gap_len']).agg(dict(frsp=np.sum))
+# voc exp hits by slot
+hitbyslot = longform_voc.groupby(['slot', 'gap_len']).agg(dict(hit=np.sum))
 
 # is RT generally different by slot?  YES
 nonans = longform.dropna()
