@@ -497,11 +497,15 @@ duration and the attentional manipulation were independent.
 
 ### Reaction time
 Box-and-swarm plots showing quartile and individual reaction time values are
-shown in Figure \ref{fig-voc-rt}.  The statistical model indicated a a bias
+shown in Figure \ref{fig-voc-rt}.  The statistical model indicated a bias
 toward faster responses generally (by 70 ms on average) in long-gap trials, and
 a main effect of gap duration on responses to target items, with faster
 response times (by an additional 76 ms on average) to targets in long-gap
 trials.  No other significant differences in reaction time were observed.
+Unlike in Experiment 1, post-hoc tests of reaction time difference between
+maintain- and switch-attention trials by slot showed no significant differences
+(Welch’s independent *t*-tests, uncorrected: *p*=0.085 for slot 1, *p*=0.22 for
+slot 2, *p*=0.097 for slot 3, and *p*=0.76 for slot 4).
 
 ![(Color online) Box-and-swarm plots of between-condition differences in reaction time for Experiment 2.  Boxes show first & third quartiles and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention, spectral degradation, and gap duration (faster response time in long-gap trials).  (b) Two-way interactions (no statistically significant differences).  (c) Three-way interaction (no statistically significant differences).  *** = _p_<0.001.\label{fig-voc-rt}](fig-beh-voc-rt.eps)
 
@@ -722,7 +726,7 @@ attention would be a good starting point to guide future studies. Finally,
 further investigations of the underlying physiology of the pupillary response,
 especially as elicited by auditory attention are also a priority.
  -->
- 
+
 # Acknowledgments
 This research was supported by NIH grant R01-DC013260 to AKCL and NIH LRP
 awards to EDL and DRM. The authors are grateful to two anonymous reviewers and
