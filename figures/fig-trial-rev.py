@@ -64,32 +64,32 @@ for x, y, b, e in zip(box_x, box_y, bcolor, ecolor):
     ax.fill(x, y, b, alpha=1, zorder=4, edgecolor=e, linewidth=0.5)
 for x, y, s, c, h, w in zip(centers_x, centers_y, box_l, color, ha, wt):
     ax.text(x, y - 0.04, s, ha=h, va='center', color=c, weight=w, zorder=5)
+ax.vlines([2., 3.6], ymin=-0.5, ymax=2.5, zorder=5, color='w', linewidth=1)
 ax.text(0.5, 2, '/', color=slashcol, ha='center', va='center', zorder=5)
 
 # switch gap
-bot = -3.25
+bot = -3.3
 ht = 1.25
 top = bot + ht
 lwd = 0.4
 rect = plt.Rectangle((2.5, bot), width=0.6, height=ht, zorder=4, fill=False,
                      linewidth=lwd, edgecolor=gapcol, clip_on=False)
 yy = tile([bot + ht, bot], (6, 1))
-# yy[0, 0] = yy[-1, -1] = bot + ht / 2
 xx = [(x, x + 0.1) for x in linspace(2.5, 3., 6)]
 _ = [plt.plot(x, y, linewidth=lwd, color=gapcol, solid_capstyle='butt',
               zorder=4, clip_on=False) for x, y in zip(xx, yy)]
 ax.add_artist(rect)
 ax.set_clip_on(False)
-ax.text(2.8, -3.4, 'switch gap', ha='center', va='top', fontsize=10,
+ax.text(2.8, -3.5, 'switch gap', ha='center', va='top', fontsize=10,
         color=gapcol)
 
 # timing slots
 for ix, x in enumerate([1.6, 2.1, 3.2, 3.7]):
-    offset = -0.2 * (ix % 2)
-    rect = plt.Rectangle((x, -2.8 + offset), width=0.9, height=0.5, zorder=3,
+    offset = -0.25 * (ix % 2)
+    rect = plt.Rectangle((x, -2.9 + offset), width=0.9, height=0.6, zorder=3,
                          facecolor=slotcol, alpha=0.5,
                          edgecolor='none', fill=True, clip_on=False)
-    ax.text(x + 0.05, -2.575 + offset, str(ix + 1), ha='left', va='center',
+    ax.text(x + 0.05, -2.65 + offset, str(ix + 1), ha='left', va='center',
             weight='bold', fontsize=7.5, color='w', zorder=4)
     ax.add_artist(rect)
 ax.text(1.6, -3.1, 'response\ntiming slots', ha='left', va='top',
@@ -108,7 +108,7 @@ ax.text(1.5, 0.55, 'female', color=femalecol, fontsize=9, ha='left',
 arr_y = -2.3
 arr_xmax = 4.7
 tcklen = 0.25
-ticktimes = [0, 1, 1.5, 2.5, 3.1, 4.1]
+ticktimes = [0, 1, 1.5, 2.0, 2.5, 3.1, 3.6, 4.1]
 ticklabels = [str(tt) for tt in ticktimes]
 #ticklabels[-2:] = [str(a - 0.4) + ' or ' + str(a) for a in ticktimes[-2:]]
 _ = ax.vlines(ticktimes, arr_y - tcklen, arr_y + tcklen, linewidths=0.5,
