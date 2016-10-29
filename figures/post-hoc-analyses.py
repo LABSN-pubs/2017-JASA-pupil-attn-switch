@@ -35,8 +35,9 @@ hmfc2 = ['hit', 'miss', 'fals', 'crej']
 
 # plot params
 pd.set_option('display.width', 160)
-plt.ioff()
+plt.ion()
 use_font('mplus')
+
 
 # functions
 def read_data(data_fname, parse_presses=False):
@@ -76,6 +77,7 @@ longform = read_data(rt_data_fnames[0])
 longform_voc = read_data(rt_data_fnames[1])
 nonans = longform.dropna()
 
+
 # distribution of targets by slot
 byslot = longform.groupby(['slot']).aggregate(dict(targ=np.sum))
 print(byslot / byslot.sum())
@@ -83,18 +85,31 @@ byslot = longform_voc.groupby(['slot']).aggregate(dict(targ=np.sum))
 print(byslot / byslot.sum())
 
 
-# voc exp foil responses by slot
-foilbyslot = longform_voc.groupby(['slot', 'gap_len']).agg(dict(frsp=np.sum))
-# voc exp hits by slot
-hitbyslot = longform_voc.groupby(['slot', 'gap_len']).agg(dict(hit=np.sum))
+# vocoder experiment: distribution of foil response rate by slot
+aggfuncs = dict(frsp=np.sum, hit=np.sum, targ=np.sum, foil=np.sum)
+vocbyslot = longform_voc.groupby(['slot', 'gap_len', 'subj']).agg(aggfuncs)
+vocbyslot['foilrate'] = vocbyslot.frsp / vocbyslot.foil
+vocbyslot = vocbyslot.unstack([0, 1])['foilrate']
+pvals = list()
+for slot in range(4):
+    _long = vocbyslot[slot, 'long']
+    _short = vocbyslot[slot, 'short']
+    tval, pval = ss.ttest_ind(_long, _short, equal_var=False)
+    pvals.append(pval)
+print(pvals)
+ax, bar = efa.barplot(vocbyslot.values, axis=0, err_bars='se',
+                      groups=[(0, 1), (2, 3), (4, 5), (6, 7)],
+                      brackets=[(2, 3), (4, 5)], bracket_text=['*', '**'],
+                      bar_names=['long', 'short'] * 4,
+                      group_names=['slot {}'.format(x + 1) for x in range(4)])
 
 
-# is maint/switch RT difference localized by slot?  YES
+# reverb experiment: is maint/switch RT difference localized by slot?  YES
+# change next line to longform_voc for vocoder
 gb = longform.groupby(['slot', 'attn'])
 n_resp = gb.agg(dict(reax_time=lambda x: np.sum(np.logical_not(np.isnan(x)))))
 means = gb.agg(dict(reax_time=np.mean))
 stdev = gb.agg(dict(reax_time=np.std))
-
 pvals = list()
 for slot in range(4):
     maint = nonans.loc[np.logical_and(nonans.slot == slot,
@@ -104,13 +119,12 @@ for slot in range(4):
     tval, pval = ss.ttest_ind(maint, switch, equal_var=False)
     pvals.append(pval)
 print(pvals)
-"""
 ax, bar = efa.barplot(means.values, err_bars=stdev.values,
                       groups=[(0, 1), (2, 3), (4, 5), (6, 7)],
                       brackets=[(4, 5), (6, 7)], bracket_text=['***', '*'],
                       bar_names=['maint.', 'switch'] * 4,
                       group_names=['slot {}'.format(x + 1) for x in range(4)])
-"""
+
 
 # is elevated pupil signal in switch condition just an artifact of more
 # button presses in those trials? NO: there are actually more responses
