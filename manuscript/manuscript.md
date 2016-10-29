@@ -448,7 +448,7 @@ from another “O” (in either stream) by at least 1 second, and its position i
 the letter sequence was balanced across trials and conditions.  Distribution of
 targets and foils across timing slots was equivalent to Experiment 1.
 
-![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 2. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AU” in a male voice, attend to the male voice (“EO”) for the first half of the trial and the female voice (“DE”) for the second half of the trial, and respond once (to the “O” occurring at 2–2.5 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“EOPO”) throughout the trial, and respond twice (once for each “O”).\label{fig-voc-trial}](fig-trial-voc.eps)
+![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 2. The short-gap version is depicted; timing of long-gap elements (where different) are shown with faint dashed lines. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AU” in a male voice, attend to the male voice (“EO”) for the first half of the trial and the female voice (“DE”) for the second half of the trial, and respond once (to the “O” occurring at 2–2.5 seconds). In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“EOPO”) throughout the trial, and respond twice (once for each “O”).\label{fig-voc-trial}](fig-trial-voc.eps)
 
 Before starting the experimental task, participants heard 2 blocks of 10 trials
 for familiarization with noise-vocoded speech (one with a single talker, one
