@@ -524,20 +524,26 @@ manifests as a delay rather than a vertical shift.
 
 ## Discussion
 
-The model of listener sensitivity showed main effects of the vocoder channel
-and attentional manipulations in the expected directions: listener sensitivity
-was better when there were more vocoder channels and when mid-trial switching
-of attention was not required.  However, the results of the gap duration
-manipulation were unexpected; based on past findings that auditory attention
-switches take between 300 and 400 ms,[@LarsonLee2013a; @LarsonLee2013b] we
-hypothesized that a gap duration of 200 ms would cause listeners to fail to
-detect targets in the immediate post-gap position (i.e., timing slot 3).  We
-did see slower reaction time in the short-gap trials, but sensitivity was
-actually *better* in the short-gap trials than in the long-gap ones (Figure
-\ref{fig-voc-dprime}a, right column).  Moreover, according to the statistical
-model this effect was driven by a difference in the rate of responses to foil
-items, not targets.  This suggests that, in the long-gap condition, listeners
-had difficulty selecting the correct stream to attend to, and/or had difficulty
+The model of listener sensitivity showed main effects of the spectral
+degradation and attentional manipulations in the expected directions: listener
+sensitivity was better when there were more vocoder channels and when mid-trial
+switching of attention was not required.  However, the results of the gap
+duration manipulation were unexpected; based on past findings that auditory
+attention switches take between 300 and 400 ms,[@LarsonLee2013a;
+@LarsonLee2013b] we hypothesized that a gap duration of 200 ms would cause
+listeners to fail to detect targets in the immediate post-gap position (i.e.,
+timing slot 3).  We did see marginally slower reaction time in the short-gap
+trials, but sensitivity was actually *better* in the short-gap trials than in
+the long-gap ones (Figure \ref{fig-voc-dprime}a, right column).  Moreover,
+according to the statistical model this effect was driven by a difference in
+the rate of responses to *foil items*, not targets; post-hoc analysis showed
+that this difference in foil response rate was significant in timing slots 2
+and 3 (i.e., both before and after the switch gap); this difference in foil
+response rate in slot 2 (before the switch gap) cannot be attributed to the gap
+duration manipulation (since the manipulation was uncued), making definitive
+interpretation of this result difficult.  Nevertheless, it may be the case that
+(for the post-gap difference at least) listeners had difficulty in the long-gap
+condition selecting the correct stream to attend to, and/or had difficulty
 suppressing responses to foil items in the competing stream.  Interestingly,
 this difficulty appears to be limited to the maintain-attention trials (see
 Figure \ref{fig-voc-dprime}b, right column), and more specifically, to the
@@ -548,7 +554,12 @@ A possible explanation is that the long-gap condition interfered with auditory
 streaming, the 10-channel condition also interfered with streaming, and when
 both conditions occurred simultaneously there was a strong effect on listener
 ability to group the pre- and post-gap letters into a single stream (i.e., to
-maintain stream identity across the gap).  However, this explanation still does
+preserve stream identity across the gap).  Larson and Lee showed a similar
+“drop off” in performance in their maintain-attention trials when the gap
+duration reached 800 ms;[@LarsonLee2013a] perhaps the spectral degradation in
+our stimuli decreased listeners’ tolerance for gaps in the stream, causing
+performance to drop off at shorter (600 ms) gap lengths.
+However, this explanation still does
 not account for the finding that the 10-channel plus long-gap difficulty seems
 to only occur in the maintain-attention trials.  One might speculate that the
 act of switching attention at the mid-trial gap effectively “fills in” the gap,
@@ -561,15 +572,12 @@ additional cognitive effort required to make the switch might result in *more
 accurate* post-gap stream selection, whereas the putatively less effortful task
 of maintaining attention to a consistent source could lead to *less accurate*
 post-gap stream selection when stream formation is already difficult (due to
-strong spectral degradation) and stream interruptions are long.  If that is
+strong spectral degradation) and stream interruptions are long.  <!-- If that is
 true, then (paradoxically) listeners could better “maintain” attention to a
 consistent source by actively disengaging and re-engaging from that source at
-the edges of temporally predictable caesuras. Further study of the temporal
+the edges of temporally predictable caesuras. --> Further study of the temporal
 dynamics of auditory attention switching is needed to clarify how listeners’
-intended behavior affects stream stability across temporal gaps.
-
-# Post-hoc analyses?
-TODO: exp 2 foil responses by timing slot?
+intended behavior affects stream stability across temporal caesuras.
 
 # General discussion
 **TODO: notes on what Dan wants to say**
@@ -579,6 +587,12 @@ the degradation itself that causes pupil dilation in his results, it's the
 resulting increased effort in resolving sentential meaning.  Other than that,
 summarize discussion from Exps. 1 and 2; the main points are already in there I
 think.
+
+The relationship between auditory stream preservation and gap duration is an
+interesting one.  If we're right that Larson and Lee saw a drop-off at 800 ms
+because their stimuli were cleaner, then it has implications for hearing loss
+and cognitive decline (peripheral degradation = less tolerance for long gaps;
+cognitive decline = slower switching).
 
 <!--
 **TODO: following is Bonnie’s draft text, not yet revised.**
