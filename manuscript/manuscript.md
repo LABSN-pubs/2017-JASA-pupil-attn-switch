@@ -32,14 +32,19 @@ abstract: Successful speech communication often requires selective attention to 
 <!-- 43.71.Rt Sensory mechanisms in speech perception -->
 <!-- 43.66.Pn Binaural hearing -->
 
+<!-- TODO: revise abstract ("where and when" part, maybe move to intro,
+as long as we circle back and explain "we hoped to see pupil spike at
+switch but saw it all trial long") -->
+
 # Introduction
 The ability to selectively attend to a target speech stream in the presence of
 competing sounds is required to communicate in everyday listening environments.
-This ability varies across individuals with normal hearing,[@GoldbergEtAl2014]
-For listeners with peripheral hearing deficits, changes in the encoding of
+This ability varies across individuals with audiometrically normal hearing, and
+for listeners with peripheral hearing deficits, changes in the encoding of
 stimuli often result in impaired selective attention and consequent difficulty
 communicating in noisy environments.[@ShinnCunninghamBest2008]
 
+<!-- TODO: needs revision, not so relevant to what we're asking/showing -->
 Past findings show that directing auditory attention involves a complex
 interaction between endogenous control (conscious, top-down) and exogenous
 (re)orientation (involuntary, bottom-up).[@Carlyon2004; @ShammaEtAl2011]
@@ -89,8 +94,12 @@ While there have been no previous pupillometry studies of attention switching,
 Larson and Lee[@LarsonLee2013a] showed that when cueing listeners in a target
 detection task to either maintain attention to one stream or switch attention
 to the other stream mid-trial, switching attention both reduced accuracy and
-led to longer response latency. The present study was designed to investigate
-whether the pupillary response is also sensitive to attention switches. Pupil
+led to longer response latency *even on targets prior to the attentional
+switch*. The present study was designed to investigate whether the pupillary
+response is also sensitive to attention switches.  
+<!-- TODO: we'll be using pupillometry to look at attention **switching** to see
+if it registers as "load" or "effort" -->
+Pupil
 dilation was measured while listeners heard two speech streams, with pre-trial
 cues instructing them to either switch attention from one stream to the other
 at a designated mid-trial gap, or to maintain attention on the same stream
@@ -177,7 +186,7 @@ female voice), with a 600 ms gap between the second and third letters. The task
 was to respond by button press to the letter “O” spoken by the target talker
 (Figure \ref{fig-rev-trial}).
 
-![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 s).  In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.  In the depicted trials, a button press during timing slot 2 would be counted as response to the “O” at 2-2.5 s, which is a “foil” in both trial types illustrated.  A button press during timing slot 3 would be counted as response to the “O” at 3.1-3.6 s, which is considered a target in the switch-attention trial and a foil in the maintain-attention trial.\label{fig-rev-trial}](fig-trial-rev.eps)
+![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial and the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 s).  In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, attend to the male voice (“QUJR”) throughout the trial, and not respond at all.  In the depicted trials, a button press during timing slot 2 would be counted as response to the “O” at 2-2.5 s, which is a “foil” in both trial types illustrated.  A button press during timing slot 3 would be counted as response to the “O” at 3.1-3.6 s, which is considered a target in the switch-attention trial and a foil in the maintain-attention trial. Note that “O” tokens never occurred in immediately adjacent timing slots (unless separated by the switch gap) so response attribution was unambiguous.\label{fig-rev-trial}](fig-trial-rev.eps)
 
 Before starting the experimental task, participants heard 2 blocks of 10 trials
 for familiarization with anechoic and reverberant speech (one with a single
@@ -323,8 +332,8 @@ throughout the rest of the trial.
 The model of listener sensitivity showed main effects in the expected
 directions for all three manipulations: put simply, listener sensitivity was
 better when the talkers had different voices, when there was no reverberation,
-and when mid-trial switching of attention was not required.  Somewhat
-paradoxically, the difference between anechoic and reverberant trials was
+and when mid-trial switching of attention was not required.  
+The difference between anechoic and reverberant trials was
 *smaller* in trials where the talkers had different voices, suggesting that the
 advantage of anechoic conditions and the advantage due to talker voice
 differences are not strictly additive.  A possible explanation for this finding
@@ -344,7 +353,10 @@ Post-hoc analysis showed that reaction time did not differ between maintain-
 and switch-attention trials for responses occurring *before* the switch gap
 (Welch’s independent *t*-tests, uncorrected: *p*=0.74 for slot 1 and *p*=0.53
 for slot 2) but did significantly differ for responses occurring *after* the
-switch gap (*p*<0.001 for slot 3 and *p*=0.035 for slot 4).
+switch gap (*p*<0.001 for slot 3 and *p*=0.035 for slot 4).  This is consistent
+with a view that the act of attention switching creates a lag or slow-down in
+auditory perception, which takes on the order of 1 s to recover from.
+
 Congruent with the reaction time results (and in contrast to listener
 sensitivity), the pupillary response differed only in response to the
 attentional manipulation.  This situation might arise if, for normal hearing
