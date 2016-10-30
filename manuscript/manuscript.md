@@ -25,35 +25,30 @@ pacs:
 biblio-style: bibstyle
 bibliography: bib/switching
 possible-reviewers: Thomas Koelewijn, Matt Winn
-abstract: Successful speech communication often requires selective attention to a target stream in the presence of competing sounds, as well as the ability to switch attention among multiple interlocutors. An objective physiological measure that reflected *where* attention was directed or *when* an attentional switch had occurred would be a useful tool for studying the mechanisms underlying selective auditory attention. Two experiments were conducted to determine whether the pupillary response is sensitive to auditory attention switches. In both experiments, pupil dilation, performance accuracy, and reaction time were measured during a task requiring listeners to either maintain or switch attention between two concurrent speech streams. Task difficulty was modulated in various ways to explore its effect on the pupillary response during attention switching tasks. In Experiment 1, spatially distinct stimuli were manipulated by simulating reverberation (affecting the integrity of temporal segregation cues), and target/masker gender match was also manipulated.  In Experiment 2, non-spatial stimuli were manipulated by spectral degradation and altering the duration of the mid-trial switch gap. Pupil responses showed greater dilation on trials requiring switching attention between talkers, demonstrating that the attentional switch is reflected in the pupillary response. Furthermore, while the stimulus manipulations had an effect on behavioral performance, the pupillary response was affected only by the top-down attentional task.
+abstract: Successful speech communication often requires selective attention to a target stream in the presence of competing sounds, as well as the ability to switch attention among multiple interlocutors.  However, auditory attention switching has been shown to negatively affect both target detection accuracy and reaction time [Larson & Lee 2013, J. Acoust. Soc. Am., 134, EL165-171], suggesting that attention switches carry a cognitive cost.  One tool for assessing cognitive effort or load is the measurement of pupil diameter.  Two experiments were conducted to determine whether the pupillary response is sensitive to auditory attention switches.  In both experiments, pupil dilation, performance accuracy, and reaction time were measured during a task requiring listeners to either maintain or switch attention between two concurrent speech streams.  Task difficulty was modulated in various ways to explore its effect on the pupillary response during attention switching tasks.  In Experiment 1, spatially distinct stimuli were manipulated by simulating reverberation (affecting the integrity of temporal segregation cues), and target/masker gender match was also manipulated.  In Experiment 2, non-spatial stimuli separable by talker voice quality and pitch were manipulated by spectral degradation and altering the duration of the mid-trial switch gap.  Pupil responses showed greater dilation on trials requiring switching attention between talkers, demonstrating that the attentional switch is reflected in the pupillary response.  Furthermore, while the stimulus manipulations had an effect on behavioral performance, the pupillary response was affected only by the top-down attentional task.
 ---
 <!-- 43.66.Qp Localization of sound sources -->
 <!-- 43.71.An Models and theories of speech perception (see also 43.66.Ba) -->
 <!-- 43.71.Rt Sensory mechanisms in speech perception -->
 <!-- 43.66.Pn Binaural hearing -->
 
-<!-- TODO: revise abstract ("where and when" part, maybe move to intro,
-as long as we circle back and explain "we hoped to see pupil spike at
-switch but saw it all trial long") -->
-
 # Introduction
+
 The ability to selectively attend to a target speech stream in the presence of
 competing sounds is required to communicate in everyday listening environments.
-This ability varies across individuals with audiometrically normal hearing, and
-for listeners with peripheral hearing deficits, changes in the encoding of
-stimuli often result in impaired selective attention and consequent difficulty
-communicating in noisy environments.[@ShinnCunninghamBest2008]
-
-<!-- TODO: needs revision, not so relevant to what we're asking/showing -->
-Past findings show that directing auditory attention involves a complex
-interaction between endogenous control (conscious, top-down) and exogenous
-(re)orientation (involuntary, bottom-up).[@Carlyon2004; @ShammaEtAl2011]
-Unfortunately, it is hard to tell which of two competing sounds a listener is
-attending to (other than through subjective report), making it difficult to
-experimentally segregate exogenous and endogenous aspects of attention. A
-physiological measure that could index the attended stimulus, or that could
-indicate when an attentional switch had occurred, would be a useful tool to
-complement psychophysical measures of auditory attention.
+In many situations (e.g., a lively debate around the dinner table), the ability
+to rapidly switch attention among multiple interlocutors is also necessary for
+successful communication.  Some evidence suggests that attention is a necessary
+prerequisite for auditory stream formation,[@ShammaEtAl2011] and for listeners
+with peripheral hearing deficits, changes in the encoding of stimuli often
+result in impaired selective attention and consequent difficulty communicating
+in noisy environments.[@ShinnCunninghamBest2008]  Larson and Lee showed that
+when cueing listeners in a target detection task to either maintain attention
+to one stream or switch attention to the other stream mid-trial, switching
+attention both reduced accuracy and led to longer response latency *even on
+targets prior to the attentional switch*.[@LarsonLee2013a]  This suggests that
+the act of remembering or preparing to switch imposes some degree of effort or
+load on the listener.
 
 Pupillometry, the tracking of pupil diameter, has been used for over four
 decades to measure cognitive load.[@KahnemanBeatty1966; @Beatty1982]  Pupil
@@ -90,22 +85,14 @@ additionally reported greater pupil dilation and later peak pupil latency when
 listeners were asked to attend to both speech streams present in the stimulus
 compared to attending to only one stream.[@KoelewijnEtAl2014]
 
-While there have been no previous pupillometry studies of attention switching,
-Larson and Lee[@LarsonLee2013a] showed that when cueing listeners in a target
-detection task to either maintain attention to one stream or switch attention
-to the other stream mid-trial, switching attention both reduced accuracy and
-led to longer response latency *even on targets prior to the attentional
-switch*. The present study was designed to investigate whether the pupillary
-response is also sensitive to attention switches.  
-<!-- TODO: we'll be using pupillometry to look at attention **switching** to see
-if it registers as "load" or "effort" -->
-Pupil
-dilation was measured while listeners heard two speech streams, with pre-trial
-cues instructing them to either switch attention from one stream to the other
-at a designated mid-trial gap, or to maintain attention on the same stream
-throughout the trial. Extrapolating from the divided attention results of
-Koelewijn and colleagues,[@KoelewijnEtAl2014] we predicted greater pupil
-dilation on trials that required attention switching.
+The present study was designed to investigate whether the pupillary response is
+also sensitive to attention switches.  Pupil dilation was measured while
+listeners heard two speech streams, with pre-trial cues instructing them to
+either switch attention from one stream to the other at a designated mid-trial
+gap, or to maintain attention on the same stream throughout the trial.
+Extrapolating from the divided attention results of Koelewijn and
+colleagues,[@KoelewijnEtAl2014] we predicted greater pupil dilation on trials
+that required attention switching.
 
 # General Methods
 All procedures were performed in a sound-treated booth; illumination was
