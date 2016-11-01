@@ -109,7 +109,9 @@ aggfuncs = dict(frsp=np.sum, hit=np.sum, targ=np.sum, foil=np.sum)
 vocbyslot = longform_voc.groupby(['slot', 'gap_len', 'voc_chan', 'attn',
                                   'subj']).agg(aggfuncs)
 vocbyslot['foilrate'] = vocbyslot.frsp / vocbyslot.foil
-vbs = vocbyslot.unstack([0, 1, 2, 3])['frsp']
+vocbyslot['hitrate'] = vocbyslot.hit / vocbyslot.targ
+vocbyslot['resprate'] = (vocbyslot.hit + vocbyslot.frsp) / (vocbyslot.targ + vocbyslot.foil)
+vbs = vocbyslot.unstack([0, 1, 2, 3])['foilrate']
 pvals = list()
 for slot in range(4):
     for dur in ['long', 'short']:
@@ -123,8 +125,8 @@ ax, bar = efa.barplot(vbs.values, axis=0, err_bars='se',
                       groups=np.arange(vbs.shape[1]).reshape(-1, 2),
                       #brackets=[(0, 1), (2, 3), (6, 7)],
                       #bracket_text=['***', '*', '*'],
-                      bar_names=['maint.', 'switch'] * (vbs.shape[1] / 2),
-                      group_names=['10', '20'] * vbs.shape[1] / 4)
+                      bar_names=['mnt.', 'swch'] * (vbs.shape[1] // 2),
+                      group_names=['10', '20'] * (vbs.shape[1] // 4))
                       #group_names=['slot {}'.format(x + 1) for x in range(4)])
 
 
