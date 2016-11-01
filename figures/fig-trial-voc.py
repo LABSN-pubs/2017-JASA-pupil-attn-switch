@@ -62,7 +62,7 @@ ecolor = ['k'] + ['none'] * 4
 wt = ['normal'] * 2 + ['bold'] * 8  # ['bold'] * 10
 ha = ['left', 'right'] + ['center'] * 8
 for x, y in zip(ghost_x, ghost_y):
-    ax.fill(x, y, '0.95', edgecolor='0.6', alpha=0.85, zorder=3, linewidth=0.5,
+    ax.fill(x, y, '0.95', edgecolor='0.6', alpha=0.85, zorder=3, linewidth=0.6,
             linestyle='dashed')
 for x, y, b, e in zip(box_x, box_y, bcolor, ecolor):
     ax.fill(x, y, b, alpha=1, zorder=4, edgecolor=e, linewidth=0.5)
@@ -72,13 +72,13 @@ ax.vlines([2., 3.2], ymin=-0.5, ymax=2.5, zorder=5, color='w', linewidth=1)
 ax.text(0.5, 2, '/', color=slashcol, ha='center', va='center', zorder=5)
 
 # params for ghost elements
-ghost = dict(alpha=0.5, linestyle='dashed', zorder=1, clip_on=False)
+ghost = dict(alpha=0.6, linestyle='dashed', zorder=1, clip_on=False)
 
 # switch gap 1 (long)
 bot = -3.
 ht = 1.
 top = bot + ht
-lwd = 0.4
+lwd = 0.6
 rect = plt.Rectangle((2.5, bot), width=0.6, height=ht, fill=False,
                      linewidth=lwd, edgecolor=gapcol, **ghost)
 yy = tile([bot + ht, bot], (6, 1))
@@ -100,9 +100,10 @@ ax.text(2.525, -3.1, 'variable-length\nswitch gap', ha='left', va='top',
 
 # timing slots
 for ix, x in enumerate([3.2, 3.7]):
-    offset = -0.2 * (ix % 2) - 0.0
-    rect = plt.Rectangle((x, -2.8 + offset), width=0.9, height=0.5, fill=False,
-                         linewidth=0.25, edgecolor=slotcol, **ghost)
+    offset = -0.2 * (ix % 2)
+    htoffset = 0.04 * (1 - ix % 2)
+    rect = plt.Rectangle((x, -2.8 + offset), width=0.9, height=0.5 + htoffset,
+                         fill=False, linewidth=lwd, edgecolor=slotcol, **ghost)
     ax.add_artist(rect)
 for ix, x in enumerate([1.6, 2.1, 2.8, 3.3]):
     offset = -0.2 * (ix % 2)
