@@ -26,5 +26,8 @@ pupil-fig-%.pdf: fig-pupil-%.py
 	python $(<F)
 	echo "CONVERT PUPIL FIGURES TO EPS IN ILLUSTRATOR TO AVOID RASTERIZATION"
 
+pdfs:
+	for fig in fig-beh*.eps; do inkscape -A $$(basename $$fig eps)pdf $$fig; done
+
 clean:
-	rm -f fig*.eps *.svg *.pyc *.ps
+	rm -f fig*.eps *.svg *.pyc *.ps fig-beh*.pdf
