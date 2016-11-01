@@ -104,6 +104,30 @@ ax, bar = efa.barplot(vocbyslot.values, axis=0, err_bars='se',
                       group_names=['slot {}'.format(x + 1) for x in range(4)])
 
 
+# vocoder experiment: 3-way sensitivity interaction (foils)
+aggfuncs = dict(frsp=np.sum, hit=np.sum, targ=np.sum, foil=np.sum)
+vocbyslot = longform_voc.groupby(['slot', 'gap_len', 'voc_chan', 'attn',
+                                  'subj']).agg(aggfuncs)
+vocbyslot['foilrate'] = vocbyslot.frsp / vocbyslot.foil
+vbs = vocbyslot.unstack([0, 1, 2, 3])['frsp']
+pvals = list()
+for slot in range(4):
+    for dur in ['long', 'short']:
+        for chan in [10, 20]:
+            maint = vbs[slot, dur, chan, 'maint.']
+            switch = vbs[slot, dur, chan, 'switch']
+            tval, pval = ss.ttest_ind(maint, switch, equal_var=False)
+            pvals.append(pval)
+print(pvals)
+ax, bar = efa.barplot(vbs.values, axis=0, err_bars='se',
+                      groups=np.arange(vbs.shape[1]).reshape(-1, 2),
+                      #brackets=[(0, 1), (2, 3), (6, 7)],
+                      #bracket_text=['***', '*', '*'],
+                      bar_names=['maint.', 'switch'] * (vbs.shape[1] / 2),
+                      group_names=['10', '20'] * vbs.shape[1] / 4)
+                      #group_names=['slot {}'.format(x + 1) for x in range(4)])
+
+
 # reverb experiment: is maint/switch RT difference localized by slot?  YES
 # change next line to longform_voc for vocoder
 gb = longform.groupby(['slot', 'attn'])
