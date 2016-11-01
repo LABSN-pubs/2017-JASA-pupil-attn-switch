@@ -293,7 +293,7 @@ all_contrasts = [[['subj', 'attn', 'reverb'],
                   ['subj', 'reverb', 'gender'],
                   ['subj', 'gender', 'attn']],
                  [['subj', 'attn', 'voc_chan'],
-                  ['subj', 'voc_chan', 'gap_len'],
+                  ['subj', 'gap_len', 'voc_chan'],
                   ['subj', 'gap_len', 'attn']]]
 all_groupnames = [[u'attn.\u2009\u00D7\u2009revb.',
                    u'attn.\u2009\u00D7\u2009gend.',
@@ -354,7 +354,7 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
 
 # setup subplot info for three-way interactions
 all_contrasts = [[['subj', 'gender', 'attn', 'reverb']],
-                 [['subj', 'gap_len', 'attn', 'voc_chan']]]
+                 [['subj', 'gap_len', 'voc_chan', 'attn']]]
 all_groupnames = [[u'\u2009\u00D7\u2009'.join(['attn.', 'revb.', 'gend.'])],
                   [u'\u2009\u00D7\u2009'.join(['attn.', 'voc.ch.',
                                                'gap dur.'])]]
