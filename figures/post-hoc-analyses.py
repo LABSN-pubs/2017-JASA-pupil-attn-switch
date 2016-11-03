@@ -80,8 +80,10 @@ nonans = longform.dropna()
 
 # distribution of targets by slot
 byslot = longform.groupby(['slot']).aggregate(dict(targ=np.sum))
+print('reverb: pct. targs by slot')
 print(byslot / byslot.sum())
 byslot = longform_voc.groupby(['slot']).aggregate(dict(targ=np.sum))
+print('\nvocoder: pct. targs by slot')
 print(byslot / byslot.sum())
 
 
@@ -104,30 +106,71 @@ ax, bar = efa.barplot(vocbyslot.values, axis=0, err_bars='se',
                       group_names=['slot {}'.format(x + 1) for x in range(4)])
 
 
-# vocoder experiment: 3-way sensitivity interaction (foils)
-aggfuncs = dict(frsp=np.sum, hit=np.sum, targ=np.sum, foil=np.sum)
-vocbyslot = longform_voc.groupby(['slot', 'gap_len', 'voc_chan', 'attn',
+# vocoder: 2-way sensitivity interactions by slot
+voc_x_gap = longform_voc.groupby(['voc_chan', 'slot', 'gap_len',
                                   'subj']).agg(aggfuncs)
-vocbyslot['foilrate'] = vocbyslot.frsp / vocbyslot.foil
-vocbyslot['hitrate'] = vocbyslot.hit / vocbyslot.targ
-vocbyslot['resprate'] = (vocbyslot.hit + vocbyslot.frsp) / (vocbyslot.targ + vocbyslot.foil)
-vbs = vocbyslot.unstack([0, 1, 2, 3])['foilrate']
+voc_x_gap['foilrate'] = voc_x_gap.frsp / voc_x_gap.foil
+voc_x_gap['hitrate'] = voc_x_gap.hit / voc_x_gap.targ
+voc_x_gap['resprate'] = ((voc_x_gap.hit + voc_x_gap.frsp) /
+                         (voc_x_gap.targ + voc_x_gap.foil))
+twenty_minus_ten = voc_x_gap.loc[20] - voc_x_gap.loc[10]
+# hits = twenty_minus_ten.unstack([0, 1])['hit']
+hitrate = twenty_minus_ten.unstack([0, 1])['hitrate']
 pvals = list()
 for slot in range(4):
-    for dur in ['long', 'short']:
-        for chan in [10, 20]:
-            maint = vbs[slot, dur, chan, 'maint.']
-            switch = vbs[slot, dur, chan, 'switch']
-            tval, pval = ss.ttest_ind(maint, switch, equal_var=False)
-            pvals.append(pval)
+    _long = hitrate[slot, 'long']
+    _short = hitrate[slot, 'short']
+    tval, pval = ss.ttest_ind(_long, _short, equal_var=False)
+    pvals.append(pval)
 print(pvals)
-ax, bar = efa.barplot(vbs.values, axis=0, err_bars='se',
-                      groups=np.arange(vbs.shape[1]).reshape(-1, 2),
-                      #brackets=[(0, 1), (2, 3), (6, 7)],
-                      #bracket_text=['***', '*', '*'],
-                      bar_names=['mnt.', 'swch'] * (vbs.shape[1] // 2),
-                      group_names=['10', '20'] * (vbs.shape[1] // 4))
-                      #group_names=['slot {}'.format(x + 1) for x in range(4)])
+
+attn_x_gap = longform_voc.groupby(['attn', 'slot', 'gap_len',
+                                   'subj']).agg(aggfuncs)
+attn_x_gap['foilrate'] = attn_x_gap.frsp / attn_x_gap.foil
+attn_x_gap['hitrate'] = attn_x_gap.hit / attn_x_gap.targ
+attn_x_gap['resprate'] = ((attn_x_gap.hit + attn_x_gap.frsp) /
+                          (attn_x_gap.targ + attn_x_gap.foil))
+maint_minus_switch = attn_x_gap.loc['maint.'] - attn_x_gap.loc['switch']
+hits = maint_minus_switch.unstack([0, 1])['hit']  # last slot
+hitrate = maint_minus_switch.unstack([0, 1])['hitrate']  # last slot
+foilrate = maint_minus_switch.unstack([0, 1])['foilrate']  # no sign. diffs.
+pvals = list()
+for slot in range(4):
+    _long = hits[slot, 'long']
+    _short = hits[slot, 'short']
+    tval, pval = ss.ttest_ind(_long, _short, equal_var=False)
+    pvals.append(pval)
+print(pvals)
+
+
+# vocoder: 3-way sensitivity interaction (foils)
+three_way = longform_voc.groupby(['slot', 'gap_len', 'voc_chan', 'attn',
+                                  'subj']).agg(aggfuncs)
+three_way['foilrate'] = three_way.frsp / three_way.foil
+three_way['hitrate'] = three_way.hit / three_way.targ
+three_way['resprate'] = ((three_way.hit + three_way.frsp) /
+                         (three_way.targ + three_way.foil))
+hitrate = three_way.unstack([0, 1, 2, 3])['hitrate']
+foilrate = three_way.unstack([0, 1, 2, 3])['foilrate']
+pvals = list()
+for rate in [hitrate, foilrate]:
+    for slot in range(4):
+        for dur in ['long', 'short']:
+            for chan in [10, 20]:
+                maint = rate[slot, dur, chan, 'maint.']
+                switch = rate[slot, dur, chan, 'switch']
+                tval, pval = ss.ttest_ind(maint, switch, equal_var=False)
+                pvals.append(pval)
+    print(pvals)
+    colors = (['0.5', '0.7'] * 2 + ['0.6', '0.8'] * 2 +
+              ['g', 'y'] * 2 + ['b', 'c'] * 2) * 2
+    ax, bar = efa.barplot(rate.values, axis=0, err_bars='se',
+                          groups=np.arange(rate.shape[1]).reshape(-1, 2),
+                          # brackets=[(0, 1), (2, 3), (6, 7)],
+                          # bracket_text=['***', '*', '*'],
+                          bar_names=['m.', 's.'] * (rate.shape[1] // 2),
+                          group_names=['10', '20'] * (rate.shape[1] // 4),
+                          bar_kwargs=dict(color=colors))
 
 
 # reverb experiment: is maint/switch RT difference localized by slot?  YES

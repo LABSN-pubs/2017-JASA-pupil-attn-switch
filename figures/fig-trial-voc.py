@@ -24,7 +24,7 @@ use_font('source')
 
 # set up figure
 fig = plt.figure(figsize=(6.5, 1.75))
-ax = plt.Axes(fig, [0.025, 0.2, 0.9, 0.8])
+ax = plt.Axes(fig, [0.025, 0.225, 0.9, 0.825])
 ax.axis('off')
 fig.add_axes(ax)
 
@@ -59,7 +59,7 @@ box_l = ['AA', 'AU', 'E', 'O', 'P', 'O', 'P', 'V', 'D', 'E']
 color = [maintcol, switchcol] + [lettercol] * 8
 bcolor = [cuecol] + [malecol] * 2 + [femalecol] * 2
 ecolor = ['k'] + ['none'] * 4
-wt = ['normal'] * 2 + ['bold'] * 8  # ['bold'] * 10
+wt = ['normal'] * 2 + ['bold'] * 8
 ha = ['left', 'right'] + ['center'] * 8
 for x, y in zip(ghost_x, ghost_y):
     ax.fill(x, y, '0.95', edgecolor='0.6', alpha=0.85, zorder=3, linewidth=0.6,
@@ -75,8 +75,8 @@ ax.text(0.5, 2, '/', color=slashcol, ha='center', va='center', zorder=5)
 ghost = dict(alpha=0.6, linestyle='dashed', zorder=1, clip_on=False)
 
 # switch gap 1 (long)
-bot = -3.
-ht = 1.
+bot = -3.15
+ht = 1.15
 top = bot + ht
 lwd = 0.6
 rect = plt.Rectangle((2.5, bot), width=0.6, height=ht, fill=False,
@@ -95,25 +95,28 @@ _ = [plt.plot(x, y, linewidth=lwd, color=gapcol, solid_capstyle='butt',
               zorder=4, clip_on=False) for x, y in zip(xx, yy)]
 ax.add_artist(rect)
 ax.set_clip_on(False)
-ax.text(2.525, -3.1, 'variable-length\nswitch gap', ha='left', va='top',
+ax.text(2.525, -4.8, 'variable-length\nswitch gap', ha='left', va='bottom',
         fontsize=10, color=gapcol)
 
 # timing slots
+h = 0.55
+w = 0.9
+y = -2.85
 for ix, x in enumerate([3.2, 3.7]):
-    offset = -0.2 * (ix % 2)
-    htoffset = 0.04 * (1 - ix % 2)
-    rect = plt.Rectangle((x, -2.8 + offset), width=0.9, height=0.5 + htoffset,
+    y_offset = -0.2 * (ix % 2)
+    h_offset = 0.04 * (1 - ix % 2)
+    rect = plt.Rectangle((x, y + y_offset), width=w, height=h + h_offset,
                          fill=False, linewidth=lwd, edgecolor=slotcol, **ghost)
     ax.add_artist(rect)
 for ix, x in enumerate([1.6, 2.1, 2.8, 3.3]):
-    offset = -0.2 * (ix % 2)
-    rect = plt.Rectangle((x, -2.8 + offset), width=0.9, height=0.5, zorder=3,
-                         facecolor=slotcol, alpha=0.5,
-                         edgecolor='none', fill=True, clip_on=False)
-    ax.text(x + 0.05, -2.555 + offset, str(ix + 1), ha='left', va='center',
-            weight='bold', fontsize=7.5, color='w', zorder=4)
+    y_offset = -0.2 * (ix % 2)
+    rect = plt.Rectangle((x, y + y_offset), width=w, height=h, zorder=3,
+                         facecolor=slotcol, alpha=0.5, edgecolor='none',
+                         fill=True, clip_on=False)
+    ax.text(x + 0.05, y + y_offset + 0.225, str(ix + 1), ha='left',
+            va='center', weight='bold', fontsize=7.5, color='w', zorder=4)
     ax.add_artist(rect)
-ax.text(1.6, -3.1, 'response\ntiming slots', ha='left', va='top',
+ax.text(1.6, -4.8, 'response\ntiming slots', ha='left', va='bottom',
         fontsize=10, color=slotcol, zorder=4)
 
 # captions
@@ -129,11 +132,10 @@ ax.text(1.5, 0.55, 'female', color=femalecol, fontsize=9, ha='left',
 arr_y = -2.3
 arr_xmax = 4.7
 tcklen = 0.25
-ticktimes = [0, 1, 1.5, 2.0, 2.5, 2.7, 3.2, 3.7]  #, 3.1, 3.6, 4.1]
+ticktimes = [0, 1, 1.5, 2.0, 2.5, 2.7, 3.2, 3.7]
 ticklabels = [str(tt) for tt in ticktimes]
-tickcols = ['k'] * len(ticktimes)  # ['k'] * (len(ticktimes) - 3) + ['0.5'] * 3
-ticksizes = [9] * len(ticktimes)  # [7] *  (len(ticktimes) - 3) + [5] * 3
-# ticklabels[-2:] = [str(a) + ' or ' + str(a + 0.4) for a in ticktimes[-2:]]
+tickcols = ['k'] * len(ticktimes)
+ticksizes = [9] * len(ticktimes)
 _ = ax.vlines(ticktimes, arr_y - tcklen, arr_y + tcklen, linewidths=0.5,
               zorder=5, colors=tickcols)
 _ = [ax.text(x, y, s, ha='center', va='baseline', fontsize=z, color=c)
