@@ -23,7 +23,7 @@ with open(infile, 'r') as f, open(outfile, 'w') as g:
         line = line.replace('Experiment ', 'Experiment~')
         line = line.replace('Experiments ', 'Experiments~')
         # prevent prime collisions
-        line = line.replace('d^\\prime', 'd\\thinspace^\\prime')
+        line = line.replace('d′', '$d\\thinspace^\\prime$')
         # push acknowledgments to separate page
         if 'section{Acknowledgments' in line:
             g.write('\\cleardoublepage\n')
