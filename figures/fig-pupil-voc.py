@@ -56,7 +56,7 @@ t_zs = t_min + np.arange(data_zscore.shape[-1]) / float(fs)
 stat_fun = partial(ttest_1samp_no_p, sigma=1e-3)
 
 # colors
-cue, msk, blu, red = '0.5', '0.75', '#332288', '#aa4499'
+cue, msk, blu, red = '0.75', '0.75', '#332288', '#cc6677'
 grn, yel = '#44aa99', '#ddcc77'
 signifcol = '0.9'
 axiscol = '0.8'
@@ -92,7 +92,7 @@ for t, data in zip(times, datas):
         contr_mean = np.mean(contrast, axis=0)
         # vars for trial timecourse
         gaps = [[0.6, 0.6], [0.2, 0.6], [0.6, 0.6]][jj]
-        labels = [['10 band/', '20 band'], ['short gap/', 'long gap'],
+        labels = [['10 band', '20 band'], ['short gap', 'long gap'],
                   ['maintain', 'switch']][jj]
         colors = [[cue, cue], [cue, cue], [blu, red]][jj]
         # plot curves
@@ -154,19 +154,18 @@ for t, data in zip(times, datas):
                     ax.fill_between((x, x+stim_dur), y+u, y-d, color=c,
                                     edgecolor='none', zorder=9)
             # timecourse labels
-            ha = ['right', 'right', 'left'][jj]
-            xtxt = [0, 0, 4.4][jj]
-            ytxt = [stim_ymax, stim_ymin][kk]
-            xytxt = [(-6, 0), (-6, 0), (6, 0)][jj]
+            xtxt = [-0.1, -0.1, 4.4][jj]
+            ytxt = [[0.09, 0.075], [0.09, 0.075],
+                    [stim_ymax, stim_ymin]][jj][kk]
+            xytxt = [(0, 0), (0, 0), (5, 0)][jj]
             _ = ax.annotate(labels[kk], (xtxt, ytxt), xytext=xytxt,
                             textcoords='offset points', color=linecol,
-                            ha=ha, va='center', fontsize=9,
-                            fontstyle='italic')
+                            ha='left', va='center', fontsize=9)
         # cue label
         _ = ax.annotate('cue', xy=(stim_times[1], stim_ymax + thk),
                         xytext=(0, 1.5), textcoords='offset points',
                         fontsize=9, fontstyle='italic', ha='center',
-                        va='bottom', color=cue)
+                        va='bottom', color='0.5')
         # stats
         if plot_signif:
             thresh = -1 * distributions.t.ppf(0.05 / 2, len(contr_diff) - 1)
@@ -222,7 +221,7 @@ for t, data in zip(times, datas):
         ax.tick_params(color=tickcol, width=0.5, labelcolor=ticklabcol)
 
         # annotations
-        yl = 'Effort (a.u.)' if use_deconv else 'Pupil size (z-score)'
+        yl = u'“Effort” (a.u.)' if use_deconv else 'Pupil size (z-score)'
         yo = 1 - np.diff(ytck) / np.diff(ylim) / 2.
         ax.set_ylabel(yl, y=yo, color=axislabcol)
         ax.set_xlabel('Time (s)', color=axislabcol)
