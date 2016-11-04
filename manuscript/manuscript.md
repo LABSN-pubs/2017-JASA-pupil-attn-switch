@@ -1,11 +1,11 @@
 ---
 title: Pupillometry shows the effort of auditory attention switching
 runningtitle: Pupillometry and attention switching
-titlenote: Portions of the research described here were previously presented at the 37th Annual MidWinter Meeting of the Association for Research in Otolaryngology, and published in McCloy et al (2016), Temporal alignment of pupillary response with stimulus events via deconvolution, J. Acoust. Soc. Am. 139(3), EL57-EL62.
+titlenote: Portions of the research described here were previously presented at the 37th Annual MidWinter Meeting of the Association for Research in Otolaryngology, and published in McCloy et al (2016), Temporal alignment of pupillary response with stimulus events via deconvolution, J. Acoust. Soc. Am. **139**(3), EL57-EL62.
 author:
 - name: Daniel R. McCloy
-- name: Bonnie Lau
-- name: Eric D. Larson
+- name: Bonnie K. Lau
+- name: Eric Larson
 - name: Katherine A. I. Pratt
 - name: Adrian K. C. Lee
   email: akclee@uw.edu
@@ -17,15 +17,40 @@ fontsize: 12pt
 geometry:
 - letterpaper
 - margin=1in
-header: McCloy, JASA
+header: McCloy et al, JASA
 pacs:
 - 43.71.Qr <!-- Neurophysiology of speech perception -->
 - 43.66.Ba <!-- Models and theories of auditory processes -->
 - 43.71.Sy <!-- Spoken language processing by humans -->
+keywords:
+- auditory attention
+- listening effort
+- pupillometry
 biblio-style: bibstyle
 bibliography: bib/switching
-possible-reviewers: Thomas Koelewijn, Matt Winn
-abstract: Successful speech communication often requires selective attention to a target stream in the presence of competing sounds, as well as the ability to switch attention among multiple interlocutors.  However, auditory attention switching has been shown to negatively affect both target detection accuracy and reaction time (Larson & Lee, J. Acoust. Soc. Am. 134, EL165–171), suggesting that attention switches carry a cognitive cost.  One tool for assessing cognitive effort or load is the measurement of pupil diameter.  Two experiments were conducted to determine whether the pupillary response is sensitive to auditory attention switches.  In both experiments, pupil dilation, target detection sensitivity, and reaction time were measured during a task requiring listeners to either maintain or switch attention between two concurrent speech streams.  Task difficulty was modulated to explore its effect on the pupillary response during attention switching tasks.  In Experiment 1, spatially distinct stimuli were degraded by simulating reverberation (affecting the across-time streaming cues), and target/masker talker gender match was also manipulated.  In Experiment 2, non-spatial stimuli separable by talker voice quality and pitch were degraded by noise vocoding, and the duration of the mid-trial switch gap was varied.  Pupil responses showed greater dilation on trials requiring switching attention between talkers, beginning as soon as the pre-trial maintain/switch cue was heard; thus both preparation and switching of attention are types of mental effort reflected in the pupillary response.  Meanwhile, stimulus degradation affected behavioral performance but had no effect on the pupillary response.
+possible-reviewers: Thomas Koelewijn, Matt Winn, Gerald Kidd
+abstract: >
+  Successful speech communication often requires selective attention to a
+  target stream amidst competing sounds, as well as the ability to switch
+  attention among multiple interlocutors.  However, auditory attention
+  switching negatively affects both target detection accuracy and reaction
+  time, suggesting that attention switches carry a cognitive cost.
+  Pupillometry is one method of assessing mental effort or cognitive load.  Two
+  experiments were conducted to determine whether the pupillary response
+  reflects auditory attention switches.  In both experiments, pupil dilation,
+  target detection sensitivity, and reaction time were measured; the task
+  required listeners to either maintain or switch attention between two
+  concurrent speech streams.  Task difficulty was modulated to explore its
+  effect on the pupillary response during attention switching.  In Experiment
+  1, spatially distinct stimuli were degraded by simulating reverberation
+  (compromising across-time streaming cues), and target-masker talker gender
+  match was also varied.  In Experiment 2, diotic streams separable by talker
+  voice quality and pitch were degraded by noise vocoding, and the time alloted
+  for mid-trial attention switching was varied.  All trial manipulations had
+  some effect on target detection sensitivity and or reaction time; however,
+  only one manipulation appeared to affect the pupillary response: greater
+  dilation was observed in trials requiring switching attention between
+  talkers.
 ---
 <!-- 43.66.Qp Localization of sound sources -->
 <!-- 43.71.An Models and theories of speech perception (see also 43.66.Ba) -->
@@ -52,7 +77,7 @@ degree of effort or load that can compromise the success of the listening task.
 
 Pupillometry, the tracking of pupil diameter, has been used for over four
 decades to measure cognitive load.[@KahnemanBeatty1966; @Beatty1982]  Pupil
-dilation is an involuntary, time-locked, externally-evoked physiological
+dilation is an involuntary, time-locked, physiological
 response that is present from infancy in humans and other animal species.  In
 general, as the cognitive demands of a task increases, pupil dilation of up to
 about 5-6 mm can be observed up to 1 second after onset of relevant
@@ -82,8 +107,8 @@ two concurrent speech streams as opposed to attending to a single stream, a
 decrease in task performance is typically observed;[@BestEtAl2010;
 @KoelewijnEtAl2014] Koelewijn and colleagues additionally reported greater
 pupil dilation and later peak pupil latency when listeners were asked to attend
-to both speech streams present in the stimulus compared to attending to only
-one stream.[@KoelewijnEtAl2014] or when the expected location, temporal onset
+to both speech streams present in the stimulus instead of attending only
+one stream,[@KoelewijnEtAl2014] or when the expected location, temporal onset
 and talker of a speech stream were unknown as opposed to
 predictable.[@KoelewijnEtAl2015]
 
@@ -93,47 +118,27 @@ degradation would elicit a pupillary response in a closed-set task absent of
 semantic processing.  Pupil dilation was measured while listeners heard two
 speech streams, with pre-trial cues instructing them to either switch attention
 from one stream to the other at a designated mid-trial gap, or to maintain
-attention on the same stream throughout the trial. Extrapolating from the
+attention on the same stream throughout the trial.  Extrapolating from the
 divided attention results of Koelewijn and colleagues,[@KoelewijnEtAl2014] we
 predicted greater pupil dilation on trials that required attention switching;
 we also expected stimulus degradation to  affect pupil dilation (in line with
 Winn and colleague’s findings).[@WinnEtAl2015]
 
-# General Methods
-\label{sec-gen-meth}
-
-All procedures were performed in a sound-treated booth; illumination was
-provided only by the LCD monitor that presented instructions and fixation
-points. Auditory stimuli were delivered via a TDT RP2 real-time processor
-(Tucker Davis Technologies, Alachula, FL) to Etymotic ER-2 insert earphones at
-a level of 65 dB SPL.  A white-noise masker with π-interaural-phase was played
-continuously during experimental blocks at a level of 45 dB SPL, yielding a
-stimulus-to-noise ratio of 20 dB. The additional noise was included to provide
-masking of environmental sounds (e.g., friction between subject clothing and
-earphone tubes) and to provide consistency with follow-up neuroimaging
-experiments (required due to the acoustic conditions in the neuroimaging
-suite).  
-
-Pupil size was measured continuously during each block of trials at a 1000 Hz
-sampling frequency using an EyeLink1000 infra-red eye tracker (SR Research,
-Kanata, ON).  Participants’ heads were stabilized by a chin rest and forehead
-bar, fixing their eyes at a distance of 50 cm from the EyeLink camera.  Target
-detection accuracy and response time were also recorded for comparison with
-pupillometry data and the results of past studies.
-
 # Experiment 1
 
 Experiment 1 involved target detection in one of two spatially separated speech
 streams.  In addition to the maintain- versus switch-attention manipulation,
-there was a cued stimulus manipulation previously shown to cause variation in
-task performance: degradation of binaural cues to talker location (implemented
-as presence/absence of simulated reverberation).[@NabelekRobinson1982]  Reduced
+there was a stimulus manipulation previously shown to cause variation in task
+performance: degradation of binaural cues to talker location (implemented as
+presence/absence of simulated reverberation).[@NabelekRobinson1982]  Reduced
 task performance and greater pupil dilation were predicted for the reverberant
-condition.  Additionally, the voice of the competing talker was varied (either
-the same male voice as the target talker, or a female voice, uncued).  The
-same-voice condition was expected to degrade the separability of the
-talkers[@Brungart2001] and therefore decrease task performance and increase
-pupil dilation.
+condition.  This manipulation was incorporated into the pre-trial cue (i.e., on
+reverberant trials, the cue was also reverberant).  Additionally, the voice of
+the competing talker was varied (either the same male voice as the target
+talker, or a female voice); this manipulation was not signalled in the
+pre-trial cue.  The same-voice condition was expected to degrade the
+separability of the talkers[@Brungart2001] and therefore decrease task
+performance and increase pupil dilation.
 
 ## Methods
 ### Participants
@@ -173,6 +178,26 @@ full BRIRs. In both conditions, the BRIRs recorded at ±45° for each stream wer
 used, simulating a separation of 90° azimuth between target and masker streams.
 
 ### Procedure
+\label{sec-meth-proc}
+
+All procedures were performed in a sound-treated booth; illumination was
+provided only by the LCD monitor that presented instructions and fixation
+points. Auditory stimuli were delivered via a TDT RP2 real-time processor
+(Tucker Davis Technologies, Alachula, FL) to Etymotic ER-2 insert earphones at
+a level of 65 dB SPL.  A white-noise masker with π-interaural-phase was played
+continuously during experimental blocks at a level of 45 dB SPL, yielding a
+stimulus-to-noise ratio of 20 dB. The additional noise was included to provide
+masking of environmental sounds (e.g., friction between subject clothing and
+earphone tubes) and to provide consistency with follow-up neuroimaging
+experiments (required due to the acoustic conditions in the neuroimaging
+suite).  
+
+Pupil size was measured continuously during each block of trials at a 1000 Hz
+sampling frequency using an EyeLink1000 infra-red eye tracker (SR Research,
+Kanata, ON).  Participants’ heads were stabilized by a chin rest and forehead
+bar, fixing their eyes at a distance of 50 cm from the EyeLink camera.  Target
+detection accuracy and response time were also recorded for comparison with
+pupillometry data and the results of past studies.
 
 Participants were instructed to fixate on a white dot centered on a black
 screen and maintain this gaze throughout test blocks.  Each trial began with a
@@ -244,7 +269,7 @@ and $\beta$ is the vector of parameter coefficients to be estimated.
 (@eq-mod-probit)  $\Phi^{-1}(Pr(Y = 1 \mid X)) = X^\prime \beta$
 
 This model has the convenient advantage that coefficient estimates are
-interpretable as differences in bias and sensitivity on a $d^\prime$ scale
+interpretable as differences in bias and sensitivity on a d′ scale
 resulting from the various experimental manipulations.[@DeCarlo1998;
 @SheuEtAl2008; @McCloyLee2015]  Reaction time was analyzed using linear
 mixed-effects regression (i.e., without a link function) but was otherwise
@@ -257,6 +282,8 @@ demonstrated to work with non-normally-distributed response variables, i.e.,
 when modeling probabilities).
 
 ### Analysis of pupil diameter
+\label{sec-meth-pupil}
+
 Recordings of pupil diameter for each trial were epoched from −0.5 to 6 s, with
 0 s defined as the onset of the pre-trial cue. Periods where eye blinks were
 detected by the EyeLink software were linearly interpolated from 25 ms before
@@ -281,7 +308,8 @@ signal and kernel to 10 Hz prior to deconvolution), as implemented in the
 can be thought of as an indicator of listener arousal or effort that is
 time-aligned to the stimulus (i.e., the response latency of the pupil has been
 effectively removed).  Statistical comparison of deconvolved pupil dilation
-time series (i.e., “effort”) was performed using a non-parametric cluster-level
+time series (i.e., “effort” in Figures \ref{fig-rev-pupil} and
+\ref{fig-voc-pupil}) was performed using a non-parametric cluster-level
 one-sample *t*-test on the within-subject differences in deconvolved pupil size
 between experimental conditions (clustering across time
 only),[@MarisOostenveld2007] as implemented in `mne-python`.[@GramfortEtAl2013]
@@ -290,24 +318,28 @@ only),[@MarisOostenveld2007] as implemented in `mne-python`.[@GramfortEtAl2013]
 
 ### Sensitivity analysis
 
-Box-and-swarm plots displaying quartile and individual $d^\prime$ values are
-shown in Figure \ref{fig-rev-dprime}.  The statistical model indicated
+Box-and-swarm plots displaying quartile and individual d′ values are shown in
+Figure \ref{fig-rev-dprime}.  Note that d′ is an aggregate measure of
+sensitivity that does not distinguish between responses to foil items versus
+other types of false alarms; however, the statistical model does separately
+estimate significant differences between experimental conditions for both
+target response rate and foil response rate. The statistical model indicated
 significant main effects for all three trial type manipulations, as seen in
-Figure \ref{fig-rev-dprime}a, with effect sizes around 0.2 to 0.3 on a
-$d^\prime$ scale.  Model results indicate that the attentional manipulation led
-to more responses to both targets and foils in maintain- versus
-switch-attention trials, though the net effect was an increase in $d^\prime$ in
-the maintain attention condition for nearly all listeners.  Regarding
-reverberation, listeners were better at detecting targets in the anechoic
-trials, but there was no significant difference in response to foils between
-anechoic and reverberant trials.  Regarding talker gender (mis)match, the model
-indicated both better target detection and fewer responses to foils when the
-target and masker talkers had different genders.  The model also indicated a
-two-way interaction between reverberation and talker gender, seen in Figure
-\ref{fig-rev-dprime}b: somewhat paradoxically, the difference between anechoic
-and reverberant trials was smaller when the target and masker talkers were of
-different genders.  The three-way interaction among attention, reverberation,
-and talker gender was not significant.
+Figure \ref{fig-rev-dprime}a, with effect sizes around 0.2 to 0.3 on a d′
+scale.  Model results indicate that the attentional manipulation led to more
+responses to both targets and foils in maintain- versus switch-attention
+trials, though the net effect was an increase in d′ in the maintain attention
+condition for nearly all listeners.  Regarding reverberation, listeners were
+better at detecting targets in the anechoic trials, but there was no
+significant difference in response to foils between anechoic and reverberant
+trials.  Regarding talker gender (mis)match, the model indicated both better
+target detection and fewer responses to foils when the target and masker
+talkers were different genders.  The model also indicated a two-way interaction
+between reverberation and talker gender, seen in Figure \ref{fig-rev-dprime}b:
+somewhat paradoxically, the difference between anechoic and reverberant trials
+was smaller when the target and masker talkers were of different genders.  The
+three-way interaction among attention, reverberation, and talker gender was not
+significant.
 
 ![(Color online) Box-and-swarm plots of between-condition differences in listener sensitivity for Experiment 1.  Boxes show first & third quartiles and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (higher sensitivity in maintain than switch trials), reverberation (higher sensitivity in anechoic than reverberant trials), and talker gender (mis)match (higher sensitivity in trials with different gendered target and masker talkers).  (b) Two-way interactions; the difference between anechoic and reverberant trials was higher in the gender-match (MM) condition.  (c) Three-way interaction (no statistically significant differences).  ** = _p_<0.01; *** = _p_<0.001; MM = matching talker genders; MF = mismatched talker genders.\label{fig-rev-dprime}](fig-beh-rev.eps)
 
@@ -330,7 +362,7 @@ with “switch attention” trials showing greater effort than “maintain atten
 trials.  Effort diverges as soon as listeners have heard the cue and remains higher
 throughout the rest of the trial.
 
-![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-rev-pupil}](pupil-fig-rev.eps)
+![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (see text for explanation of “effort”).\label{fig-rev-pupil}](pupil-fig-rev.eps)
 
 ## Discussion
 
@@ -356,12 +388,13 @@ faster reaction times in maintain-attention trials than in switch-attention
 trials.  The mean difference between these conditions was approximately 14 ms.
 Post-hoc analysis showed that reaction time did not differ between maintain-
 and switch-attention trials for responses occurring *before* the switch gap
-(Welch’s independent *t*-tests: *p*=0.74 for slot 1 and *p*=0.53
-for slot 2) but did significantly differ for responses occurring *after* the
-switch gap (*p*<0.001 for slot 3 and *p*=0.035 for slot 4; Bonferroni-corrected
+(Welch’s independent *t*-tests: *p*=0.74 for slot 1 and *p*=0.53 for slot 2)
+but did significantly differ for responses occurring *after* the switch gap
+(*p*<0.001 for slot 3 and *p*=0.035 for slot 4; Bonferroni-corrected
 significance level = 0.0125).  This is consistent with a view that the act of
 attention switching creates a lag or slow-down in auditory
-perception.[@LarsonLee2013a]
+perception.[@LarsonLee2013a]  Aside from this main effect of the attentional
+condition, the model showed no other significant differences in reaction time.
 
 Unlike listener sensitivity, the pupillary response differed only in response
 to the attentional manipulation.  This pattern was also seen in the model of
@@ -373,7 +406,7 @@ hearing listeners, reverberation and talker gender mismatch are not severe
 enough degradations to cause sufficient extra effort or load to be observable
 in the pupillary response (in other words, the pupillary response may reflect
 the same processes as the behavioral signal, but may not be as sensitive).
-However, given that the magnitude of the effect size in $d^\prime$ is roughly
+However, given that the magnitude of the effect size in d′ is roughly
 equal for all three trial parameters (see Figure \ref{fig-rev-dprime}a), this
 explanation seems unlikely. Another possibility is that the elevated pupil
 response is simply due to a higher number of button presses in the switch
@@ -400,15 +433,18 @@ task demand: spectral degradation (implemented as variation in number of
 noise-vocoder channels, 10 or 20).  Based on results from Winn and colleagues
 showing increased dilation for low versus high numbers of vocoder channels with
 full-sentence stimuli,[@WinnEtAl2015] greater pupil dilation was expected here
-in the (more difficult, lower-intelligibility) 10-channel condition.  The cued
-behavioral maintain-versus-switch manipulation from Experiment 1 was retained
-in Experiment 2, and additionally, the duration of the mid-trial temporal gap
-provided for attention switching was varied (either 200 ms or 600 ms, uncued).
-Behavioral and neuroimaging research suggest that the time course of attention
-switching in the auditory domain is around 300-400 ms;[@LarsonLee2013a;
-@LarsonLee2013b] accordingly, we expected the 200 ms switch gap to be
-challenging and thus predicted greater pupil dilation in short-gap trials
-(though only in the post-gap portion of the trial).
+in the (more difficult, lower-intelligibility) 10-channel condition.  As in
+Experiment 1, a pre-trial cue indicated whether to maintain or switch attention
+between talkers at the mid-trial gap; here the cue also indicated whether
+spectral degradation was mild or severe (i.e., the cue underwent the same noise
+vocoding procedure as the main portion of the trial). Additionally, in
+Experiment 2 the duration of the mid-trial temporal gap provided for attention
+switching was varied (either 200 ms or 600 ms). Behavioral and neuroimaging
+research suggest that the time course of attention switching in the auditory
+domain is around 300-400 ms;[@LarsonLee2013a; @LarsonLee2013b] accordingly, we
+expected the short gap trials to be challenging and thus predicted greater
+pupil dilation in short-gap trials (though only in the post-gap portion of the
+trial).  The duration of the gap was not predictable from the pre-trial cue.
 
 ## Methods
 
@@ -422,7 +458,7 @@ University of Washington Institutional Review Board.
 ### Stimuli
 Stimuli were based on spoken English alphabet letters from the ISOLET v1.3
 corpus[@ColeEtAl1990] from the same female and male talkers used in Experiment
-1, with the same stimulus preprocessing steps (padding, loudness normalization,
+1, with the same stimulus preprocessing steps (padding, amplitude normalization,
 and edge windowing).  Two streams of four letters each were generated for each
 trial, with a gap of either 200 or 600 ms between the second and third letters
 of each stream. The letters “A” and “U” were used only in the pre-trial cues
@@ -436,17 +472,17 @@ Phonetic Alphabet are /e/ and /u/ (cues “A” and “U”), /o/ (target “O�
 (non-target letters “DEGPV”).
 
 Spectral degradation was implemented following a conventional noise vocoding
-strategy.[@ShannonEtAl1995]  The stimuli were fourth-order bandpass filtered
-into 10 or 20 spectral bands of equal equivalent rectangular
-bandwidths;[@MooreGlasberg1987] the filterbank ranged from 200 Hz to 8000 Hz
-(low cutoff of the lowest filter to high cutoff of the highest filter). Each
-band was half-wave rectified and low-pass filtered with a 160 Hz fourth-order
-Butterworth filter to extract the amplitude envelope. The resulting amplitude
-envelopes were used to modulate white noise that had been bandpass filtered
-with the same filters used to extract the speech bands, and the resulting
-modulated noise bands were summed and presented diotically at 65 dB SPL.  A
-simultaneous white-noise masker was also presented, as described in Section
-\ref{sec-gen-meth}.
+strategy.[@ShannonEtAl1995]  The stimuli were fourth-order Butterworth bandpass
+filtered into 10 or 20 spectral bands of equal equivalent rectangular
+bandwidths.[@MooreGlasberg1987]  This filterbank ranged from 200 to 8000 Hz
+(low cutoff of lowest filter to high cutoff of highest filter). Each band was
+then half-wave rectified and filtered with a 160 Hz low-pass fourth-order
+Butterworth filter to extract the amplitude envelope.  The resulting envelopes
+were used to modulate corresponding noise bands (created from white noise
+filtered with the same filterbank used to extract the speech bands).  The
+resulting modulated noise bands were summed and presented diotically at 65 dB
+SPL.  As in Experiment 1, a simultaneous white-noise masker was also presented
+(see Section \ref{sec-meth-proc}).
 
 ### Procedure
 Participants were instructed to fixate on a white dot centered on a black
@@ -479,12 +515,17 @@ vocoder, and 200/600 ms gap duration) were counterbalanced and randomly
 presented in 10 blocks of 32 trials each, for a total of 320 trials.
 
 ### Behavioral analysis
+
 As in Experiment 1, listener responses were labeled as “hits” if the button
 press occurred between 100 and 1000 ms of the onset of “O” stimuli in the
-target stream, responses occurring between 100 and 1000 ms after an “O” onset
-*in the masker stream* were labeled as “responses to foils,” and other
-responses were considered “false alarms.”  Statistical modeling of sensitivity
-and reaction time used the same approach as was employed in Experiment 1.
+target stream, and all other responses were considered “false alarms.”
+Responses occurring between 100 and 1000 ms after an “O” onset *in the masker
+stream* were additionally labeled as “responses to foils.”  Statistical
+modeling of sensitivity and reaction time used the same approach as was
+employed in Experiment 1: predicting probability of button press in each timing
+slot based on fixed-effect predictors (maintain/switch, 10- or 20-channel
+vocoder, and short/long mid-trial gap duration), a target/foil/neither
+indicator variable, and a subject-level random intercept.
 
 ### Analysis of pupil diameter
 Analysis of pupil diameter was carried out as in Experiment 1: trials epoched
@@ -497,20 +538,23 @@ carried out identically to Experiment 1.
 
 ### Sensitivity analysis
 
-Box-and-swarm plots displaying quartile and individual $d^\prime$ values are
-shown in Figure \ref{fig-voc-dprime}.  The statistical model indicated
-significant main effects for all three trial type manipulations, as seen in
-Figure \ref{fig-voc-dprime}a.  Model results indicate no significant difference
-in target detection between maintain- and switch-attention trials, but did show
-fewer responses to foils in maintain-attention trials (estimated effect size
-0.16 $d^\prime$); a corresponding increase in $d^\prime$ in the maintain
-attention condition is seen for nearly all listeners in Figure
-\ref{fig-voc-dprime}a, left column.  Regarding spectral degradation, listeners
-were better at detecting targets in 20-channel trials (estimated effect size
-0.23 $d^\prime$), but there was no significant difference in response to foils
-for the spectral degradation manipulation.  For the switch gap length
-manipulation, the model indicated much greater response to foil items in the
-long gap trials (estimated effect size 0.53 $d^\prime$).
+Box-and-swarm plots displaying quartile and individual d′ values are shown in
+Figure \ref{fig-voc-dprime}.  Again, note that d′ is an aggregate measure of
+sensitivity that does not distinguish between responses to foil items versus
+other types of false alarms, but the statistical model does  estimate separate
+coefficients for target response rate and foil response rate.  The statistical
+model indicated significant main effects for all three trial type
+manipulations, as seen in Figure \ref{fig-voc-dprime}a.  Model results indicate
+no significant difference in target detection between maintain- and
+switch-attention trials, but did show fewer responses to foils in
+maintain-attention trials (estimated effect size 0.16 d′); a corresponding
+increase in d′ in the maintain attention condition is seen for nearly all
+listeners in Figure \ref{fig-voc-dprime}a, left column.  Regarding spectral
+degradation, listeners were better at detecting targets in 20-channel trials
+(estimated effect size 0.23 d′), but there was no significant difference in
+response to foils for the spectral degradation manipulation.  For the switch
+gap length manipulation, the model indicated much greater response to foil
+items in the long gap trials (estimated effect size 0.53 d′).
 
 The model also indicated a three-way interaction (lower sensitivity in
 maintain-attention, 10-channel, long-gap trials; Figure \ref{fig-voc-dprime}c),
@@ -536,14 +580,14 @@ perform post-hoc analysis of the three-way interaction.
 Box-and-swarm plots showing quartile and individual reaction time values are
 shown in Figure \ref{fig-voc-rt}.  The statistical model indicated a bias
 toward faster responses on both targets and foils (by 70 ms on average) in
-long-gap trials, and a main effect of gap duration on responses to target
-items, with faster response times (by an additional 76 ms on average) to
-targets in long-gap trials.  No other significant differences in reaction time
-were observed. Unlike in Experiment 1, post-hoc tests of reaction time
-difference between maintain- and switch-attention trials by slot showed no
-significant differences (Welch’s independent *t*-tests: *p*=0.085
-for slot 1, *p*=0.22 for slot 2, *p*=0.097 for slot 3, and *p*=0.76 for slot
-4).  This is perhaps unsurprising, given that no main effect of attentional
+long-gap trials.  There was also a main effect of gap duration on response
+speed to target items, with faster response times (by an additional 76 ms on
+average) to targets in long-gap trials.  No other significant differences in
+reaction time were observed.  Unlike in Experiment 1, post-hoc tests of
+reaction time difference between maintain- and switch-attention trials by slot
+showed no significant differences (Welch’s independent *t*-tests: *p*=0.085 for
+slot 1, *p*=0.22 for slot 2, *p*=0.097 for slot 3, and *p*=0.76 for slot 4).
+This is perhaps unsurprising, given that no main effect of attentional
 condition on reaction time was seen in Experiment 2.
 
 ![(Color online) Box-and-swarm plots of between-condition differences in reaction time for Experiment 2.  Boxes show first & third quartiles and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention, spectral degradation, and gap duration (faster response time in long-gap trials).  (b) Two-way interactions (no statistically significant differences).  (c) Three-way interaction (no statistically significant differences).  *** = _p_<0.001.\label{fig-voc-rt}](fig-beh-voc-rt.eps)
@@ -561,7 +605,7 @@ the time course of effort between long- and short-gap trials, with the signals
 diverging around the onset of the mid-trial gap (though only differing
 statistically in the final ~1 s of the trial).
 
-![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) 10- versus 20-band vocoded stimuli, (b) 200 versus 600 ms mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-voc-trial}). Hatched region shows temporal span of statistically significant differences between time series. The late-trial divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Fig. \ref{fig-rev-pupil}c). a.u. = arbitrary units (deconvolution procedure yields “kernel weights” at each time point, which are interpretable as listener effort).\label{fig-voc-pupil}](pupil-fig-voc.eps)
+![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) 10- versus 20-band vocoded stimuli, (b) 200 versus 600 ms mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-voc-trial}). Hatched region shows temporal span of statistically significant differences between time series. The late-trial divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Fig. \ref{fig-rev-pupil}c). a.u. = arbitrary units (see text for explanation of “effort”).\label{fig-voc-pupil}](pupil-fig-voc.eps)
 
 ## Discussion
 
@@ -676,7 +720,8 @@ to preserve focus in the face of degraded auditory input.
 
 # Acknowledgments
 
-This research was supported by NIH grant R01-DC013260 to AKCL and NIH LRP
-awards to EDL and DRM. The authors are grateful to Susan McLaughlin
+Portions of this work were supported by NIH grants R01-DC013260 to AKCL,
+F32DC012456 to EL, T32DC000018 to the University of Washington, and NIH LRP
+awards to EL and DRM.  The authors are grateful to Susan McLaughlin
 <!-- and two anonymous reviewers --> for helpful suggestions on earlier drafts
 of this paper.
