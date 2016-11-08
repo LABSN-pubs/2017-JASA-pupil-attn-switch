@@ -211,8 +211,8 @@ $endfor$
 \setlength{\footnotesep}{2em}
 %% author block
 \usepackage[blocks]{authblk}
-\renewcommand{\Authfont}{\scshape} 
-\renewcommand{\Affilfont}{\normalfont\itshape} 
+\renewcommand{\Authfont}{\scshape}
+\renewcommand{\Affilfont}{\normalfont\itshape}
 \setlength{\affilsep}{0in}
 
 %% %% %% %% %% %% %% %%
@@ -266,10 +266,17 @@ $endif$
 %% formatting for section & subsection headings and table captions
 \makeatletter\renewcommand{\section}{\@startsection {section}{1}{0mm}{-\baselineskip}{0.5\baselineskip}{\bfseries\large\uppercase}}\makeatother %{name}{level}{indent}{beforeskip}{afterskip}{style}
 \makeatletter\renewcommand{\subsubsection}{\@startsection {subsubsection}{3}{0mm}{-\baselineskip}{0.5\baselineskip}{\bfseries\itshape}}\makeatother %{name}{level}{indent}{beforeskip}{afterskip}{style}
-\renewcommand{\thesection}{\Roman{section}.} 
-\renewcommand{\thesubsection}{\Alph{subsection}.} 
-\renewcommand{\thesubsubsection}{\arabic{subsubsection}.} 
-%% format various other headings to match the style of section headings 
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{subsubsection}}
+\makeatletter
+%% put trailing periods in section title numbers
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\quad}
+%% put medial (but not trailing) periods in cross-references
+\def\p@subsection{\thesection.}
+\def\p@subsubsection{\thesection.\thesubsection.}
+\makeatother
+%% format various other headings to match the style of section headings
 \renewcommand{\refname}{\bfseries\large\uppercase{references}}
 \renewcommand{\abstractname}{\bfseries\large\uppercase{abstract}}
 \renewcommand{\listfigurename}{\bfseries\large\uppercase{list of figures}}
