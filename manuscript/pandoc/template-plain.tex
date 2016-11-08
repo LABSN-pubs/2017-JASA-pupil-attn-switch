@@ -28,13 +28,15 @@ $endif$
             colorlinks=false,
             pdfborder={0 0 0}}
 
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 $if(numbersections)$
 %\setcounter{secnumdepth}{5}
 $else$
 %\setcounter{secnumdepth}{0}
 $endif$
 $if(verbatim-in-note)$
-%\VerbatimFootnotes % allows verbatim text in footnotes 
+%\VerbatimFootnotes % allows verbatim text in footnotes
 $endif$
 $if(mainfont)$
 %    \setmainfont{$mainfont$}
@@ -71,15 +73,15 @@ $endif$
 %\renewcommand{\thesubsection}{\Alph{subsection}.}
 %\renewcommand{\thesubsubsection}{\arabic{subsubsection}.}
 %\renewcommand*\thetable{\Roman{table}}
-% format various headings to match the style of section headings 
+% format various headings to match the style of section headings
 \renewcommand{\refname}{\bfseries\uppercase{references}}
 
-% % % % % % % % % % % % % 
+% % % % % % % % % % % % %
 % other customizations  %
-% % % % % % % % % % % % % 
+% % % % % % % % % % % % %
 \usepackage[shortcuts]{extdash}
 \usepackage{fontspec}
-\setmainfont[Numbers={Lining}]{Linux Libertine O} 
+\setmainfont[Numbers={Lining}]{Linux Libertine O}
 \setmonofont[ItalicFont={M+ 1m}]{M+ 1m}
 \renewcommand{\url}{\begingroup \def\UrlLeft{}\def\UrlRight{}\urlstyle{same}\Url} % set URLs in whatever font surrounding text uses
 \thickmuskip=5mu plus 3mu minus 1mu % adjust equation spacing around =
