@@ -29,6 +29,7 @@ keywords:
 biblio-style: bibstyle
 bibliography: bib/switching
 possible-reviewers: Thomas Koelewijn, Matt Winn, Gerald Kidd
+copyrightyear: 2016
 abstract: >
   Successful speech communication often requires selective attention to a
   target stream amidst competing sounds, as well as the ability to switch
@@ -47,24 +48,20 @@ abstract: >
   match was also varied.  In Experiment 2, diotic streams separable by talker
   voice quality and pitch were degraded by noise vocoding, and the time alloted
   for mid-trial attention switching was varied.  All trial manipulations had
-  some effect on target detection sensitivity and or reaction time; however,
-  only one manipulation appeared to affect the pupillary response: greater
-  dilation was observed in trials requiring switching attention between
+  some effect on target detection sensitivity and/or reaction time; however,
+  only the attention-switching manipulation affected the pupillary response:
+  greater dilation was observed in trials requiring switching attention between
   talkers.
 ---
-<!-- 43.66.Qp Localization of sound sources -->
-<!-- 43.71.An Models and theories of speech perception (see also 43.66.Ba) -->
-<!-- 43.71.Rt Sensory mechanisms in speech perception -->
-<!-- 43.66.Pn Binaural hearing -->
 
 # Introduction
 
 The ability to selectively attend to a target speech stream in the presence of
 competing sounds is required to communicate in everyday listening environments.
-Evidence suggests that attention can influence auditory
-stream formation;[@ShammaEtAl2011] for listeners with peripheral hearing
-deficits, changes in the encoding of stimuli often result in impaired selective
-attention and consequent difficulty communicating in noisy
+Evidence suggests that attention can influence auditory stream
+formation;[@ShammaEtAl2011] for listeners with peripheral hearing deficits,
+changes in the encoding of stimuli often result in impaired selective attention
+and consequent difficulty communicating in noisy
 environments.[@ShinnCunninghamBest2008]  In many situations (e.g., a lively
 debate around the dinner table), the ability to rapidly switch attention among
 multiple interlocutors is also necessary for successful communication.  Larson
@@ -73,7 +70,8 @@ maintain attention to one stream or switch attention to the other stream
 mid-trial, switching attention both reduced accuracy and led to longer response
 latency *even on targets prior to the attentional switch*.[@LarsonLee2013a]
 This suggests that the act of remembering or preparing to switch imposes some
-degree of effort or load that can compromise the success of the listening task.
+degree of mental effort or cognitive load that can compromise the success of
+the listening task.
 
 Pupillometry, the tracking of pupil diameter, has been used for over four
 decades to measure cognitive load.[@KahnemanBeatty1966; @Beatty1982]  Pupil
@@ -248,9 +246,7 @@ for the purpose of calculating sensitivity, but no reaction time was computed
 reaction time analysis).
 
 Listener sensitivity and reaction time were analyzed with (generalized) linear
-mixed-effects regression models, using packages `afex`[@afex] (version
-0.16.1) and `lme4`[@BatesEtAl2015] (version 1.1.12) in the `R` statistical
-computing environment.[@R3.3.1]  A model for listener sensitivity was
+mixed-effects regression models.  A model for listener sensitivity was
 constructed to predict probability of button press at each timing slot (four
 timing slots per trial, see Figure \ref{fig-rev-trial}) from the interaction
 among the fixed-effect predictors specifying trial parameters (maintain/switch,
@@ -260,11 +256,10 @@ slot.  A random intercept was also estimated for each listener.  An inverse
 probit link function was used to transform button press probabilities (bounded
 between 0 and 1) into unbounded continuous values suitable for linear modeling.
 Full model specification is given in the supplementary material;
-<!-- TODO: add crossref to supplementary material -->
-the general form of this model is given in (@eq-mod-probit), where $\Phi^{-1}$
-is the inverse probit link function, $Pr(Y = 1)$ is the probability of button
-press, $X$ is the design matrix of trial parameters and indicator variables,
-and $\beta$ is the vector of parameter coefficients to be estimated.
+the general form of this model is given in Equation @eq-mod-probit, where
+$\Phi^{-1}$ is the inverse probit link function, $Pr(Y = 1)$ is the probability
+of button press, $X$ is the design matrix of trial parameters and indicator
+variables, and $\beta$ is the vector of parameter coefficients to be estimated.
 
 (@eq-mod-probit)  $\Phi^{-1}(Pr(Y = 1 \mid X)) = X^\prime \beta$
 
@@ -305,7 +300,7 @@ so for computational efficiency the deconvolution was realized as a best-fit
 linear sum of kernels spaced at 100 ms intervals (similar to downsampling both
 signal and kernel to 10 Hz prior to deconvolution), as implemented in the
 `pyeparse` software.[@pyeparse]  After deconvolution, the resulting time series
-can be thought of as an indicator of listener arousal or effort that is
+can be thought of as an indicator of mental effort that is
 time-aligned to the stimulus (i.e., the response latency of the pupil has been
 effectively removed).  Statistical comparison of deconvolved pupil dilation
 time series (i.e., “effort” in Figures \ref{fig-rev-pupil} and
@@ -354,15 +349,16 @@ time were observed.
 ![(Color online) Box-and-swarm plots of between-condition differences in reaction time for Experiment 1.  Boxes show first & third quartiles and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (faster reaction time in maintain than switch trials), reverberation, and talker gender (mis)match.  (b) Two-way interactions (no statistically significant differences).  (c) Three-way interaction (no statistically significant differences).  * = _p_<0.05; MM = matching talker genders; MF = mismatched talker genders.\label{fig-rev-rt}](fig-beh-rev-rt.eps)
 
 ### Pupillometry
-Mean effort as a function of time for the three stimulus manipulations
-(reverberant/anechoic trials, talker gender match/mismatch trials, and
-maintain/switch attention trials) are shown in Figure \ref{fig-rev-pupil}. Only
-the attentional manipulation shows a significant difference between conditions,
-with “switch attention” trials showing greater effort than “maintain attention”
-trials.  Effort diverges as soon as listeners have heard the cue and remains higher
-throughout the rest of the trial.
+Mean deconvolved pupil diameter as a function of time for the three stimulus
+manipulations (reverberant/anechoic trials, talker gender match/mismatch
+trials, and maintain/switch attention trials) are shown in Figure
+\ref{fig-rev-pupil}. Only the attentional manipulation shows a significant
+difference between conditions, with “switch attention” trials showing greater
+pupillary response than “maintain attention” trials.  The time courses diverge
+as soon as listeners have heard the cue and remains higher in the
+switch-attention condition throughout the rest of the trial.
 
-![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (see text for explanation of “effort”).\label{fig-rev-pupil}](pupil-fig-rev.eps)
+![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions aligns with the end of the cue. a.u. = arbitrary units (see Section \ref{sec-meth-pupil} for explanation of “effort”).\label{fig-rev-pupil}](pupil-fig-rev.eps)
 
 ## Discussion
 
@@ -398,28 +394,31 @@ condition, the model showed no other significant differences in reaction time.
 
 Unlike listener sensitivity, the pupillary response differed only in response
 to the attentional manipulation.  This pattern was also seen in the model of
-response time; however, unlike response time, the difference in effort was seen
-across the entire trial, whereas the response time difference was restricted to
-the post-switch time slots.  The finding that patterns of pupillary response do
-not recapitulate patterns of listener behavior would make sense if, for normal
-hearing listeners, reverberation and talker gender mismatch are not severe
-enough degradations to cause sufficient extra effort or load to be observable
-in the pupillary response (in other words, the pupillary response may reflect
-the same processes as the behavioral signal, but may not be as sensitive).
-However, given that the magnitude of the effect size in d′ is roughly
-equal for all three trial parameters (see Figure \ref{fig-rev-dprime}a), this
-explanation seems unlikely. Another possibility is that the elevated pupil
-response is simply due to a higher number of button presses in the switch
-trials (motor planning and execution are known to cause pupillary
-dilations[@HupeEtAl2009]); however, the number of button presses is in fact
-higher in the maintain-attention condition. A third possibility is that the
-pupil dilation only reflects certain kinds of effort or load, and that stimulus
-degradations that mainly affect listener ability to form and select auditory
-streams are not reflected in the pupillary response, whereas differences in
-listener attentional state (such as preparing for a mid-trial attention switch)
-are reflected by the pupil.  Experiment 2 tests this latter explanation, by
-increasing stimulus degradation to further impair formation and selection of
-auditory streams.
+reaction time; however, unlike reaction time, the difference in pupillary
+response was seen across the entire trial, whereas the reaction time difference
+was restricted to the post-switch time slots.  The finding that patterns of
+pupillary response do not recapitulate patterns of listener behavior would make
+sense if, for normal hearing listeners, reverberation and talker gender
+mismatch are not severe enough degradations to cause sufficient extra mental
+effort or cognitive load to be observable in the pupil (in other words, the
+pupillary response may reflect the same processes as the behavioral signal, but
+may not be as sensitive). However, the magnitude of the effect size in d′ is
+roughly equal for all three trial parameters (see Figure
+\ref{fig-rev-dprime}a); if behavioral effect size reflects degree of effort or
+load, then the explanation that pupillometry is just “not sensitive enough”
+seems unlikely.  Another possibility is that the elevated pupil response is
+simply due to a higher number of button presses in the switch trials (motor
+planning and execution are known to cause pupillary dilations[@HupeEtAl2009]);
+however, the number of button presses is in fact higher in the
+maintain-attention condition (the statistical approach expressly models such
+bias, and none was detected).  A third possibility is that the pupil dilation
+only reflects *certain kinds* of effort or load, and that stimulus degradations
+that mainly affect listener ability to form and select auditory streams are not
+reflected in the pupillary response, whereas differences in listener
+attentional state (such as preparing for a mid-trial attention switch) are
+reflected by the pupil.  Experiment 2 tests this latter explanation, by
+repeating the maintain/switch manipulation while increasing stimulus
+degradation, to further impair formation and selection of auditory streams.
 
 # Experiment 2
 
@@ -594,18 +593,29 @@ condition on reaction time was seen in Experiment 2.
 
 ### Pupillometry
 
-Mean effort as a function of time for the three stimulus manipulations (10/20
-vocoder channels, gap duration, and maintain/switch attention trials) is shown
-in Figure \ref{fig-voc-pupil}. As in Experiment 1, the attentional manipulation
-shows a significant difference between conditions, with switch-attention trials
-showing greater effort than maintain-attention trials.  Also as in Experiment
-1, effort diverges as soon as listeners have heard the cue and remains higher
-throughout the rest of the trial.  There is also a significant difference in
-the time course of effort between long- and short-gap trials, with the signals
-diverging around the onset of the mid-trial gap (though only differing
-statistically in the final ~1 s of the trial).
+<!-- Mean deconvolved pupil diameter as a function of time for the three stimulus
+manipulations (reverberant/anechoic trials, talker gender match/mismatch
+trials, and maintain/switch attention trials) are shown in Figure
+\ref{fig-rev-pupil}. Only the attentional manipulation shows a significant
+difference between conditions, with “switch attention” trials showing greater
+pupillary response than “maintain attention” trials.  The time courses diverge
+as soon as listeners have heard the cue and remains higher in the
+switch-attention condition throughout the rest of the trial. -->
 
-![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) 10- versus 20-band vocoded stimuli, (b) 200 versus 600 ms mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-voc-trial}). Hatched region shows temporal span of statistically significant differences between time series. The late-trial divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Fig. \ref{fig-rev-pupil}c). a.u. = arbitrary units (see text for explanation of “effort”).\label{fig-voc-pupil}](pupil-fig-voc.eps)
+Mean deconvolved pupil diameter as a function of time for the three stimulus
+manipulations (10/20 vocoder channels, gap duration, and maintain/switch
+attention trials) is shown in Figure \ref{fig-voc-pupil}. As in Experiment 1,
+the attentional manipulation shows a significant difference between conditions,
+with switch-attention trials showing greater pupillary response than
+maintain-attention trials.  Also as in Experiment 1, the time courses diverge
+as soon as listeners have heard the cue, and remains higher in the
+switch-attention condition throughout the rest of the trial.  There is also a
+significant difference in the time course of the pupillary response between
+long- and short-gap trials, with the signals diverging around the onset of the
+mid-trial gap (though only differing statistically in the final ~1 s of the
+trial).
+
+![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) 10- versus 20-band vocoded stimuli, (b) 200 versus 600 ms mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-voc-trial}). Hatched region shows temporal span of statistically significant differences between time series. The late-trial divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Fig. \ref{fig-rev-pupil}c). a.u. = arbitrary units (see Section \ref{sec-meth-pupil} for explanation of “effort”).\label{fig-voc-pupil}](pupil-fig-voc.eps)
 
 ## Discussion
 
@@ -647,7 +657,7 @@ post-gap letters less noticeable, and thereby preserving attended stream
 identity across a longer gap duration than would be possible if attention were
 maintained on a single source.  In other words, if listeners must conceive of
 the “stream of interest” as a source that undergoes a change in voice quality
-partway through the trial, the additional cognitive effort required to make the
+partway through the trial, the additional mental effort required to make the
 switch might result in *more accurate* post-gap stream selection, whereas the
 putatively less effortful task of maintaining attention to a consistent source
 could lead to *less accurate* post-gap stream selection when stream formation
@@ -666,42 +676,43 @@ important to note that we attempted to include time slot as an additional
 non-convergent; therefore we hesitate to draw any strong conclusions from the
 post-hoc *t*-tests.
 
-Regarding the pupillary response, we again saw a difference in effort between
-maintain- and switch-attention trials, with the divergence beginning as soon as
-the listeners heard the attentional cue.  We also saw a significant difference
-in the pupillary response to long- versus short-gap trials, though the
-difference appears to be a post-gap delay in the long-gap trials (mirroring the
-stimulus time course), rather than a vertical shift indicating increased
-effort.  Contrary to our hypothesis, there was no apparent effect of spectral
+Regarding the pupillary response, we again saw a difference between maintain-
+and switch-attention trials, with the divergence beginning as soon as listeners
+heard the attentional cue.  We also saw a significant difference in the
+pupillary response to long- versus short-gap trials, though the difference
+appears to be a post-gap delay in the long-gap trials (mirroring the stimulus
+time course), rather than a vertical shift indicating increased effort.
+Contrary to our hypothesis, there was no apparent effect of spectral
 degradation on the pupillary response.
 
 # General discussion
 
-The main goal of these experiments was to see whether the pupillary response would
-reflect listener effort associated with the need to switch attention between
-talkers who were spatially separated (Experiment 1), or talkers separable only
-by talker voice quality and pitch (Experiment 2).  The overall finding was that
-attention switching is clearly reflected in the pupillary signal as an increase
-in dilation that begins either as soon as listeners are aware that a switch
-will be required, or perhaps as soon as they begin planning the switch; since
-we did not manipulate the latency between the cue and the onset of the switch
-gap these two possibilities cannot be disambiguated.
+The main goal of these experiments was to see whether the pupillary response
+would reflect the switching of attention between talkers who were spatially
+separated (Experiment 1), or talkers separable only by talker voice quality and
+pitch (Experiment 2).  The overall finding was that attention switching is
+clearly reflected in the pupillary signal as an increase in dilation that
+begins either as soon as listeners are aware that a switch will be required, or
+perhaps as soon as they begin planning the switch; since we did not manipulate
+the latency between the cue and the onset of the switch gap these two
+possibilities cannot be disambiguated.
 
 A secondary goal was to reproduce past findings regarding the pupillary
-response to degraded *sentential* stimuli using a simpler stimulus paradigm
-(spoken letter sequences) and (in Experiment 1) relatively mild stimulus
-degradations like reverberation.  In fact, we failed to see any effect of
-stimulus degradation in the pupillary response, neither when degrading the
-temporal cues for spatial separation through simulated reverberation, nor when
-degrading the signal’s spectral resolution through noise vocoding.  We believe
-the key difference lies in our choice of stimuli: detecting a target letter in
-a sequence of spoken letters is not the same kind of task as computing the
-meaning of a well-formed sentence, and our results suggest that simply
-detecting targets among a small set of possible stimulus tokens does not engage
-the same neural circuits or invoke the same kind of mental effort or load that
-is responsible for pupillary dilations seen in the sentence comprehension tasks
-of Winn and colleagues.[@WinnEtAl2015]  In this light, one might say of Winn
-and colleagues’ findings that the signal degradation itself is not the proximal
+response to degraded *sentential* stimuli, but using a simpler stimulus
+paradigm (spoken letter sequences) and (in Experiment 1) relatively mild
+stimulus degradations like reverberation.  In fact, we failed to see any effect
+of stimulus degradation in the pupillary response, neither when degrading the
+temporal cues for spatial separation through simulated reverberation, nor with
+more severe degradation  ofthe signal’s spectral resolution through noise
+vocoding (Experiment 2).  We believe the key difference lies in our choice of
+stimuli: detecting a target letter in a sequence of spoken letters is not the
+same kind of task as computing the meaning of a well-formed sentence, and our
+results suggest that simply detecting targets among a small set of possible
+stimulus tokens does not engage the same neural circuits or invoke the same
+kind of mental effort or cognitive load that is responsible for pupillary
+dilations seen in the sentence comprehension tasks of Winn and
+colleagues.[@WinnEtAl2015]  In this light, one might say of Winn and
+colleagues’ findings that the signal degradation itself is not the proximal
 cause of the pupil dilation; rather, it is the additional cogitation or effort
 needed to construct a coherent linguistic meaning from degraded speech that
 leads to the pupillary response.
@@ -717,6 +728,9 @@ decline may make rapid switching difficult.  In other words, the cognitive
 abilities of older listeners might require longer pauses to switch attention
 among multiple interlocutors, but the longer pauses may in fact make it harder
 to preserve focus in the face of degraded auditory input.
+
+<!-- TODO: more thorough tie-back to "effort", including discussion of
+Koelewijn and Zekveld findings and the white-paper definition -->
 
 # Acknowledgments
 
