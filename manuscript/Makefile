@@ -31,9 +31,9 @@ _subm: manuscript.tex link_bib link_figs
 	pdflatex submission.tex
 
 supplement:
-	pandoc --no-tex-ligatures --latex-engine=xelatex \
-	--template=pandoc/template-supplement.tex \
-	--output=supplement.pdf supplement.md
+	pandoc --filter pandoc-citeproc --no-tex-ligatures --latex-engine=xelatex \
+	--template=pandoc/template-supplement.tex --output=supplement.pdf \
+	supplement.md
 
 response:
 	pandoc --no-tex-ligatures --latex-engine=xelatex \

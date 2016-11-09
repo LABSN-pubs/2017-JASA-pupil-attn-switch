@@ -22,6 +22,7 @@ $endif$
     \usepackage{mathspec}
   \else
     \usepackage{fontspec}
+    \setmainfont[Numbers={Lining}]{Linux Libertine O}
   \fi
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 $for(fontfamilies)$
@@ -251,13 +252,14 @@ $endif$
 %% %% %% %% %%
 %%  TABLES  %%
 %% %% %% %% %%
-\usepackage{siunitx,lscape}
-%\sisetup{table-number-alignment=center}
+\usepackage{./pandoc/threshold}
+\usepackage{siunitx,caption}
+\usepackage[table]{xcolor}
 %% TABLE REFERENCE FORMATTING
 \renewcommand*{\thetable}{\Roman{table}}
 %% SINGLE SPACE TABLES
 \usepackage{etoolbox}  % provides \AtBeginEnvironment and \apptocmd
-\AtBeginEnvironment{tabular}{\singlespacing\tiny}
+\AtBeginEnvironment{tabular}{\singlespacing\small}
 
 %% %% %% %% %% %% %% %% %%
 %% OTHER CUSTOMIZATIONS %%
