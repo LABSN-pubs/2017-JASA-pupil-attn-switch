@@ -34,8 +34,9 @@ using packages `afex`[@afex] (version 0.16.1) and `lme4`[@BatesEtAl2015]
 Reaction time was modeled with linear mixed-effects regression using the same
 software.
 
-## Experiment 1
+# Experiment 1
 
+## Listener sensitivity
 The model for listener sensitivity was constructed to predict probability of
 button press at each timing slot.  Binary fixed-effect predictors specified the
 trial  parameters (maintain/switch, anechoic/reverberant, and talker gender
@@ -80,7 +81,41 @@ with all three of the experimental manipulations (`attn`, `reverb`, and
 
 \include{exp-one-table}
 
-## Experiment 2
+## Reaction time
+
+The model for reaction time was constructed to predict latency of button press
+at each timing slot.  Analysis of only “hit” responses (i.e., button presses
+occurring between 100 and 1000 ms after the onset of a target) is reported
+here; an  additional analysis that included responses to both targets and foils
+did not differ in terms of which predictors were significant nor in the
+direction of the effect for significant predictors (though of course the
+magnitude of the estimated effect sizes did vary slightly).
+
+As in the model of listener sensitivity, binary fixed-effect predictors
+specified the trial  parameters (maintain/switch, anechoic/reverberant, and
+talker gender match/mismatch), but because only hits are analyzed, there was no
+indicator variable encoding whether a target, foil, or neither was present in
+the timing slot.  Again, a random intercept was estimated for each listener. As
+measured in this experiment, reaction time is a continuous scalar quantity
+bounded between 0.1 and 1.0 s.  However, examination of the distribution of
+reaction times resembled a $\chi^2$ distribution (as reaction time models often
+do) and so the response was treated as though continuous and unbounded; hence
+it was not transformed and no link function was used.  Mathematically, the
+model of reaction time is represented as in Equation @eq-mod-one-rt:
+
+(@eq-mod-one-rt)  $y_{ij} = \beta_0 + \beta_1 R_i + \beta_2 G_i + \beta_3 A_i + \beta_4 R_i G_i + \beta_5 R_i A_i + \beta_6 G_i A_i + \beta_7 R_i G_i A_i + S_{0j} + \epsilon_{ij}$
+
+This model is implemented in `R` as `formula(reax_time ~ reverb * gender * attn +
+(1|subj))`, where `reax_time` is reaction time in seconds, and `reverb`,
+`gender`, `attn`, and `subj` are defined as in the sensitivity model described
+above.
+
+\include{exp-one-rt-table}
+
+
+# Experiment 2
+
+## Listener sensitivity
 
 As in Experiment 1, the model for listener sensitivity was constructed to
 predict probability of button press at each timing slot.  Binary fixed-effect
@@ -123,6 +158,11 @@ indicator of whether listeners were cued to maintain or switch attention
 between talkers at the mid-trial gap; and `subj` is an indicator variable for
 the identity of the listener.  Deviation coding was used with all three of the
 experimental manipulations (`attn`, `voc_chan`, and `gap_len`).
+
+\include{exp-two-table}
+
+## Reaction time
+<!-- TODO -->
 
 # References
 \setlength{\parindent}{-0.25in}
