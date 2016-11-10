@@ -78,6 +78,20 @@ longform_voc = read_data(rt_data_fnames[1])
 nonans = longform.dropna()
 
 
+# distribution of reaction times for hits
+bins = np.arange(0.1, 1., 0.025)
+lsp = np.linspace(0.1, 1.1, 100)
+fig = plt.figure(figsize=(3.4, 3))
+rev_hit_rts = longform[longform['targ'] & longform['reax_time'] > 0]
+plot_hist_chsq(rev_hit_rts['reax_time'].values, bins, fig, color='#aa4499',
+               linsp=lsp, edgecolor='none', label='rev_hits')
+voc_hit_rts = longform_voc[longform_voc['targ'] &
+                           longform_voc['reax_time'] > 0]
+fig = plt.figure(figsize=(3.4, 3))
+plot_hist_chsq(voc_hit_rts['reax_time'].values, bins, fig, color='#44aa99',
+               linsp=lsp, edgecolor='none', label='rev_hits')
+
+
 # distribution of targets by slot
 byslot = longform.groupby(['slot']).aggregate(dict(targ=np.sum))
 print('reverb: pct. targs by slot')
