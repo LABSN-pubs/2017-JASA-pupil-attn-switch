@@ -17,7 +17,7 @@ geometry:
 - margin=1in
 header: Supplement to McCloy et al, Pupillometry and attention switching, JASA
 bibliography: bib/switching.bib
-csl: bib/nature.csl
+csl: bib/jasa-numeric.csl
 ---
 
 # Repository
@@ -125,3 +125,6 @@ the identity of the listener.  Deviation coding was used with all three of the
 experimental manipulations (`attn`, `voc_chan`, and `gap_len`).
 
 # References
+\setlength{\parindent}{-0.25in}
+\setlength{\leftskip}{0.25in}
+\noindent
