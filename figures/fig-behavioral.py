@@ -66,8 +66,8 @@ axis_lab_dp = u'within-subject difference in d\u2032'
 axis_lab_rt = u'within-subject difference in RT (ms)'
 ylim_dp = np.array([-2, 2])  # np.array([0, 5]) if not doing differences
 ytick_dp = range(ylim_dp[0], ylim_dp[1] + 1)
-ylim_rt = np.array([-0.32, 0.12])
-ytick_rt = np.linspace(-0.3, 0.1, 5)
+ylim_rt = np.array([[-0.21, 0.11], [-0.32, 0.12]])
+ytick_rt = [np.linspace(-0.2, 0.1, 4), np.linspace(-0.3, 0.1, 5)]
 exts_dp = dict(bottom=0.1, top=0.8, right=0.98)
 exts_rt = dict(bottom=0.1, top=0.8, right=0.98, left=0.153)
 exts_dp_threeway = dict(bottom=0.1, top=0.8, right=0.88)
@@ -237,12 +237,13 @@ all_contrasts = [[['subj', 'attn'], ['subj', 'reverb'], ['subj', 'gender']],
 all_groupnames = [['attention', 'reverberation', 'talker genders'],
                   ['attention', 'vocoder channels', 'gap duration']]
 all_signif = [['***', '**', '***'], ['*', '***', '***']]
-all_rt_signif = [['*', '', ''], ['', '', '***']]
+all_rt_signif = [['*', '**', '***'], ['', '**', '***']]
 
 # plot main effects
-for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
-        zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
-            all_signif, all_rt_signif):
+for (data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs,
+     rty, rtcky) in zip(data_fnames, rt_data_fnames, all_contrasts,
+                        all_groupnames, all_signif, all_rt_signif, ylim_rt,
+                        ytick_rt):
     # init figure
     figname = 'fig-{}-main.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
@@ -272,8 +273,8 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
     # load RT data
     data = read_data(rt_data_fname, False)
     ylab = axis_lab_rt
-    ylim = ylim_rt
-    ytick = ytick_rt
+    ylim = rty
+    ytick = rtcky
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, rt_signifs, axs)):
@@ -306,9 +307,10 @@ all_rt_signif = [['', '', ''], ['', '', '']]
 boxp.update(dict(width=0.7))
 
 # plot two-way interactions
-for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
-        zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
-            all_signif, all_rt_signif):
+for (data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs,
+     rty, rtcky) in zip(data_fnames, rt_data_fnames, all_contrasts,
+                        all_groupnames, all_signif, all_rt_signif, ylim_rt,
+                        ytick_rt):
     # init figure
     figname = 'fig-{}-twoway.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
@@ -337,8 +339,8 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
     # load RT data
     data = read_data(rt_data_fname, False)
     ylab = axis_lab_rt
-    ylim = ylim_rt
-    ytick = ytick_rt
+    ylim = rty
+    ytick = rtcky
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, rt_signifs, axs)):
@@ -363,9 +365,10 @@ all_rt_signif = [[''], ['']]
 boxp.update(dict(width=0.8))
 
 # plot three-way interactions
-for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
-        zip(data_fnames, rt_data_fnames, all_contrasts, all_groupnames,
-            all_signif, all_rt_signif):
+for (data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs,
+     rty, rtcky) in zip(data_fnames, rt_data_fnames, all_contrasts,
+                        all_groupnames, all_signif, all_rt_signif, ylim_rt,
+                        ytick_rt):
     # init figure
     figname = 'fig-{}-threeway.svg'.format(data_fname[:3])
     fig, axs = plt.subplots(1, len(contrasts), figsize=(3.5, 2.5))
@@ -396,8 +399,8 @@ for data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs in \
     # load RT data
     data = read_data(rt_data_fname, False)
     ylab = axis_lab_rt
-    ylim = ylim_rt
-    ytick = ytick_rt
+    ylim = rty
+    ytick = rtcky
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, rt_signifs, axs)):

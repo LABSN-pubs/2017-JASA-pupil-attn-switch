@@ -57,50 +57,127 @@ def chsq_rt(x):
         return efa.rt_chisq(y)
 
 
-def plot_hist_chsq(x, bins, fig, color, linsp, lcolor=None, histalpha=0.25,
+def plot_hist_chsq(x, bins, ax, color, linsp, lcolor=None, histalpha=0.25,
                    label='', ltyp=(None, None), **kwargs):
     histcol = mplc.hex2color(color) + (histalpha,)
     if lcolor is None:
         lcolor = color
-    plt.hist(x, bins, normed=True, color=histcol, histtype='stepfilled',
-             **kwargs)
+    ax.hist(x, bins, normed=True, color=histcol, histtype='stepfilled',
+            **kwargs)
     df, loc, scale = ss.chi2.fit(x, floc=0)
     pdf = ss.chi2.pdf(linsp, df, scale=scale)
-    l = plt.plot(linsp, pdf, color=lcolor, figure=fig, linewidth=2,
-                 label=label)
+    l = ax.plot(linsp, pdf, color=lcolor, linewidth=2, label=label)
     l[0].set_dashes(ltyp)
     l[0].set_dash_capstyle('round')
 
 
 # load data
-longform = read_data(rt_data_fnames[0])
+longform_rev = read_data(rt_data_fnames[0])
 longform_voc = read_data(rt_data_fnames[1])
-nonans = longform.dropna()
+datas = [longform_rev, longform_voc]
+exps = ['reverb', 'vocoder']
+
+
+# distribution of targets by slot
+print('PERCENTAGE OF TARGETS BY TIMING SLOT')
+for exp, data in zip(exps, datas):
+    byslot = data.groupby(['slot']).aggregate(dict(targ=np.sum))
+    print('  {} experiment:'.format(exp))
+    print(byslot / byslot.sum())
+
+
+# is RT difference localized by slot?
+print('P-VALUES FOR REACTION TIME BY TIMING SLOT')
+for exp, data, var in zip(exps, datas,
+                          [['attn', 'reverb', 'gender'],
+                           ['attn', 'voc_chan', 'gap_len']]):
+    print('  {} experiment:'.format(exp))
+    fig, axs = plt.subplots(1, 3, sharey=True)
+    n_ttests = 12
+    for main_eff, ax in zip(var, axs):
+        nonans = data.dropna()
+        gb = nonans.groupby(['slot', main_eff])
+        n_resp = gb.agg(dict(reax_time=lambda x:
+                             np.sum(np.logical_not(np.isnan(x)))))
+        means = gb.agg(dict(reax_time=np.mean))
+        stdev = gb.agg(dict(reax_time=np.std))
+        print('    {}:'.format(main_eff))
+        pvals = list()
+        for slot in range(4):
+            rts = list()
+            print('      slot {}: '.format(slot + 1), end='')
+            conds = means.index.levels[1].values
+            for cond in conds:
+                reaxtimes = nonans.loc[(nonans['slot'] == slot) &
+                                       (nonans[main_eff] == cond)]['reax_time']
+                rts.append(reaxtimes)
+            tval, pval = ss.ttest_ind(rts[0], rts[1], equal_var=False)
+            pvals.append(pval)
+            star = efa.format_pval(n_ttests * pval, False, 'stars')
+            print('{:.6f} {}'.format(pval, star))
+        # plot
+        signifs = np.where(np.array(pvals) < 0.05 / n_ttests)[0]
+        grps = [(0, 1), (2, 3), (4, 5), (6, 7)]
+        brks = [tuple(x) for x in np.array(grps)[signifs]]
+        strs = efa.format_pval(n_ttests * np.array(pvals), latex=False,
+                               scheme='stars')[signifs]
+        ax, bar = efa.barplot(means.values, err_bars=stdev.values, ax=ax,
+                              groups=grps, brackets=brks, bracket_text=strs,
+                              bar_names=conds.tolist() * 4,
+                              group_names=['slot {}'.format(x + 1)
+                                           for x in range(4)])
 
 
 # distribution of reaction times for hits
 bins = np.arange(0.1, 1., 0.025)
 lsp = np.linspace(0.1, 1.1, 100)
-fig = plt.figure(figsize=(3.4, 3))
-rev_hit_rts = longform[longform['targ'] & longform['reax_time'] > 0]
-plot_hist_chsq(rev_hit_rts['reax_time'].values, bins, fig, color='#aa4499',
-               linsp=lsp, edgecolor='none', label='rev_hits')
-voc_hit_rts = longform_voc[longform_voc['targ'] &
-                           longform_voc['reax_time'] > 0]
-fig = plt.figure(figsize=(3.4, 3))
-plot_hist_chsq(voc_hit_rts['reax_time'].values, bins, fig, color='#44aa99',
-               linsp=lsp, edgecolor='none', label='rev_hits')
+fig, axs = plt.subplots(1, 2, figsize=(7, 3))
+for exp, data, ax, col in zip(exps, datas, axs, ['#aa4499', '#44aa99']):
+    hit_rts = data[data['targ'] & (data['reax_time'] > 0)]
+    plot_hist_chsq(hit_rts['reax_time'].values, bins, ax, color=col,
+                   linsp=lsp, edgecolor='none', label='rev_hits')
+    _ = ax.set_title(exp)
 
 
-# distribution of targets by slot
-byslot = longform.groupby(['slot']).aggregate(dict(targ=np.sum))
-print('reverb: pct. targs by slot')
-print(byslot / byslot.sum())
-byslot = longform_voc.groupby(['slot']).aggregate(dict(targ=np.sum))
-print('\nvocoder: pct. targs by slot')
-print(byslot / byslot.sum())
+# is elevated pupil signal in switch condition just an artifact of more
+# button presses in those trials?
+print('DISTRIBUTION OF BUTTON PRESSES BY ATTENTIONAL CONDITION')
+for exp, data in zip(exps, datas):
+    presses = data.loc[data['press']].groupby(['attn']).count()['reax_time']
+    targ_resps = data.loc[data['hit']].groupby(['attn']).count()['reax_time']
+    false_alarm = presses - targ_resps
+    false_alarm_pct = false_alarm / presses
+    summary = pd.concat([presses, targ_resps, false_alarm, false_alarm_pct],
+                        axis=1)
+    summary.columns = ['all_presses', 'targ', 'non_targ', 'non_targ_pct']
+    print('  {} experiment:'.format(exp))
+    print(summary, end='\n\n')
+# NO: there are actually more responses in the maintain condition.
 
 
+# vocoder: 2-way sensitivity interactions by slot
+print('HIT RATE x SLOT FOR VOCODER EXPERIMENT')
+# TODO: resume here
+aggfuncs = dict(frsp=np.sum, hit=np.sum, targ=np.sum, foil=np.sum)
+voc_x_gap = longform_voc.groupby(['voc_chan', 'slot', 'gap_len',
+                                  'subj']).agg(aggfuncs)
+voc_x_gap['foilrate'] = voc_x_gap.frsp / voc_x_gap.foil
+voc_x_gap['hitrate'] = voc_x_gap.hit / voc_x_gap.targ
+voc_x_gap['resprate'] = ((voc_x_gap.hit + voc_x_gap.frsp) /
+                         (voc_x_gap.targ + voc_x_gap.foil))
+twenty_minus_ten = voc_x_gap.loc[20] - voc_x_gap.loc[10]
+# hits = twenty_minus_ten.unstack([0, 1])['hit']
+hitrate = twenty_minus_ten.unstack([0, 1])['hitrate']
+pvals = list()
+for slot in range(4):
+    _long = hitrate[slot, 'long']
+    _short = hitrate[slot, 'short']
+    tval, pval = ss.ttest_ind(_long, _short, equal_var=False)
+    pvals.append(pval)
+print(pvals)
+
+
+raise RuntimeError
 # vocoder experiment: distribution of foil response rate by slot
 aggfuncs = dict(frsp=np.sum, hit=np.sum, targ=np.sum, foil=np.sum)
 vocbyslot = longform_voc.groupby(['slot', 'gap_len', 'subj']).agg(aggfuncs)
@@ -119,24 +196,6 @@ ax, bar = efa.barplot(vocbyslot.values, axis=0, err_bars='se',
                       bar_names=['long', 'short'] * 4,
                       group_names=['slot {}'.format(x + 1) for x in range(4)])
 
-
-# vocoder: 2-way sensitivity interactions by slot
-voc_x_gap = longform_voc.groupby(['voc_chan', 'slot', 'gap_len',
-                                  'subj']).agg(aggfuncs)
-voc_x_gap['foilrate'] = voc_x_gap.frsp / voc_x_gap.foil
-voc_x_gap['hitrate'] = voc_x_gap.hit / voc_x_gap.targ
-voc_x_gap['resprate'] = ((voc_x_gap.hit + voc_x_gap.frsp) /
-                         (voc_x_gap.targ + voc_x_gap.foil))
-twenty_minus_ten = voc_x_gap.loc[20] - voc_x_gap.loc[10]
-# hits = twenty_minus_ten.unstack([0, 1])['hit']
-hitrate = twenty_minus_ten.unstack([0, 1])['hitrate']
-pvals = list()
-for slot in range(4):
-    _long = hitrate[slot, 'long']
-    _short = hitrate[slot, 'short']
-    tval, pval = ss.ttest_ind(_long, _short, equal_var=False)
-    pvals.append(pval)
-print(pvals)
 
 attn_x_gap = longform_voc.groupby(['attn', 'slot', 'gap_len',
                                    'subj']).agg(aggfuncs)
@@ -185,35 +244,6 @@ for rate in [hitrate, foilrate]:
                           bar_names=['m.', 's.'] * (rate.shape[1] // 2),
                           group_names=['10', '20'] * (rate.shape[1] // 4),
                           bar_kwargs=dict(color=colors))
-
-
-# reverb experiment: is maint/switch RT difference localized by slot?  YES
-# change next line to longform_voc for vocoder
-gb = longform.groupby(['slot', 'attn'])
-n_resp = gb.agg(dict(reax_time=lambda x: np.sum(np.logical_not(np.isnan(x)))))
-means = gb.agg(dict(reax_time=np.mean))
-stdev = gb.agg(dict(reax_time=np.std))
-pvals = list()
-for slot in range(4):
-    maint = nonans.loc[np.logical_and(nonans.slot == slot,
-                                      nonans.attn == 'maint.')]['reax_time']
-    switch = nonans.loc[np.logical_and(nonans.slot == slot,
-                                       nonans.attn == 'switch')]['reax_time']
-    tval, pval = ss.ttest_ind(maint, switch, equal_var=False)
-    pvals.append(pval)
-print(pvals)
-ax, bar = efa.barplot(means.values, err_bars=stdev.values,
-                      groups=[(0, 1), (2, 3), (4, 5), (6, 7)],
-                      brackets=[(4, 5), (6, 7)], bracket_text=['***', '*'],
-                      bar_names=['maint.', 'switch'] * 4,
-                      group_names=['slot {}'.format(x + 1) for x in range(4)])
-
-
-# is elevated pupil signal in switch condition just an artifact of more
-# button presses in those trials? NO: there are actually more responses
-# in the maintain condition.
-presses = longform.loc[longform.press].groupby(['attn']).count()['reax_time']
-targ_resps = longform.loc[longform.hit].groupby(['attn']).count()['reax_time']
 
 
 # is RT generally different by slot?  YES

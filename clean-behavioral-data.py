@@ -21,6 +21,7 @@ from os import getcwd
 from os import path as op
 from scipy.io import loadmat
 
+pd.set_option('display.width', 160)
 
 # params
 rev_subjects = ['1', '2', '3', '4', '5', '6', '7', '10',
