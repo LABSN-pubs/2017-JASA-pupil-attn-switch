@@ -83,7 +83,7 @@ print('PERCENTAGE OF TARGETS BY TIMING SLOT')
 for exp, data in zip(exps, datas):
     byslot = data.groupby(['slot']).aggregate(dict(targ=np.sum))
     print('  {} experiment:'.format(exp))
-    print(byslot / byslot.sum())
+    print(byslot / byslot.sum(), end='\n\n')
 
 
 # is RT difference localized by slot?
@@ -105,7 +105,6 @@ for exp, data, var in zip(exps, datas,
         pvals = list()
         for slot in range(4):
             rts = list()
-            print('      slot {}: '.format(slot + 1), end='')
             conds = means.index.levels[1].values
             for cond in conds:
                 reaxtimes = nonans.loc[(nonans['slot'] == slot) &
@@ -114,7 +113,7 @@ for exp, data, var in zip(exps, datas,
             tval, pval = ss.ttest_ind(rts[0], rts[1], equal_var=False)
             pvals.append(pval)
             star = efa.format_pval(n_ttests * pval, False, 'stars')
-            print('{:.6f} {}'.format(pval, star))
+            print('      slot {}: {:.6f} {}'.format(slot + 1, pval, star))
         # plot
         signifs = np.where(np.array(pvals) < 0.05 / n_ttests)[0]
         grps = [(0, 1), (2, 3), (4, 5), (6, 7)]
@@ -126,6 +125,7 @@ for exp, data, var in zip(exps, datas,
                               bar_names=conds.tolist() * 4,
                               group_names=['slot {}'.format(x + 1)
                                            for x in range(4)])
+print()
 
 
 # distribution of reaction times for hits
@@ -145,36 +145,56 @@ print('DISTRIBUTION OF BUTTON PRESSES BY ATTENTIONAL CONDITION')
 for exp, data in zip(exps, datas):
     presses = data.loc[data['press']].groupby(['attn']).count()['reax_time']
     targ_resps = data.loc[data['hit']].groupby(['attn']).count()['reax_time']
-    false_alarm = presses - targ_resps
-    false_alarm_pct = false_alarm / presses
-    summary = pd.concat([presses, targ_resps, false_alarm, false_alarm_pct],
-                        axis=1)
-    summary.columns = ['all_presses', 'targ', 'non_targ', 'non_targ_pct']
+    foil_resps = data.loc[data['frsp']].groupby(['attn']).count()['reax_time']
+    non_targ = presses - targ_resps
+    non_targ_pct = non_targ / presses
+    summary = pd.concat([presses, targ_resps, foil_resps, non_targ,
+                         non_targ_pct], axis=1)
+    summary.columns = ['all_presses', 'targ', 'foil', 'non_targ',
+                       'non_targ_pct']
+    summary['non_foil_fa'] = summary['non_targ'] - summary['foil']
     print('  {} experiment:'.format(exp))
     print(summary, end='\n\n')
 # NO: there are actually more responses in the maintain condition.
 
 
-# vocoder: 2-way sensitivity interactions by slot
+# vocoder: 2-way targ detection interactions by slot
 print('HIT RATE x SLOT FOR VOCODER EXPERIMENT')
-# TODO: resume here
-aggfuncs = dict(frsp=np.sum, hit=np.sum, targ=np.sum, foil=np.sum)
-voc_x_gap = longform_voc.groupby(['voc_chan', 'slot', 'gap_len',
-                                  'subj']).agg(aggfuncs)
-voc_x_gap['foilrate'] = voc_x_gap.frsp / voc_x_gap.foil
-voc_x_gap['hitrate'] = voc_x_gap.hit / voc_x_gap.targ
-voc_x_gap['resprate'] = ((voc_x_gap.hit + voc_x_gap.frsp) /
-                         (voc_x_gap.targ + voc_x_gap.foil))
-twenty_minus_ten = voc_x_gap.loc[20] - voc_x_gap.loc[10]
-# hits = twenty_minus_ten.unstack([0, 1])['hit']
-hitrate = twenty_minus_ten.unstack([0, 1])['hitrate']
-pvals = list()
+n_ttests = 8
+aggfuncs = dict(targ=np.sum, hit=np.sum)  # foil=np.sum, frsp=np.sum
+level_dict = dict(gap_len=['long', 'short'], attn=['maint.', 'switch'],
+                  voc_chan=[20, 10])
+for interact in [['gap_len', 'voc_chan'], ['gap_len', 'attn']]:
+    cols = ['slot'] + interact + ['subj']
+    twoway = longform_voc.groupby(cols).agg(aggfuncs)
+    twoway['hitrate'] = twoway['hit'] / twoway['targ']
+    hr = twoway.unstack(0)['hitrate']
+    first_diff = (hr.loc[level_dict[interact[0]][0]] -
+                  hr.loc[level_dict[interact[0]][1]])
+    tval, pval = ss.ttest_rel(first_diff.loc[level_dict[interact[1]][0]],
+                              first_diff.loc[level_dict[interact[1]][1]])
+    star = efa.format_pval(n_ttests * pval, False, 'stars')
+    ix, iy = np.mgrid[0:2, 0:2]
+    levs = [level_dict[interact[x]][y] for x, y in zip(ix.flat, iy.flat)]
+    print('{} minus {}, {} vs {}'.format(*levs))
+    for slot in range(4):
+        print('  slot {}: {:.6f} {}'.format(slot + 1, pval[slot], star[slot]))
+
+"""
+# vocoder 3-way targ detection interaction by slot
+n_ttests = 4
+cols = ['slot', 'gap_len', 'voc_chan', 'attn', 'subj']
+threeway = longform_voc.groupby(cols).agg(aggfuncs)
+threeway['hitrate'] = threeway['hit'] / threeway['targ']
+hr = threeway.unstack(0)['hitrate']
+first_diff = (hr.loc['long'] - hr.loc['short'])
+second_diff = first_diff.loc[20] - first_diff.loc[10]
+tval, pval = ss.ttest_rel(second_diff.loc['maint.'], second_diff.loc['switch'])
+star = efa.format_pval(n_ttests * pval, False, 'stars')
+print('long minus short, 20 minus 10, maint. vs switch')
 for slot in range(4):
-    _long = hitrate[slot, 'long']
-    _short = hitrate[slot, 'short']
-    tval, pval = ss.ttest_ind(_long, _short, equal_var=False)
-    pvals.append(pval)
-print(pvals)
+    print('  slot {}: {:.6f} {}'.format(slot + 1, pval[slot], star[slot]))
+"""
 
 
 raise RuntimeError
