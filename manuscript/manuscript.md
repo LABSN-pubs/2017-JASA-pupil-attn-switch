@@ -29,7 +29,7 @@ keywords:
 biblio-style: bibstyle
 bibliography: bib/switching
 possible-reviewers: Thomas Koelewijn, Matt Winn, Gerald Kidd
-copyrightyear: 2016
+copyrightyear: 2017
 abstract: >
   Successful speech communication often requires selective attention to a
   target stream amidst competing sounds, as well as the ability to switch
@@ -84,15 +84,15 @@ Pupillometry, the tracking of pupil diameter, has been used for over four
 decades to measure cognitive load in a variety of task
 types.[@KahnemanBeatty1966; @Beatty1982]  Pupil dilation is an involuntary,
 time-locked, physiological response that is present from infancy in humans and
-other animal species.  In general, as the cognitive demands of a task
-increases, pupil dilation of up to about 5-6 mm can be observed up to 1 second
-after onset of relevant stimuli.[@KahnemanBeatty1966; @Beatty1982;
-@HoeksLevelt1993]  While pupil dilation is slow (~1 Hz), recent results show
-that tracking of attention and cognitive processes with higher temporal
-resolution (~10 Hz) is possible with deconvolution of the pupillary
+other animal species.  In general, as the cognitive demands of a task increase,
+pupil dilation of up to about 5-6 mm can be observed up to 1 second after onset
+of relevant stimuli.[@KahnemanBeatty1966; @Beatty1982; @HoeksLevelt1993]  While
+this task-evoked pupillary response is slow (~1 Hz), recent results show that
+it is possible to track attention and cognitive processes with higher temporal
+resolution (~10 Hz) with deconvolution of the pupillary
 response.[@WierdaEtAl2012; @McCloyEtAl2016]
 
-Prior work has shown that pupil dilation co-varies with differences in memory
+Prior work has shown that the pupillary response co-varies with differences in memory
 demands,[@Taylor1981] sentence complexity,[@AhernBeatty1981] lexical frequency
 of isolated written words,[@PapeshGoldinger2012] or difficulty of mathematical
 operations.[@HessPolt1964]  In the auditory domain, larger pupil dilations have
