@@ -71,7 +71,11 @@ mid-trial, switching attention both reduced accuracy and led to longer response
 latency *even on targets prior to the attentional switch*.[@LarsonLee2013a]
 This suggests that the act of remembering or preparing to switch imposes some
 degree of mental effort or cognitive load that can compromise the success of
-the listening task.
+the listening task.  Given that listeners are aware of linguistic cues to
+conversational turn-taking,[@deRuiterEtAl2006] the pre-planning of attention
+switches (and associated hypothesized load) may be part of ordinary listening
+behavior in everyday conditions, not just an artifact of laboratory
+experimentation.
 
 Pupillometry, the tracking of pupil diameter, has been used for over four
 decades to measure cognitive load.[@KahnemanBeatty1966; @Beatty1982]  Pupil
