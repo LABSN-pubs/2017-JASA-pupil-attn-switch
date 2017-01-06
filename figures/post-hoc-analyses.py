@@ -20,6 +20,7 @@ import matplotlib.colors as mplc
 # import seaborn as sns
 from os import path as op
 import scipy.stats as ss
+from scipy.special import logit
 from expyfun import analyze as efa
 from ast import literal_eval
 from convenience_functions import use_font
@@ -125,6 +126,12 @@ for exp, data, var in zip(exps, datas,
                               bar_names=conds.tolist() * 4,
                               group_names=['slot {}'.format(x + 1)
                                            for x in range(4)])
+        _ = ax.set_title(main_eff)
+    _ = fig.suptitle('{} experiment'.format(exp))
+    if exp == 'vocoder':
+        means = means.unstack()
+        means['long-short'] = means.diff(axis=1)['reax_time']['short']
+        print('\n{}'.format(means), end='\n\n')
 print()
 
 
@@ -137,6 +144,10 @@ for exp, data, ax, col in zip(exps, datas, axs, ['#aa4499', '#44aa99']):
     plot_hist_chsq(hit_rts['reax_time'].values, bins, ax, color=col,
                    linsp=lsp, edgecolor='none', label='rev_hits')
     _ = ax.set_title(exp)
+    tk = np.linspace(0, 1.1, 12)
+    _ = ax.set_xticks(tk)
+    _ = ax.set_xticklabels([str(round(x, 1)) for x in tk],
+                           fontdict=dict(size=8))
 
 
 # is elevated pupil signal in switch condition just an artifact of more
@@ -158,6 +169,28 @@ for exp, data in zip(exps, datas):
 # NO: there are actually more responses in the maintain condition.
 
 
+# attn x foil response rate by slot
+print('FOIL RESPONSE RATE x ATTENTIONAL CONDITION x SLOT')
+print('(t-test applied to logit-transformed response rates)')
+for exp, data in zip(exps, datas):
+    foils = data.loc[data['foil']].groupby(['attn', 'slot']).count()
+    foil_rate = (foils['reax_time'] / foils['trial']).unstack()
+    print('  {} experiment:'.format(exp))
+    print(foil_rate)
+    # t-tests (maint vs switch) by slot, across subjects
+    foils = data.loc[data['foil']].groupby(['attn', 'slot', 'subj']).count()
+    foil_rate = (foils['reax_time'] / foils['trial']).unstack(1).unstack(0)
+    foil_rate[foil_rate == 0] = 1e-12  # avoid -np.inf from logit transform
+    foil_rate = logit(foil_rate)
+    print('----------------------------------------------')
+    print('p-val.', end='  ')
+    for slot in range(4):
+        tval, pval = ss.ttest_rel(foil_rate[slot]['maint.'],
+                                  foil_rate[slot]['switch'])
+        print('{:.6f}'.format(pval), end='  ')
+    print('', end='\n\n')
+
+
 # vocoder: 2-way targ detection interactions by slot
 print('HIT RATE x SLOT FOR VOCODER EXPERIMENT')
 n_ttests = 8
@@ -169,6 +202,10 @@ for interact in [['gap_len', 'voc_chan'], ['gap_len', 'attn']]:
     twoway = longform_voc.groupby(cols).agg(aggfuncs)
     twoway['hitrate'] = twoway['hit'] / twoway['targ']
     hr = twoway.unstack(0)['hitrate']
+    # avoid np.inf after logit
+    hr[hr == 1] = 1 - 1e-12
+    hr[hr == 0] = 1e-12
+    hr = logit(hr)
     first_diff = (hr.loc[level_dict[interact[0]][0]] -
                   hr.loc[level_dict[interact[0]][1]])
     tval, pval = ss.ttest_rel(first_diff.loc[level_dict[interact[1]][0]],
@@ -179,138 +216,3 @@ for interact in [['gap_len', 'voc_chan'], ['gap_len', 'attn']]:
     print('{} minus {}, {} vs {}'.format(*levs))
     for slot in range(4):
         print('  slot {}: {:.6f} {}'.format(slot + 1, pval[slot], star[slot]))
-
-"""
-# vocoder 3-way targ detection interaction by slot
-n_ttests = 4
-cols = ['slot', 'gap_len', 'voc_chan', 'attn', 'subj']
-threeway = longform_voc.groupby(cols).agg(aggfuncs)
-threeway['hitrate'] = threeway['hit'] / threeway['targ']
-hr = threeway.unstack(0)['hitrate']
-first_diff = (hr.loc['long'] - hr.loc['short'])
-second_diff = first_diff.loc[20] - first_diff.loc[10]
-tval, pval = ss.ttest_rel(second_diff.loc['maint.'], second_diff.loc['switch'])
-star = efa.format_pval(n_ttests * pval, False, 'stars')
-print('long minus short, 20 minus 10, maint. vs switch')
-for slot in range(4):
-    print('  slot {}: {:.6f} {}'.format(slot + 1, pval[slot], star[slot]))
-"""
-
-
-raise RuntimeError
-# vocoder experiment: distribution of foil response rate by slot
-aggfuncs = dict(frsp=np.sum, hit=np.sum, targ=np.sum, foil=np.sum)
-vocbyslot = longform_voc.groupby(['slot', 'gap_len', 'subj']).agg(aggfuncs)
-vocbyslot['foilrate'] = vocbyslot.frsp / vocbyslot.foil
-vocbyslot = vocbyslot.unstack([0, 1])['foilrate']
-pvals = list()
-for slot in range(4):
-    _long = vocbyslot[slot, 'long']
-    _short = vocbyslot[slot, 'short']
-    tval, pval = ss.ttest_ind(_long, _short, equal_var=False)
-    pvals.append(pval)
-print(pvals)
-ax, bar = efa.barplot(vocbyslot.values, axis=0, err_bars='se',
-                      groups=[(0, 1), (2, 3), (4, 5), (6, 7)],
-                      brackets=[(2, 3), (4, 5)], bracket_text=['*', '**'],
-                      bar_names=['long', 'short'] * 4,
-                      group_names=['slot {}'.format(x + 1) for x in range(4)])
-
-
-attn_x_gap = longform_voc.groupby(['attn', 'slot', 'gap_len',
-                                   'subj']).agg(aggfuncs)
-attn_x_gap['foilrate'] = attn_x_gap.frsp / attn_x_gap.foil
-attn_x_gap['hitrate'] = attn_x_gap.hit / attn_x_gap.targ
-attn_x_gap['resprate'] = ((attn_x_gap.hit + attn_x_gap.frsp) /
-                          (attn_x_gap.targ + attn_x_gap.foil))
-maint_minus_switch = attn_x_gap.loc['maint.'] - attn_x_gap.loc['switch']
-hits = maint_minus_switch.unstack([0, 1])['hit']  # last slot
-hitrate = maint_minus_switch.unstack([0, 1])['hitrate']  # last slot
-foilrate = maint_minus_switch.unstack([0, 1])['foilrate']  # no sign. diffs.
-pvals = list()
-for slot in range(4):
-    _long = hits[slot, 'long']
-    _short = hits[slot, 'short']
-    tval, pval = ss.ttest_ind(_long, _short, equal_var=False)
-    pvals.append(pval)
-print(pvals)
-
-
-# vocoder: 3-way sensitivity interaction (foils)
-three_way = longform_voc.groupby(['slot', 'gap_len', 'voc_chan', 'attn',
-                                  'subj']).agg(aggfuncs)
-three_way['foilrate'] = three_way.frsp / three_way.foil
-three_way['hitrate'] = three_way.hit / three_way.targ
-three_way['resprate'] = ((three_way.hit + three_way.frsp) /
-                         (three_way.targ + three_way.foil))
-hitrate = three_way.unstack([0, 1, 2, 3])['hitrate']
-foilrate = three_way.unstack([0, 1, 2, 3])['foilrate']
-pvals = list()
-for rate in [hitrate, foilrate]:
-    for slot in range(4):
-        for dur in ['long', 'short']:
-            for chan in [10, 20]:
-                maint = rate[slot, dur, chan, 'maint.']
-                switch = rate[slot, dur, chan, 'switch']
-                tval, pval = ss.ttest_ind(maint, switch, equal_var=False)
-                pvals.append(pval)
-    print(pvals)
-    colors = (['0.5', '0.7'] * 2 + ['0.6', '0.8'] * 2 +
-              ['g', 'y'] * 2 + ['b', 'c'] * 2) * 2
-    ax, bar = efa.barplot(rate.values, axis=0, err_bars='se',
-                          groups=np.arange(rate.shape[1]).reshape(-1, 2),
-                          # brackets=[(0, 1), (2, 3), (6, 7)],
-                          # bracket_text=['***', '*', '*'],
-                          bar_names=['m.', 's.'] * (rate.shape[1] // 2),
-                          group_names=['10', '20'] * (rate.shape[1] // 4),
-                          bar_kwargs=dict(color=colors))
-
-
-# is RT generally different by slot?  YES
-slot0 = nonans.loc[nonans.slot == 0]['reax_time']
-slot1 = nonans.loc[nonans.slot == 1]['reax_time']
-slot2 = nonans.loc[nonans.slot == 2]['reax_time']
-slot3 = nonans.loc[nonans.slot == 3]['reax_time']
-f_val, aov_p_val = ss.f_oneway(slot0, slot1, slot2, slot3)
-comps = [(slot0, slot1), (slot0, slot2), (slot0, slot3),
-         (slot1, slot2), (slot1, slot3), (slot2, slot3)]
-print(f_val, aov_p_val)
-for comp in comps:
-    t_val, p_val = ss.ttest_ind(*comp, equal_var=False)
-    p_val = p_val / len(comps)  # bonferroni
-    print([slot.mean() for slot in comp])
-    print([slot.std() for slot in comp])
-    print(p_val)
-
-
-# # # # # # # # # # # # # # # # # #
-# REACTION TIME HISTOGRAM BY SLOT #
-# # # # # # # # # # # # # # # # # #
-bins = np.arange(0.1, 1., 0.025)
-lsp = np.linspace(0.1, 1.1, 100)
-
-# plot
-fig = plt.figure(figsize=(3.4, 3))
-plot_hist_chsq(slot0, bins, fig, color='#aa4499', linsp=lsp, edgecolor='none',
-               label='slot 1')
-plot_hist_chsq(slot1, bins, fig, color='#44aa99', linsp=lsp, edgecolor='none',
-               label='slot 2', ltyp=[8, 4])
-plot_hist_chsq(slot2, bins, fig, color='#999933', linsp=lsp, edgecolor='none',
-               label='slot 3', ltyp=[2, 4])
-plot_hist_chsq(slot3, bins, fig, color='#cc6677', linsp=lsp, edgecolor='none',
-               label='slot 4', ltyp=[1, 3])
-
-ax = fig.gca()
-_ = ax.set_xlim(0.15, 1.05)
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-ax.tick_params('both', top=False, left=False, right=False, direction='out')
-_ = ax.yaxis.set_ticklabels([])
-_ = ax.xaxis.set_ticks(np.arange(0.2, 1.1, 0.2))
-_ = ax.set_xlabel('Response time (s)')
-_ = ax.set_ylabel('Proportion of responses')
-lgnd = ax.legend(loc='upper right', frameon=False, fontsize='small',
-                 bbox_to_anchor=(1.05, 1.1), handlelength=2.3)
-plt.tight_layout()
-plt.subplots_adjust(bottom=0.2)
-plt.savefig('fig-rt-hist.pdf', bbox_extra_artists=(lgnd,))
