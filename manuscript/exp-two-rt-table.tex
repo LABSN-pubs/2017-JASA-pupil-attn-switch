@@ -1,0 +1,19 @@
+\cleardoublepage \eject \pdfpagewidth=11in \pdfpageheight=8.5in \newgeometry{right=-1.5in} \thispagestyle{empty}
+\begin{table}
+\sisetup{round-mode=places,round-precision=3,scientific-notation=fixed,fixed-exponent=0,tight-spacing=true,group-digits=false}
+\caption{Summary of model of reaction time for Experiment 2.  Terms given in {\scshape small caps} are the variable names excluded in each likelihood ratio test; terms given in {\itshape italics} are the specific values of each variable coded as positive values during modeling (and hence, determining the interpretation of the sign of their corresponding estimate). SE = standard error of coefficient estimates; nDF = numerator degrees of freedom; dDF = estimated denominator degrees of freedom; * = $p<0.05$, ** = $p<0.01$, *** = $p<0.001$.}
+\begin{tabular}{ l >{\itshape}l S S S[round-precision=2] c >{\scshape}l c S[round-precision=1,table-format=4.1] S[round-precision=2] S[round-minimum=0.001,table-format=>1.3] c }
+\toprule
+	\multicolumn{5}{c}{\bfseries Model summary}                                                                            & & \multicolumn{6}{c}{\bfseries $F$ tests with Kenward-Roger approximate DF}                                             \\ \cmidrule{1-5}\cmidrule{7-12}
+	                  &                  & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{SE} & \multicolumn{1}{c}{$t$} & &                         & nDF & \multicolumn{1}{c}{dDF} & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$p$} & signif. \\ \cmidrule{3-5}\cmidrule{8-12}
+	                  & (Intercept)      &   0.653140                   & 0.018961               &  34.45                  & &                         &     &                         &                         &                         &         \\
+	$V_i$             & 20               &  -0.034774                   & 0.007449               &  -4.67                  & & voc\_chan               & 1   & 4605.0                  & 21.7921                 & 3.125e-06               & ***     \\
+	$G_i$             & long             &  -0.065754                   & 0.007468               &  -8.80                  & & gap\_len                & 1   & 4606.9                  & 77.5165                 & < 2.2e-16               & ***     \\
+	$A_i$             & maint            &  -0.014380                   & 0.007450               &  -1.93                  & & attn                    & 1   & 4605.1                  &  3.7252                 &  0.053657               &         \\
+	$V_i G_i$         & 20:long          &  -0.043569                   & 0.014886               &  -2.93                  & & voc\_chan:gap\_len      & 1   & 4604.4                  &  8.5663                 &  0.003441               & **      \\
+	$V_i A_i$         & 20:maint         &   0.007769                   & 0.014884               &   0.52                  & & voc\_chan:attn          & 1   & 4604.3                  &  0.2725                 &  0.601704               &         \\
+	$G_i A_i$         & long:maint       &   0.006538                   & 0.014893               &   0.44                  & & gap\_len:attn           & 1   & 4604.8                  &  0.1927                 &  0.660708               &         \\
+	$V_i G_i A_i$     & 20:long:maint    &  -0.009725                   & 0.029767               &  -0.33                  & & voc\_chan:gap\_len:attn & 1   & 4604.2                  &  0.1067                 &  0.743904               &         \\ \bottomrule
+\end{tabular}
+\end{table}
+\cleardoublepage \eject \pdfpagewidth=8.5in \pdfpageheight=11in \restoregeometry \doublespacing
