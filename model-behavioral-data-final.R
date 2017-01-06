@@ -52,10 +52,11 @@ lrt_models <- mapply(function(formula_, name, data_source) {
     mod
 }, formulae, names(formulae), datas)
 save(lrt_models, file=file.path(out_dir, "lrt-models.RData"))
+stopCluster(cl)
 stop()
 
 ################################################################################
-# FIT MODELS (SLOW; BOOTSTRAP P-VALUES)
+# FIT MODELS (BOOTSTRAP P-VALUES; NOT USED -- TOO SLOW)
 # reverb experiment
 cat("fitting models (bootstrap)\n")
 proc.time()

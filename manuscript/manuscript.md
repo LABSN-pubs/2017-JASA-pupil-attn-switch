@@ -538,15 +538,30 @@ presented in 10 blocks of 32 trials each, for a total of 320 trials.
 ### Behavioral analysis
 
 As in Experiment 1, listener responses were labeled as “hits” if the button
-press occurred between 100 and 1000 ms of the onset of “O” stimuli in the
-target stream, and all other responses were considered “false alarms.”
-Responses occurring between 100 and 1000 ms after an “O” onset in the masker
-stream were additionally labeled as “responses to foils.”  Statistical
-modeling of sensitivity and reaction time used the same approach as was
-employed in Experiment 1: predicting probability of button press in each timing
-slot based on fixed-effect predictors (maintain/switch, 10- or 20-channel
-vocoder, and short/long mid-trial gap duration), a target/foil/neither
-indicator variable, and a subject-level random intercept.
+press occurred within a defined temporal response window after the onset of “O”
+stimuli in the target stream, and all other responses were considered “false
+alarms.”  However, unlike Experiment 1, the designated response window for
+targets and foil items ran from 300 to 1000 ms after the onset of “O” stimuli
+(in Experiment 1 the window ranged from 100 to 1000 ms).  This change resulted
+from a design oversight, in which the placement of target or foil items in both
+of slots 2 and 3 (on either side of the switch gap) yielded a period of overlap
+of the response windows for slots 2 and 3 in the short gap trials, in which
+presses could not be unambiguously attributed.  However, in Experiment 1 (where
+response times as fast as 100 ms were allowed) the fastest response time across
+all subjects was 296 ms, and was the sole instance of a sub-300 ms response.
+Therefore, raising the lower bound on the response time window to 300 ms for
+Experiment 2 is unlikely to have disqualified any legitimate responses
+(especially given the more severe signal degradation, which is likely to
+increase response times relative to Experiment 1), and eliminates the overlap
+between response slots 2 and 3 on short-gap trials.
+
+Statistical modeling of sensitivity used the same approach as was employed in
+Experiment 1: predicting probability of button press in each timing slot based
+on fixed-effect predictors (maintain/switch, 10- or 20-channel vocoder, and
+short/long mid-trial gap duration), a target/foil/neither indicator variable,
+and a subject-level random intercept. Statistical modeling of response time
+also mirrored Experiment 1, in omitting the indicator variable and considering
+only responses to targets and foils.
 
 ### Analysis of pupil diameter
 Analysis of pupil diameter was carried out as in Experiment 1: trials epoched

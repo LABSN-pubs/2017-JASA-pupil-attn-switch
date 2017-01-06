@@ -100,15 +100,15 @@ ax.text(2.525, -4.8, 'variable-length\nswitch gap', ha='left', va='bottom',
 
 # timing slots
 h = 0.55
-w = 0.9
+w = 0.7
 y = -2.85
-for ix, x in enumerate([3.2, 3.7]):
+for ix, x in enumerate([3.4, 3.9]):
     y_offset = -0.2 * (ix % 2)
     h_offset = 0.04 * (1 - ix % 2)
     rect = plt.Rectangle((x, y + y_offset), width=w, height=h + h_offset,
                          fill=False, linewidth=lwd, edgecolor=slotcol, **ghost)
     ax.add_artist(rect)
-for ix, x in enumerate([1.6, 2.1, 2.8, 3.3]):
+for ix, x in enumerate([1.8, 2.3, 3.0, 3.5]):
     y_offset = -0.2 * (ix % 2)
     rect = plt.Rectangle((x, y + y_offset), width=w, height=h, zorder=3,
                          facecolor=slotcol, alpha=0.5, edgecolor='none',

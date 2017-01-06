@@ -28,8 +28,9 @@ rev_subjects = ['1', '2', '3', '4', '5', '6', '7', '10',
                 '11', '13', '14', '15', '16', '18', '20', '91']
 voc_subjects = ['01', '02', '04', '55', '6', '7', '8', '10',
                 '11', '12', '13', '14', '96', '97', '98', '99']
-min_rt = 0.1  # minimum reaction time, relative to stimulus onset
-max_rt = 1.
+
+min_rts = [0.1, 0.3]  # minimum reaction time, relative to stimulus onset,
+max_rts = [1.0, 1.0]  # specified separately for each experiment.
 
 # file I/O
 data_dir = 'data-behavioral'
@@ -38,14 +39,14 @@ param_subdirs = ['data-reverb', 'data-vocoder']
 work_dir = getcwd()
 
 
-def assign_presses_to_slots(df_row):
+def assign_presses_to_slots(df_row, min_rt, max_rt):
     # applied to rows of a DataFrame, which should have elements
     # onsets, targ_letters, mask_letters, press_times
     onsets = df_row['onsets']
     presses = df_row['press_times']
     targs = df_row['targ_letters'] == 'O'
     foils = df_row['mask_letters'] == 'O'
-    press_indices = np.zeros_like(presses, dtype=int) - 999
+    press_indices = np.full_like(presses, -999, dtype=int)
     for ix, press in enumerate(presses):
         # first pass: assign to targ if possible
         for ix2, (onset, targ) in enumerate(zip(onsets, targs)):
@@ -207,7 +208,9 @@ for ix, subdir in enumerate(data_subdirs):
     onsets[:, 2:] += gap
     longform['onsets'] = [x for x in onsets]
     # assign presses to timing slots
-    longform['press_indices'] = longform.apply(assign_presses_to_slots, axis=1)
+    longform['press_indices'] = longform.apply(assign_presses_to_slots, axis=1,
+                                               min_rt=min_rts[ix],
+                                               max_rt=max_rts[ix])
     unattr_presses = sum(longform['press_indices'].apply(lambda x: -999 in x))
     # assert all([y >= 0 for x in longform['press_indices'] for y in x])
     print('{} unattributed press{}'.format(str(unattr_presses),
@@ -234,12 +237,12 @@ for ix, subdir in enumerate(data_subdirs):
     rt = xlongform['reax_time'][~np.isnan(xlongform['reax_time'])]
     # distribute hit/miss/fa counts to appropriate slots
     xlongform['hit'] = (xlongform['press'] & xlongform['targ'] &
-                        (xlongform['reax_time'] <= max_rt))
+                        (xlongform['reax_time'] <= max_rts[ix]))
     xlongform['miss'] = xlongform['targ'] & ~xlongform['hit']
     xlongform['fals'] = xlongform['press'] & ~xlongform['targ']
     xlongform['crej'] = ~xlongform['press'] & ~xlongform['targ']
     xlongform['frsp'] = (xlongform['press'] & xlongform['foil'] &
-                         (xlongform['reax_time'] <= max_rt))
+                         (xlongform['reax_time'] <= max_rts[ix]))
     # save extra-long form
     output_columns = (['subj', 'block', 'trial', 'run_index'] +
                       [['reverb', 'gender'], ['voc_chan', 'gap_len']][ix] +

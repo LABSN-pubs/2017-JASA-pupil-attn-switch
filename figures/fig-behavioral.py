@@ -236,8 +236,8 @@ all_contrasts = [[['subj', 'attn'], ['subj', 'reverb'], ['subj', 'gender']],
                  [['subj', 'attn'], ['subj', 'voc_chan'], ['subj', 'gap_len']]]
 all_groupnames = [['attention', 'reverberation', 'talker genders'],
                   ['attention', 'vocoder channels', 'gap duration']]
-all_signif = [['***', '**', '***'], ['*', '***', '***']]
-all_rt_signif = [['*', '**', '***'], ['', '**', '***']]
+all_signif = [['***', '**', '***'], ['**', '***', '***']]
+all_rt_signif = [['*', '**', '***'], ['', '***', '***']]
 
 # plot main effects
 for (data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs,
@@ -302,8 +302,8 @@ all_groupnames = [[u'attn.\u2009\u00D7\u2009revb.',
                   [u'attn.\u2009\u00D7\u2009voc.ch.',
                    u'attn.\u2009\u00D7\u2009gap dur.',
                    u'voc.ch.\u2009\u00D7\u2009gap dur.']]
-all_signif = [['', '**', ''], ['', '***', '***']]
-all_rt_signif = [['', '', ''], ['', '', '']]
+all_signif = [['', '**', ''], ['', '**', '***']]
+all_rt_signif = [['', '', ''], ['', '**', '']]
 boxp.update(dict(width=0.7))
 
 # plot two-way interactions
@@ -360,7 +360,7 @@ all_contrasts = [[['subj', 'gender', 'attn', 'reverb']],
 all_groupnames = [[u'\u2009\u00D7\u2009'.join(['attn.', 'revb.', 'gend.'])],
                   [u'\u2009\u00D7\u2009'.join(['attn.', 'voc.ch.',
                                                'gap dur.'])]]
-all_signif = [[''], ['*']]
+all_signif = [[''], ['']]
 all_rt_signif = [[''], ['']]
 boxp.update(dict(width=0.8))
 
