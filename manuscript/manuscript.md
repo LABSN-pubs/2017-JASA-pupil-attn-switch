@@ -92,19 +92,21 @@ it is possible to track attention and cognitive processes with higher temporal
 resolution (~10 Hz) with deconvolution of the pupillary
 response.[@WierdaEtAl2012; @McCloyEtAl2016]
 
-Prior work has shown that the pupillary response co-varies with differences in memory
-demands,[@Taylor1981] sentence complexity,[@AhernBeatty1981] lexical frequency
-of isolated written words,[@PapeshGoldinger2012] or difficulty of mathematical
-operations.[@HessPolt1964]  In the auditory domain, larger pupil dilations have
-been reported in response to decreased speech intelligibility due to background
-noise,[@ZekveldEtAl2010] speech maskers versus fluctuating noise
-maskers,[@KoelewijnEtAl2012] and severity of spectral degradation of spoken
-sentences.[@WinnEtAl2015]  The pupillary response has also emerged as a measure
-of listening effort, which has been defined as “the mental exertion required to
-attend to, and understand, an auditory message.”[@McGarrigleEtAl2014]  In this
-guise, pupillometry has been used in several studies to investigate the effects
-of age and hearing loss on listening effort.[@ZekveldEtAl2011;
-@KuchinskyEtAl2013; @WinnEtAl2015]
+Prior work has shown that the pupillary response co-varies with differences in
+memory demands,[@Taylor1981] sentence complexity,[@AhernBeatty1981] lexical
+frequency of isolated written words,[@PapeshGoldinger2012] or difficulty of
+mathematical operations.[@HessPolt1964]  In the auditory domain, larger pupil
+dilations have been reported in response to decreased speech intelligibility
+due to background noise,[@ZekveldEtAl2010] speech maskers versus fluctuating
+noise maskers,[@KoelewijnEtAl2012] and severity of spectral degradation of
+spoken sentences.[@WinnEtAl2015]  The pupillary response has also emerged as a
+measure of listening effort, which has been defined as “the mental exertion
+required to attend to, and understand, an auditory
+message,”[@McGarrigleEtAl2014] or, more broadly, as “the deliberate allocation
+of mental resources to overcome obstacles in goal pursuit when carrying out a
+task” involving listening.[@PichoraFullerEtAl2016]  In this guise, pupillometry
+has been used in several studies to investigate the effects of age and hearing
+loss on listening effort.[@ZekveldEtAl2011; @KuchinskyEtAl2013; @WinnEtAl2015]
 
 Recent evidence suggests that the pupillary response is also sensitive to
 auditory attention.  Dividing attention between two auditory streams is known
@@ -363,11 +365,9 @@ streams, and especially that they might do so differently in maintain- versus
 switch-attention trials, the rate of listener response to foil items was
 examined separately for each timing slot.  Foil response rates ranged from 1–4%
 for slots 1 and 2 (before the switch gap), and from 9–15% for slots 3 and 4
-(after the switch gap).  Post-hoc analysis comparing logit-transformed foil
-response rates in maintain- versus switch-attention trials separately for each
-timing slot showed no significant differences (paired _t_-tests: _p_=0.97,
-0.96, 0.70, 0.49 for slots 1–4 respectively; Bonferroni-corrected significance
-level 0.0125).
+(after the switch gap), but showed no statistically reliable difference between
+maintain- and switch-attention trials for any of the four slots (see
+supplementary material for details).
 
 ### Reaction time
 
@@ -381,19 +381,12 @@ significant interactions in reaction time among these trial parameters.
 
 ![(Color online) Box-and-swarm plots of between-condition differences in reaction time for Experiment 1.  Boxes show first & third quartiles and median values; individual data points correspond to each listener; asterisks indicate comparisons with corresponding coefficients in the statistical model that were significantly different from zero.  (a) Main effects of attention (faster reaction time in maintain than switch trials), reverberation (faster reaction time in anechoic than reverberant trials), and talker gender (mis)match (faster reaction time in trials with trials with different-gendered target and masker talkers).  (b) Two-way interactions (no statistically significant differences).  (c) Three-way interaction (no statistically significant difference).  * = _p_<0.05; ** = _p_<0.01; *** = _p_<0.001; MM = matching talker genders; MF = mismatched talker genders.\label{fig-rev-rt}](fig-beh-rev-rt.eps)
 
-Post-hoc analysis of reaction time for the reverberation contrast showed no
-significant differences by response slot (Welch’s independent _t_-tests: _p_=0.41,
-0.010, 0.037, 0.043 for slots 1–4 respectively; Bonferroni-corrected
-significance level = 0.00417).  For the talker gender (mis)match contrast,
-post-hoc analysis of reaction time showed a significant difference only for
-slot 3 (Welch’s independent _t_-tests: _p_=0.046, 0.063, 0.00018, 0.0065 for
-slots 1–4 respectively; Bonferroni-corrected significance level = 0.00417).
-For the maintain- versus switch-attention contrast, post-hoc analysis of
-reaction time also showed a significant difference only for slot 3 (Welch’s
-independent _t_-tests: _p_=0.75, 0.53, 0.001, 0.035 for slots 1–4 respectively;
-Bonferroni-corrected significance level = 0.00417). This is consistent with a
-view that the act of attention switching creates a lag or slow-down in auditory
-perception.[@LarsonLee2013a]
+Post-hoc analysis of reaction time by response slot showed showed no
+significant differences for the reverberation contrast.  For the talker gender
+(mis)match contrast and the maintain- versus switch-attention contrasts, there
+were significant differences only in slot 3 (see supplementary material for
+details).  This is consistent with a view that the act of attention switching
+creates a lag or slow-down in auditory perception.[@LarsonLee2013a]
 
 ### Pupillometry
 Mean deconvolved pupil diameter as a function of time for the three stimulus
@@ -638,25 +631,21 @@ parameters.
 
 As in Experiment 1, post-hoc tests of reaction time difference between
 maintain- and switch-attention trials by slot showed a significant difference
-in reaction time between maintain- and switch-attention trials localized to
-slot 3 (the immediately post-gap slot), with longer reaction times in
-switch-attention trials (Welch’s independent _t_-tests: _p_=0.585, 0.378,
-0.001, 0.916 for slots 1–4 respectively).  Post-hoc analysis of reaction time
-by slot for the spectral degradation contrast showed a significant difference
-localized to slot 1 (Welch’s independent _t_-tests: _p_=0.002, 0.012, 0.230,
-0.891 for slots 1–4 respectively). Post-hoc analysis of reaction time
-for the gap length manipulation showed significant differences between
-conditions by slot (Welch’s independent _t_-tests: _p_<0.001, _p_=0.060,
-_p_<0.001, and _p_<0.001 for slots 1–4 respectively; Bonferroni-corrected
-significance level for combined post-hoc analyses = 0.00417).  Significantly
-faster reaction times were seen in the long-gap trials for slot 3 (155 ms
-faster on average) and slot 4 (135 ms faster on average), and significantly
-_slower_ reaction times in the long-gap trials for slot 1 (261 ms slower on
-average). The faster reaction times in the long-gap trials in slots 3 and 4 are
-expected given that listeners had additional time to process the first half of
-the trial and/or prepare for the second half in the long-gap condition.
-However, the difference in reaction time in slot 1 is unexpected and
-inexplicable given that the gap length manipulation was uncued.
+localized to slot 3 (the immediately post-gap slot), with faster reaction times
+in maintain-attention trials (28 ms faster on average).  For the spectral
+degradation contrast, a significant difference was seen only in slot 1, with
+faster reaction times in the 20-channel trials (68 ms faster on average); this
+pattern of results could arise if listener adaptation to the level of
+degradation was incomplete when the trial started, but was in place by the end
+of slot 1.  For the gap length manipulation, significantly  faster reaction
+times were seen in the long-gap trials for slot 3 (155 ms faster on average)
+and slot 4 (135 ms faster on average), and significantly _slower_ reaction
+times in the long-gap trials for slot 1 (261 ms slower on average). The faster
+reaction times in the long-gap trials in slots 3 and 4 are expected given that
+listeners had additional time to process the first half of the trial and/or
+prepare for the second half in the long-gap condition. However, the difference
+in reaction time in slot 1 is unexpected and inexplicable given that the gap
+length manipulation was uncued.  See supplementary materials for details.
 
 ### Pupillometry
 
@@ -780,30 +769,47 @@ meaning of a well-formed sentence, and our results suggest that simply
 detecting targets among a small set of possible stimulus tokens does not engage
 the same neural circuits or invoke the same kind of mental effort or cognitive
 load that is responsible for pupillary dilations seen in the sentence
-comprehension tasks of Zekveld and colleagues[@ZekveldEtAl2010;
-@ZekveldEtAl2011] (showing greater dilation to sentences with lower SNRs) or
-Winn and colleagues (showing greater dilation to sentences with more severe
-spectral degradation).[@WinnEtAl2015]  In this light, one might say of those
-findings that the signal degradation itself is not the proximal cause of the
-pupil dilation; rather, it is the additional cogitation or effort needed to
-construct a coherent linguistic meaning from degraded speech that leads to the
-pupillary response.
+comprehension tasks of Zekveld and colleagues (showing greater dilation to
+sentences with lower signal-to-noise ratios [SNRs])[@ZekveldEtAl2010;
+@ZekveldEtAl2011] or Winn and colleagues (showing greater dilation to sentences
+with more severe spectral degradation).[@WinnEtAl2015]  Taking those findings
+together with the results of the present study, one might say that signal
+degradation itself was not the proximal cause of pupil dilation in those
+sentence comprehension experiments; rather, it was the additional cogitation or
+effort needed to construct a coherent linguistic meaning from degraded speech
+that led to the pupillary responses they observed.
 
-Notably, Winn and colleagues showed (in their Figure 5) a sustained pupillary
-response in cases where listeners failed to answer correctly, suggesting that
-continued deliberation about how to respond may be reflected by pupil size.
-Similarly, Kuchinsky and colleagues[@KuchinskyEtAl2013] showed greater
-pupillary response in word-identification tasks involving lower SNRs when
-lexical competitors were present among response choices; their results show a
-sustained elevation in the time course of the pupillary response in the harder
-conditions (as well as a parallel increase in reaction time).  Such findings
-suggest that the pupillary response reflects effort exerted by the listener;
-taken together with the results of the present study they suggest that for an
-experimental manipulation to elicit a larger pupillary response than other
-tasks, it is not enough that the task simply be made harder.  Rather, there is
-an important distinction between _a task being harder_ and _a listener trying
-harder_; if the listener has no recourse by which to overcome the added
-difficulty, no difference in the pupillary response is to be expected.
+Notably, Winn and colleagues showed a sustained pupillary response in cases
+where listeners failed to answer correctly, suggesting that continued
+deliberation about how to respond may be reflected by pupil size.  Similarly,
+Kuchinsky and colleagues[@KuchinskyEtAl2013] showed greater pupillary response
+in word-identification tasks involving lower SNRs when lexical competitors were
+present among response choices; their results show a sustained elevation in the
+time course of the pupillary response in the harder conditions (as well as a
+parallel increase in reaction time).  Both sets of findings suggest that the
+pupillary response reflects effort exerted by the listener, as do the sustained
+large dilations seen in Koelewijn and colleagues’ divided attention trials
+(where listeners heard two talkers presented dichotically, and had to report
+both sentences).[@KoelewijnEtAl2015]  
+
+The present study, on the other hand, shows that for an experimental
+manipulation to elicit a larger pupillary response than other tasks, it is not
+enough that the task simply be made harder.  Rather, there is an important
+distinction between _a task being harder_ and _a listener trying harder_; or
+what, in the terms of a recent consensus paper from a workshop on hearing
+impairment and cognitive energy, might be described as the difference between
+“demands” and “motivation.”[@PichoraFullerEtAl2016]  In this light, we can
+understand why our stimulus manipulations yielded no change in pupillary
+response: our task required rapid-response target identification, in which
+listeners had no opportunity to ponder a distorted or partial percept, nor
+could they later reconstruct whether a target had been present based on
+surrounding context.  Thus, the listener has no recourse by which to overcome
+the increased task demands, and consequently there should be no difference in
+effort, and no difference in the pupillary response.  In contrast, our
+behavioral “maintain/switch” manipulation did provide an opportunity for the
+listener to exert effort (in the form of a well-timed mid-trial attention
+switch) to achieve task success, and the difference in pupillary responses
+between maintain- and switch-attention trials reflects this difference.
 
 # Acknowledgments
 

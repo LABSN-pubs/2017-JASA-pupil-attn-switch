@@ -17,13 +17,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mplc
-# import seaborn as sns
 from os import path as op
 import scipy.stats as ss
 from scipy.special import logit
 from expyfun import analyze as efa
 from ast import literal_eval
-from convenience_functions import use_font
 
 # file I/O
 work_dir = '..'
@@ -37,7 +35,6 @@ hmfc2 = ['hit', 'miss', 'fals', 'crej']
 # plot params
 pd.set_option('display.width', 160)
 plt.ion()
-use_font('mplus')
 
 
 # functions
@@ -127,7 +124,7 @@ for exp, data, var in zip(exps, datas,
                               group_names=['slot {}'.format(x + 1)
                                            for x in range(4)])
         _ = ax.set_title(main_eff)
-    _ = fig.suptitle('{} experiment'.format(exp))
+    _ = fig.suptitle('RT by slot: {} experiment'.format(exp))
     if exp == 'vocoder':
         means = means.unstack()
         means['long-short'] = means.diff(axis=1)['reax_time']['short']

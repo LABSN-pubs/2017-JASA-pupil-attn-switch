@@ -114,6 +114,37 @@ above.
 
 \include{exp-one-rt-table}
 
+## Post-hoc analyses
+
+### Foil response rate by slot
+
+To address the concern that listeners might have attempted to monitor both
+streams, and especially that they might do so differently in maintain- versus
+switch-attention trials, the rate of listener response to foil items was
+examined separately for each timing slot.  Post-hoc analysis comparing
+logit-transformed foil response rates in maintain- versus switch-attention
+trials, performed separately for each timing slot, showed no significant
+differences (paired _t_-tests: _p_=0.97, 0.96, 0.70, 0.49 for slots 1–4
+respectively; Bonferroni-corrected significance level 0.0125).  The logit
+transformation was necessary because foil response rates are proportions
+bounded between 0 and 1, making _t_-tests on the untransformed rates
+inappropriate.
+
+### Reaction time by slot
+
+Post-hoc analysis of reaction time for the reverberation contrast showed no
+significant differences by response slot (Welch’s independent _t_-tests:
+_p_=0.41, 0.010, 0.037, 0.043 for slots 1–4 respectively).  For the talker
+gender (mis)match contrast, post-hoc analysis of reaction time showed a
+significant difference only for slot 3 (Welch’s independent _t_-tests:
+_p_=0.046, 0.063, 0.00018, 0.0065 for slots 1–4 respectively). For the
+maintain- versus switch-attention contrast, post-hoc analysis of reaction time
+also showed a significant difference only for slot 3 (Welch’s independent
+_t_-tests: _p_=0.75, 0.53, 0.001, 0.035 for slots 1–4 respectively).
+Bonferroni-corrected significance level for combined post-hoc analyses =
+0.00417.
+
+
 # Experiment 2
 
 ## Listener sensitivity
@@ -188,6 +219,26 @@ This model is implemented in `R` as `formula(reax_time ~ voc_chan * gap_len * at
 above.
 
 \include{exp-two-rt-table}
+
+## Post-hoc analyses
+
+### Reaction time by slot
+
+Post-hoc tests of reaction time difference within each timing slot between
+maintain- and switch-attention trials showed a significant difference in
+reaction time localized to slot 3 (the immediately post-gap slot), with longer
+reaction times in switch-attention trials (Welch’s independent _t_-tests:
+_p_=0.585, 0.378, 0.001, 0.916 for slots 1–4 respectively).  For the spectral
+degradation contrast, there was a significant difference localized to slot 1
+(Welch’s independent _t_-tests: _p_=0.002, 0.012, 0.230, 0.891 for slots 1–4
+respectively). The gap length manipulation showed significant differences
+between conditions by slot (Welch’s independent _t_-tests: _p_<0.001,
+_p_=0.060, _p_<0.001, and _p_<0.001 for slots 1–4 respectively).  Significantly
+faster reaction times were seen in the long-gap trials for slot 3 (155 ms
+faster on average) and slot 4 (135 ms faster on average), and significantly
+_slower_ reaction times in the long-gap trials for slot 1 (261 ms slower on
+average).  Bonferroni-corrected significance level for combined post-hoc
+analyses = 0.00417.
 
 
 # References
