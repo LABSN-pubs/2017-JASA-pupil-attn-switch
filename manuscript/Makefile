@@ -43,7 +43,7 @@ response:
 
 coverletter:
 	pandoc --no-tex-ligatures --latex-engine=xelatex \
-	--template=pandoc/template-letterhead.tex \
+	--template=pandoc/template-ilabs-letterhead.tex \
 	--output=cover-letter/cover-letter.pdf cover-letter/cover-letter.md
 
 link_el_template:

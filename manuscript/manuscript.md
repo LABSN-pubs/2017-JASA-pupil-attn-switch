@@ -24,6 +24,7 @@ pacs:
 - 43.71.Sy <!-- Spoken language processing by humans -->
 keywords:
 - auditory attention
+- attention switching
 - listening effort
 - pupillometry
 biblio-style: bibstyle
@@ -160,7 +161,7 @@ University of Washington Institutional Review Board.
 ### Stimuli
 
 Stimuli comprised spoken English alphabet letters from the ISOLET v1.3
-corpus[@ColeEtAl1990] from one female and one male talker. Mean fundamental
+corpus[@ColeEtAl1990alt] from one female and one male talker. Mean fundamental
 frequencies of the unprocessed recordings were 103 Hz (male talker) and 193 Hz
 (female talker). Letter durations ranged from 351 to 478 ms, and were
 silence-padded to a uniform duration of 500 ms, RMS normalized, and windowed at
@@ -487,7 +488,7 @@ University of Washington Institutional Review Board.
 ### Stimuli
 
 Stimuli were based on spoken English alphabet letters from the ISOLET v1.3
-corpus[@ColeEtAl1990] from the same female and male talkers used in Experiment
+corpus[@ColeEtAl1990alt] from the same female and male talkers used in Experiment
 1, with the same stimulus preprocessing steps (padding, amplitude
 normalization, and edge windowing).  Two streams of four letters each were
 generated for each trial, with a gap of either 200 or 600 ms between the second
@@ -713,6 +714,17 @@ attention switching is needed to clarify how listeners’ intended behavior
 affects stream stability across temporal caesuras of varying lengths, and how
 this process interacts with signal degradation or quality.
 
+If this speculation is correct — that signal degradation reduces listener
+tolerance of gaps in auditory stream formation and preservation — then this
+finding may have important implications for listeners experiencing both hearing
+loss and cognitive decline.  Specifically, poor signal quality due to
+degradation of the auditory periphery could lead to greater difficulty in
+stream preservation across long gaps, but cognitive decline may make rapid
+switching difficult.  In other words, the cognitive abilities of older
+listeners might require longer pauses to switch attention among multiple
+interlocutors, but the longer pauses may in fact make it harder to preserve
+focus in the face of degraded auditory input.
+
 It is also interesting that the post-hoc analyses suggested possibly different
 temporal loci for the effects of different stimulus manipulations (i.e.,
 affecting pre- versus post-gap time slots).  This might indicate that
@@ -742,18 +754,6 @@ begins either as soon as listeners are aware that a switch will be required, or
 perhaps as soon as they begin planning the switch; since we did not manipulate
 the latency between the cue and the onset of the switch gap these two
 possibilities cannot be disambiguated.
-
-The finding from Experiment 2 showing elevated response to foil items in the
-long-gap trials was unexpected.  If our speculation is correct — that signal
-degradation reduces listener tolerance of gaps in auditory stream formation and
-preservation — then this finding may have important implications for listeners
-experiencing both hearing loss and cognitive decline.  Specifically, poor
-signal quality due to degradation of the auditory periphery could lead to
-greater difficulty in stream preservation across long gaps, but cognitive
-decline may make rapid switching difficult.  In other words, the cognitive
-abilities of older listeners might require longer pauses to switch attention
-among multiple interlocutors, but the longer pauses may in fact make it harder
-to preserve focus in the face of degraded auditory input.
 
 A secondary goal of these experiments was to reproduce past findings regarding
 the pupillary response to degraded _sentential_ stimuli, but using a simpler
@@ -814,7 +814,7 @@ between maintain- and switch-attention trials reflects this difference.
 # Acknowledgments
 
 Portions of this work were supported by NIH grants R01-DC013260 to AKCL,
-F32DC012456 to EL, T32DC000018 to the University of Washington, and NIH LRP
+F32-DC012456 to EL, T32-DC000018 to the University of Washington, and NIH LRP
 awards to EL and DRM.  The authors are grateful to Susan McLaughlin for helpful
 suggestions on an earlier draft of this paper, and to Maria Chait for
 suggesting certain useful post-hoc analyses.
