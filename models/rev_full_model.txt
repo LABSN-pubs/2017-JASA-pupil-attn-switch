@@ -1,0 +1,46 @@
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( probit )
+Formula: press ~ truth * reverb * gender * attn + (1 | subj)
+   Data: data_source
+Control: glmerControl(optCtrl = list(maxfun = 30000))
+
+     AIC      BIC   logLik deviance df.resid 
+  9636.9   9835.0  -4793.4   9586.9    20455 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.7445 -0.2065 -0.1796  0.3245  8.4048 
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ subj   (Intercept) 0.01183  0.1088  
+Number of obs: 20480, groups:  subj, 16
+
+Fixed effects:
+                                                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                                      -1.84487    0.03641  -50.67  < 2e-16 ***
+truth_target                                      2.98822    0.03133   95.38  < 2e-16 ***
+truth_foil                                        0.20899    0.04365    4.79 1.68e-06 ***
+reverb_anech.                                    -0.06413    0.04826   -1.33  0.18387    
+gender_MF                                        -0.02782    0.04826   -0.58  0.56435    
+attn_maint.                                      -0.12399    0.04827   -2.57  0.01020 *  
+truth_target:reverb_anech.                        0.19163    0.06226    3.08  0.00208 ** 
+truth_foil:reverb_anech.                         -0.04346    0.08723   -0.50  0.61830    
+truth_target:gender_MF                            0.15113    0.06226    2.43  0.01521 *  
+truth_foil:gender_MF                             -0.20177    0.08724   -2.31  0.02073 *  
+reverb_anech.:gender_MF                           0.07136    0.09649    0.74  0.45957    
+truth_target:attn_maint.                          0.32596    0.06227    5.23 1.65e-07 ***
+truth_foil:attn_maint.                            0.24589    0.08723    2.82  0.00482 ** 
+reverb_anech.:attn_maint.                        -0.11957    0.09652   -1.24  0.21540    
+gender_MF:attn_maint.                             0.09600    0.09651    0.99  0.31990    
+truth_target:reverb_anech.:gender_MF             -0.26064    0.12449   -2.09  0.03629 *  
+truth_foil:reverb_anech.:gender_MF                0.25576    0.17434    1.47  0.14236    
+truth_target:reverb_anech.:attn_maint.           -0.01063    0.12451   -0.09  0.93195    
+truth_foil:reverb_anech.:attn_maint.              0.34648    0.17445    1.99  0.04702 *  
+truth_target:gender_MF:attn_maint.                0.02990    0.12452    0.24  0.81021    
+truth_foil:gender_MF:attn_maint.                  0.01167    0.17443    0.07  0.94666    
+reverb_anech.:gender_MF:attn_maint.               0.10350    0.19310    0.54  0.59199    
+truth_target:reverb_anech.:gender_MF:attn_maint. -0.39857    0.24903   -1.60  0.10949    
+truth_foil:reverb_anech.:gender_MF:attn_maint.   -0.32568    0.34900   -0.93  0.35073    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

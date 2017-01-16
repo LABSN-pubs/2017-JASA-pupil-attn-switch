@@ -1,0 +1,38 @@
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( probit )
+Formula: press ~ truth * voc_chan * gap_len * attn + (1 | subj)
+   Data: data_source
+Control: glmerControl(optCtrl = list(maxfun = 30000))
+
+     AIC      BIC   logLik deviance df.resid 
+ 17953.4  18088.2  -8959.7  17919.4    20463 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.1633 -0.3938 -0.3373  0.5586  4.1586 
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ subj   (Intercept) 0.01201  0.1096  
+Number of obs: 20480, groups:  subj, 16
+
+Fixed effects:
+                                                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                                       -1.202888   0.030879  -38.95  < 2e-16 ***
+truth_target                                       1.765975   0.021482   82.21  < 2e-16 ***
+voc_chan_20                                        0.024451   0.028417    0.86 0.389543    
+gap_len_long                                       0.154066   0.028420    5.42 5.92e-08 ***
+attn_maint.                                        0.023931   0.028418    0.84 0.399723    
+truth_target:voc_chan_20                           0.233922   0.042850    5.46 4.79e-08 ***
+truth_target:gap_len_long                         -0.242269   0.042846   -5.65 1.56e-08 ***
+voc_chan_20:gap_len_long                          -0.158294   0.056836   -2.79 0.005351 ** 
+truth_target:attn_maint.                           0.066639   0.042850    1.56 0.119904    
+voc_chan_20:attn_maint.                            0.025902   0.056826    0.46 0.648528    
+gap_len_long:attn_maint.                           0.110073   0.056838    1.94 0.052795 .  
+truth_target:voc_chan_20:gap_len_long              0.309890   0.085692    3.62 0.000299 ***
+truth_target:voc_chan_20:attn_maint.              -0.065737   0.085699   -0.77 0.443037    
+truth_target:gap_len_long:attn_maint.             -0.317086   0.085722   -3.70 0.000216 ***
+voc_chan_20:gap_len_long:attn_maint.               0.006515   0.113632    0.06 0.954277    
+truth_target:voc_chan_20:gap_len_long:attn_maint.  0.043113   0.171311    0.25 0.801300    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

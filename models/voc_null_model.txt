@@ -1,0 +1,30 @@
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( probit )
+Formula: press ~ truth + (1 | subj)
+   Data: data_source
+Control: glmerControl(optCtrl = list(maxfun = 30000))
+
+     AIC      BIC   logLik deviance df.resid 
+ 17420.0  17451.7  -8706.0  17412.0    20476 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.7665 -0.3186 -0.2847  0.6003  4.6834 
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ subj   (Intercept) 0.0129   0.1136  
+Number of obs: 20480, groups:  subj, 16
+
+Fixed effects:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  -1.45316    0.03392  -42.84   <2e-16 ***
+truth_target  2.01040    0.02450   82.07   <2e-16 ***
+truth_foil    0.77540    0.03026   25.63   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) trth_t
+truth_targt -0.415       
+truth_foil  -0.335  0.465

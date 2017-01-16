@@ -1,0 +1,38 @@
+Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( probit )
+Formula: press ~ truth * reverb * gender * attn + (1 | subj)
+   Data: data_source
+Control: glmerControl(optCtrl = list(maxfun = 30000))
+
+     AIC      BIC   logLik deviance df.resid 
+  9669.4   9804.1  -4817.7   9635.4    20463 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.7517 -0.2097 -0.1900  0.3238  7.5366 
+
+Random effects:
+ Groups Name        Variance Std.Dev.
+ subj   (Intercept) 0.01173  0.1083  
+Number of obs: 20480, groups:  subj, 16
+
+Fixed effects:
+                                                  Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                                      -1.777467   0.033590  -52.92  < 2e-16 ***
+truth_target                                      2.920854   0.028139  103.80  < 2e-16 ***
+reverb_anech.                                    -0.072981   0.039625   -1.84 0.065507 .  
+gender_MF                                        -0.098339   0.039630   -2.48 0.013086 *  
+attn_maint.                                      -0.044334   0.039632   -1.12 0.263285    
+truth_target:reverb_anech.                        0.200574   0.055838    3.59 0.000328 ***
+truth_target:gender_MF                            0.221556   0.055847    3.97 7.27e-05 ***
+reverb_anech.:gender_MF                           0.145331   0.079238    1.83 0.066640 .  
+truth_target:attn_maint.                          0.246365   0.055847    4.41 1.03e-05 ***
+reverb_anech.:attn_maint.                        -0.005305   0.079260   -0.07 0.946635    
+gender_MF:attn_maint.                             0.082777   0.079246    1.04 0.296225    
+truth_target:reverb_anech.:gender_MF             -0.334582   0.111663   -3.00 0.002732 ** 
+truth_target:reverb_anech.:attn_maint.           -0.124712   0.111683   -1.12 0.264139    
+truth_target:gender_MF:attn_maint.                0.043282   0.111662    0.39 0.698297    
+reverb_anech.:gender_MF:attn_maint.              -0.004165   0.158562   -0.03 0.979046    
+truth_target:reverb_anech.:gender_MF:attn_maint. -0.290674   0.223445   -1.30 0.193300    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

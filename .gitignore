@@ -1,8 +1,10 @@
 # folders
-data-reverb
-data-vocoder
-deprecated
+manuscript/cover-letter
+manuscript/review
 
 # files
 *.npz
+*.pyc
 .Rhistory
+models/cluster-log*
+models/convergence-failures.txt
