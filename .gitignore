@@ -2,6 +2,10 @@
 manuscript/cover-letter
 manuscript/review
 
+# these two folders just duplicate the raw data in data-reverb & data-vocoder:
+data-behavioral/reverb-raw
+data-behavioral/vocoder-raw
+
 # files
 *.npz
 *.pyc
