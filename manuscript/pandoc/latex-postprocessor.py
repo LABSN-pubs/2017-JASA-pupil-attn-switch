@@ -14,6 +14,7 @@ with open(infile, 'r') as f, open(outfile, 'w') as g:
         line = line.replace(' s ', '~s ')
         line = line.replace(' s,', '~s,')
         line = line.replace(' s.', '~s.')
+        line = line.replace(' s\n', '~s\n')
         line = line.replace('cf. ', 'cf.\ ')
         line = line.replace('St. ', 'St.\ ')
         line = line.replace('Table ', 'Table~')
@@ -36,6 +37,7 @@ with open(infile, 'r') as f, open(outfile, 'w') as g:
         # convert to ASCII to be plain LaTeX friendly (not XeLaTeX)
         line = line.replace('−', '\\textminus{}')
         line = line.replace('≥', '\\ensuremath{\\geq}')
+        line = line.replace('≤', '\\ensuremath{\\leq}')
         line = line.replace('°', '\\textdegree{}')
         line = line.replace('±', '\\textpm{}')
         line = line.replace('™', '\\texttrademark{}')
@@ -49,5 +51,6 @@ with open(infile, 'r') as f, open(outfile, 'w') as g:
         line = line.replace('”', '\'\'')  # double quote right
         line = line.replace('’', '\'')  # single quote right / apostrophe
         line = line.replace('–', '\\textendash{}')
+        line = line.replace('—', '\\textemdash{}')
         # write line
         g.write(line)

@@ -223,7 +223,7 @@ second and third letters. The task was to respond by button press to the letter
 “O” spoken by the target talker while ignoring “O” tokens spoken by the
 competing talker (Figure \ref{fig-rev-trial}).
 
-![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial, switch to the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 s).  In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, maintain attention to the male voice (“QUJR”) throughout the trial, and not respond at all.  In the depicted trials, a button press anytime during timing slot 2 would be counted as response to the “O” at 2-2.5 s, which is a “foil” in both trial types illustrated; a button press during slot 3 would be counted as response to the “O” at 3.1-3.6 s (which is considered a target in the switch-attention trial and a foil in the maintain-attention trial), and button presses at any other time would be counted as non-foil false alarms. Note that “O” tokens never occurred in immediately adjacent timing slots (unless separated by the switch gap) so response attribution to targets or foils was unambiguous.\label{fig-rev-trial}](fig-trial-rev.eps)
+![(Color online) Illustration of “maintain” and “switch” trial types in Experiment 1. In the depicted “switch” trial (heavy dashed line), listeners would hear cue “AB” in a male voice, attend to the male voice (“QU”) for the first half of the trial, switch to the female voice (“OM”) for the second half of the trial, and respond once (to the “O” occurring at 3.1–3.6 s).  In the depicted “maintain” trial (heavy solid line), listeners would hear cue “AA” in a male voice, maintain attention to the male voice (“QUJR”) throughout the trial, and not respond at all.  In the depicted trials, a button press anytime during timing slot 2 would be counted as response to the “O” at 2–2.5 s, which is a “foil” in both trial types illustrated; a button press during slot 3 would be counted as response to the “O” at 3.1–3.6 s (which is considered a target in the switch-attention trial and a foil in the maintain-attention trial), and button presses at any other time would be counted as non-foil false alarms. Note that “O” tokens never occurred in immediately adjacent timing slots (unless separated by the switch gap) so response attribution to targets or foils was unambiguous.\label{fig-rev-trial}](fig-trial-rev.eps)
 
 Before starting the experimental task, participants heard 2 blocks of 10 trials
 for familiarization with anechoic and reverberant speech (one with a single
@@ -250,7 +250,7 @@ illustrated in Figure \ref{fig-rev-trial}, the response windows for adjacent
 letters partially overlap in time; responses that occurred during these overlap
 periods were attributed to an “O” stimulus if possible (e.g., given the trial
 depicted in Figure \ref{fig-rev-trial}, a button press at 3.8 s was assumed to
-be in response to the “O” at 3.1-3.6 s, and not to the “M”).  If no “O” tokens
+be in response to the “O” at 3.1–3.6 s, and not to the “M”).  If no “O” tokens
 had occurred in that period of time, the response was coded as a false alarm
 for the purpose of calculating sensitivity, but no reaction time was computed
 (in other words, only responses to targets and foils were considered in the
@@ -399,7 +399,7 @@ pupillary response than “maintain attention” trials.  The mean time courses 
 as soon as listeners have heard the cue, and the response remains significantly
 higher in the switch-attention condition throughout the remainder of the trial.
 
-![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-rev-trial}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions is in close agreement with the end of the cue. a.u. = arbitrary units (see Section \ref{sec-meth-pupil} for explanation of “effort”).\label{fig-rev-pupil}](pupil-fig-rev.eps)
+![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) reverberant versus anechoic trials, (b) talker gender-match versus -mismatch trials, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Figure \ref{fig-rev-trial}). Hatched region shows temporal span of statistically significant differences between time series. The onset of statistically significant divergence (vertical dotted line) of the maintain/switch conditions is in close agreement with the end of the cue. a.u. = arbitrary units (see Section \ref{sec-meth-pupil} for explanation of “effort”).\label{fig-rev-pupil}](pupil-fig-rev.eps)
 
 ## Discussion
 
@@ -663,7 +663,7 @@ long- and short-gap trials, with the signals diverging around the onset of the
 mid-trial gap (though only differing statistically in the final ~1 s of the
 trial).
 
-![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) 10- versus 20-band vocoded stimuli, (b) 200 versus 600 ms mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Fig. \ref{fig-voc-trial}). Hatched region shows temporal span of statistically significant differences between time series. The late-trial divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Fig. \ref{fig-rev-pupil}c). a.u. = arbitrary units (see Section \ref{sec-meth-pupil} for explanation of “effort”).\label{fig-voc-pupil}](pupil-fig-voc.eps)
+![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) 10- versus 20-band vocoded stimuli, (b) 200 versus 600 ms mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Figure \ref{fig-voc-trial}). Hatched region shows temporal span of statistically significant differences between time series. The late-trial divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Figure \ref{fig-rev-pupil}c). a.u. = arbitrary units (see Section \ref{sec-meth-pupil} for explanation of “effort”).\label{fig-voc-pupil}](pupil-fig-voc.eps)
 
 ## Discussion
 
