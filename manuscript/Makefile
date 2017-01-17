@@ -4,7 +4,7 @@ EXTS = bbl aux ent fff log lof lol lot toc blg out pyg ttt
 
 submission: link_subm_template _subm cleantex
 
-manuscript.tex: manuscript.md bib/manuscript-numeric.bst template.tex
+manuscript.tex: manuscript.md bib/jasa-submission.bst template.tex
 	pandoc --natbib --number-sections --no-tex-ligatures \
 	--template=template.tex --output=manuscript.tex manuscript.md
 

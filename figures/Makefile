@@ -1,9 +1,7 @@
-EPS = fig-beh-rev.eps fig-beh-voc.eps fig-beh-rev-rt.eps fig-beh-voc-rt.eps \
-fig-placeholder.eps  # fig-trial-rev.eps fig-trial-voc.eps
+EPS = fig-beh-rev.eps fig-beh-voc.eps fig-beh-rev-rt.eps fig-beh-voc-rt.eps
+PDF = fig-trial-rev.pdf fig-trial-voc.pdf pupil-fig-rev.pdf pupil-fig-voc.pdf
 
-.SECONDARY:
-
-all: $(EPS) ;
+all: $(EPS) $(PDF)
 
 fig-beh-%.eps: fig-beh-%.svg
 	inkscape -E $(@F) $(<F)
@@ -12,22 +10,13 @@ fig-beh-%.eps: fig-beh-%.svg
 	python $(<F)
 	rm -f *main*.svg *twoway*.svg *threeway*.svg
 
-# fig-trial-%.eps: fig-trial-%.ps
-# 	ps2eps -f $(<F)
-
 fig-trial-%.pdf: fig-trial-%.py
 	python $(<F)
 	echo "CONVERT TRIAL FIGURES TO EPS IN ILLUSTRATOR TO AVOID RASTERIZATION"
 
-fig-placeholder.eps: fig-placeholder.py
-	python $(<F)
-
 pupil-fig-%.pdf: fig-pupil-%.py
 	python $(<F)
 	echo "CONVERT PUPIL FIGURES TO EPS IN ILLUSTRATOR TO AVOID RASTERIZATION"
-
-pdfs:
-	for fig in fig-beh*.eps; do inkscape -A $$(basename $$fig eps)pdf $$fig; done
 
 clean:
 	rm -f fig*.eps *.svg *.pyc *.ps fig-beh*.pdf

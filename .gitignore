@@ -10,5 +10,9 @@ data-behavioral/vocoder-raw
 *.npz
 *.pyc
 .Rhistory
+figures/*.svg
+figures/*.pdf
+manuscript/submission.tex
+manuscript/submission-no-figs.tex
 models/cluster-log*
 models/convergence-failures.txt
