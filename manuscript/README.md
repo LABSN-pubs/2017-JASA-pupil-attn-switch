@@ -14,6 +14,8 @@ document, and appends a list of figure captions.
 source file (`submission-no-figs.tex`) and a compiled PDF (`submission.pdf`),
 as described above. Also generates `submission.tex`, the file from which the
 PDF was created.
+- `make supplement` to make the PDF of supplementary information from
+`supplement.md`
 - `make coverletter` (supply files `pandoc/author-signature.pdf` and
 `pandoc/letterhead-banner.pdf` before using)
 - `make response` (response to reviewers; use as needed)
