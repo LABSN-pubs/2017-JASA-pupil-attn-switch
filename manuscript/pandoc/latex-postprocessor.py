@@ -43,6 +43,8 @@ with open(infile, 'r') as f, open(outfile, 'w') as g:
         line = line.replace('™', '\\texttrademark{}')
         line = line.replace('†', '\\ensuremath{\\dagger}')
         line = line.replace('×', '\\texttimes{}')
+        line = line.replace('χ²', '\\ensuremath{\\chi^2}')
+        line = line.replace('χ', '\\ensuremath{\\chi}')
         line = line.replace('⅔', '$\\sfrac{2}{3}$')
         line = line.replace('⁻⅓', '$\sfrac{-1}{3}$')
         line = line.replace('ƒ₀', '\\ensuremath{\\mathit{f}_0}')
