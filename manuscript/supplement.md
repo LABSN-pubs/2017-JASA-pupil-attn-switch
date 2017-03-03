@@ -114,6 +114,25 @@ above.
 
 \include{exp-one-rt-table}
 
+## Analysis of pupil diameter
+
+Differences in the pupillary response between experimental conditions were
+calculated using a permutation cluster-level 1-sample
+t-test,[@MarisOostenveld2007] as implemented in `mne-python`. The mean
+timecourse of pupil size across trials was computed within each condition for
+each subject, and the within-subject difference between conditions was then
+calculated. The resulting subject × time difference matrices were submitted to
+the permutation function, which simulates (by random sign-flips of the
+difference matrix) the probability that contiguous cluster(s) at least as
+large as those attested in the actual data could have arisen by chance.
+For all tests, the _t_-statistic threshold was approximately 2.13 (based on a
+two-sided hypothesis test with 2.5% lower-tail probability and 1 degree of
+freedom). All possible permutations were performed (for 16 subjects, this is
+2^15^ or 32768). Statistics for the differences between conditions for
+the three experimental manipulations are shown in Table \ref{tab-pupil-rev}.
+
+\input{exp-one-pupil-table}
+
 ## Post-hoc analyses
 
 ### Foil response rate by slot
@@ -144,6 +163,24 @@ _t_-tests: _p_=0.75, 0.53, 0.001, 0.035 for slots 1–4 respectively).
 Bonferroni-corrected significance level for combined post-hoc analyses =
 0.00417.
 
+### Gaze direction
+
+Measures of pupil size can be affected by as much as 10% when gaze direction
+is oblique to the EyeLink camera.  To ensure this did not affect our measures
+of pupil size, we checked the distribution of gaze angles relative to the
+fixation cross.  Plots of the distribution of gaze angles for each subject are
+shown in Figure \ref{fig-gaze-rev}; overall percentages of fixations relative
+to various threshold values are shown in Table \ref{tab-gaze-rev}.
+
+![Distribution of gaze angles (relative to fixation cross) for each subject.\label{fig-gaze-rev}](../figures/rev-gaze-distribution.pdf)
+
+Table: Distribution of gaze direction relative to fixation cross.\label{tab-gaze-rev}
+
+ **Threshold**  **Fixations below threshold**
+-------------- -------------------------------
+ 2°              85.8%
+ 5°              98.5%
+ 10°             99.9%
 
 # Experiment 2
 
@@ -220,6 +257,17 @@ above.
 
 \include{exp-two-rt-table}
 
+## Analysis of pupil diameter
+
+As in Experiment 1, differences in the pupillary response between experimental
+conditions were calculated using a permutation cluster-level 1-sample
+t-test. The _t_-statistic threshold was again approximately 2.13, and all
+possible permutations were performed. Statistics for the differences between
+conditions for the three experimental manipulations are shown in Table
+\ref{tab-pupil-voc}.
+
+\input{exp-two-pupil-table}
+
 ## Post-hoc analyses
 
 ### Reaction time by slot
@@ -239,6 +287,23 @@ faster on average) and slot 4 (135 ms faster on average), and significantly
 _slower_ reaction times in the long-gap trials for slot 1 (261 ms slower on
 average).  Bonferroni-corrected significance level for combined post-hoc
 analyses = 0.00417.
+
+### Gaze direction
+
+As in Experiment 1, we checked the distribution of gaze angles relative to
+the fixation cross.  Plots of the distribution of gaze angles for each subject
+are shown in Figure \ref{fig-gaze-voc}; overall percentages of fixations
+relative to various threshold values are shown in Table \ref{tab-gaze-voc}.
+
+![Distribution of gaze angles (relative to fixation cross) for each subject.\label{fig-gaze-voc}](../figures/voc-gaze-distribution.pdf)
+
+Table: Distribution of gaze direction relative to fixation cross.\label{tab-gaze-voc}
+
+ **Threshold**  **Fixations below threshold**
+-------------- -------------------------------
+ 2°              74.9%
+ 5°              99.0%
+ 10°             99.9%
 
 
 # References
