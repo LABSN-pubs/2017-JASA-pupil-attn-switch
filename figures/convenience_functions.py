@@ -82,3 +82,11 @@ def sort_desc(df, which, axis=0):
                      sort_remaining=False)
     return df
 
+
+def read_data(data_path, parse_presses=True):
+    from pandas import read_csv
+    from ast import literal_eval
+    longform = read_csv(data_path, sep='\t')
+    if parse_presses:
+        longform['press_times'] = longform['press_times'].apply(literal_eval)
+    return longform
