@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ===============================================================================
-Script 'fig-behavioral.py'
+Script 'fig-behavioral'
 ===============================================================================
 
 This script cleans and analyzes behavioral data for the vocoder/switch-gap
@@ -31,6 +31,7 @@ ttest = False
 
 # file I/O
 work_dir = '..'
+out_dir = op.join(work_dir, 'results')
 data_dir = 'data-behavioral'
 data_fnames = ['rev-behdata-longform.tsv', 'voc-behdata-longform.tsv']
 rt_data_fnames = ['rev-behdata-xlongform.tsv', 'voc-behdata-xlongform.tsv']
@@ -253,6 +254,12 @@ for (data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs,
     ylab = axis_lab_dp
     ylim = ylim_dp
     ytick = ytick_dp
+    # summary stats for all trials
+    overall_sensitivity = _agg(data, ['subj'], hmfc, np.sum)
+    overall_sensitivity.to_csv(op.join(out_dir, '{}-dprime-by-subj.csv'.format(data_fname[:3])))
+    summary = overall_sensitivity['dprime'].describe()
+    out_fname = '{}-dprime-summary.csv'.format(data_fname[:3])
+    summary.to_csv(op.join(out_dir, out_fname))
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, signifs, axs)):
@@ -275,6 +282,18 @@ for (data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs,
     ylab = axis_lab_rt
     ylim = rty
     ytick = rtcky
+    # summary stats for all trials
+    targ_rows = data.loc[data['targ']]['reax_time']
+    overall_rt = targ_rows.describe()
+    overall_rt['25%'] = np.nanpercentile(targ_rows, q=25)
+    overall_rt['50%'] = np.nanmedian(targ_rows)
+    overall_rt['75%'] = np.nanpercentile(targ_rows, q=75)
+    aggregate_rt = _agg(data, ['subj'], ['reax_time', 'targ'],
+                        efa.rt_chisq)['reax_time']
+    aggregate_rt.to_csv(op.join(out_dir, '{}-rt-by-subj.csv'.format(data_fname[:3])))
+    summary = pd.DataFrame(dict(raw=overall_rt, chsq_peak=aggregate_rt.describe()))
+    out_fname = '{}-rt-summary.csv'.format(data_fname[:3])
+    summary.to_csv(op.join(out_dir, out_fname))
     # iterate over (sub)plots
     for ix, (contrast, groupname, signif, ax) in \
             enumerate(zip(contrasts, groupnames, rt_signifs, axs)):
@@ -300,8 +319,8 @@ all_groupnames = [[u'attn.\u2009\u00D7\u2009revb.',
                    u'attn.\u2009\u00D7\u2009gend.',
                    u'revb.\u2009\u00D7\u2009gend.'],
                   [u'attn.\u2009\u00D7\u2009voc.ch.',
-                   u'attn.\u2009\u00D7\u2009gap dur.',
-                   u'voc.ch.\u2009\u00D7\u2009gap dur.']]
+                   u'voc.ch.\u2009\u00D7\u2009gap dur.',
+                   u'attn.\u2009\u00D7\u2009gap dur.']]
 all_signif = [['', '**', ''], ['', '**', '***']]
 all_rt_signif = [['', '', ''], ['', '**', '']]
 boxp.update(dict(width=0.7))
@@ -347,7 +366,7 @@ for (data_fname, rt_data_fname, contrasts, groupnames, signifs, rt_signifs,
         ax.patch.set_alpha(0)
         fig = box_and_swarm_plot(data, contrast, datalabel='reax_time',
                                  ylabel=ylab,  # xlabel=groupname,
-                                 diff=contrast[1], fig=fig,  # signif=signif,
+                                 diff=contrast[1], fig=fig, signif=signif,
                                  ax=ax, despine_y=ix, aggfunc=agg_rt,
                                  ylim=ylim, ytick=ytick, sec_to_ms=True)
     # savefig
