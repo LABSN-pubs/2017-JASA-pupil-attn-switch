@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ===============================================================================
-Script 'fig-2.py'
+Script 'fig-pupil-voc'
 ===============================================================================
 
 This script plots pupil size & significance tests for the vocoder experiment.
@@ -10,14 +10,16 @@ This script plots pupil size & significance tests for the vocoder experiment.
 # Created on Fri Sep 25 11:15:34 2015
 # License: BSD (3-clause)
 
+import yaml
 import os.path as op
 import numpy as np
 import matplotlib.pyplot as plt
+from pandas import DataFrame
 from matplotlib.colors import colorConverter as cc
 from scipy.stats import distributions
 from mne.stats import spatio_temporal_cluster_1samp_test, ttest_1samp_no_p
 from convenience_functions import (box_off, use_font, tick_label_size,
-                                   hatch_between)
+                                   hatch_between, read_data)
 from functools import partial
 
 # mostly rcParams stuff
@@ -31,38 +33,56 @@ plot_signif = True
 show_pval = False
 savefig = True
 use_deconv = True
-continuous_deconv = False
+only_perfect = False
 
 # file I/O
 work_dir = '..'
+out_dir = op.join(work_dir, 'results')
 voc_file = op.join(work_dir, 'voc_data.npz')
+perfect_filename = '-perfect' if only_perfect else ''
 vv = np.load(voc_file)
-data_deconv, t_fit, subjects = vv['fits'], vv['t_fit'], vv['subjects']
-data_zscore, fs, kernel = vv['zscores'], vv['fs'], vv['kernel']
-if continuous_deconv:
-    data_cont, t_cont = vv['fits_cont'], vv['t_cont']
+data_deconv, t_fit, subjects = vv['fits_struct'], vv['t_fit'], vv['subjects']
+data_zscore, fs, kernel = vv['zscores_struct'], vv['fs'], vv['kernel']
 '''
 data_zscore.shape
 16,   40,      2,          2,            2,         6550
 subj  trials   200/600gap  maint/switch  10/20chan  samples
+(similar for data_deconv, with fewer samples along last dimension)
 '''
 
 # params
 stim_times = np.array([0, 0.5, 1.5, 2.0, 2.5, 3.0])  # gap not included (yet)
-stim_dur = 0.47  # really 0.5, but leave a tiny gap
-peak = np.where(kernel == kernel.max())[0][0] / float(fs)
-t_min, t_max = -0.5, 6. - peak
+stim_dur = 0.47  # really 0.5, but leave a tiny gap to visually distinguish
+t_kernel_peak = np.where(kernel == kernel.max())[0][0] / float(fs)
+t_min, t_max = -0.5, 6. - t_kernel_peak
 t_zs = t_min + np.arange(data_zscore.shape[-1]) / float(fs)
 stat_fun = partial(ttest_1samp_no_p, sigma=1e-3)
 
 # colors
 cue, msk, blu, red = '0.75', '0.75', '#332288', '#cc6677'
-grn, yel = '#44aa99', '#ddcc77'
 signifcol = '0.9'
 axiscol = '0.8'
 tickcol = '0.8'
 axislabcol = '0.3'
 ticklabcol = '0.5'
+
+# get behavioral data
+if only_perfect:
+    path = op.join(work_dir, 'data-behavioral', 'voc-behdata-longform.tsv')
+    beh_data = read_data(path, parse_presses=False)
+    beh_data['perfect'] = np.logical_and(beh_data['misses'] == 0,
+                                         beh_data['false_alarms'] == 0)
+    cols = ['subj', 'gap_len', 'attn', 'voc_chan']
+    beh_data = beh_data.sort_values(by=cols)
+    dims = [len(beh_data[c].unique()) for c in cols]
+    dims.insert(1, -1)
+    perfect_ix = beh_data['perfect'].reshape(dims)
+    voc_10_ix = (beh_data['voc_chan'] == 10).reshape(dims)
+    voc_20_ix = (beh_data['voc_chan'] == 20).reshape(dims)
+    gap_200_ix = (beh_data['gap_len'] == 'short').reshape(dims)
+    gap_600_ix = (beh_data['gap_len'] == 'long').reshape(dims)
+    maint_ix = (beh_data['attn'] == 'maint.').reshape(dims)
+    switch_ix = (beh_data['attn'] == 'switch').reshape(dims)
 
 # set up figure
 fig, axs = plt.subplots(3, 1, figsize=(3, 6.5))
@@ -76,6 +96,45 @@ for t, data in zip(times, datas):
     chan_10_vs_20 = np.nanmean(data, axis=(1, 2, 3))
     gap_200_vs_600 = np.nanmean(data, axis=(1, 3, 4))
     maint_vs_switch = np.nanmean(data, axis=(1, 2, 4))
+    # if only analyzing trials with perfect behavioral response, recompute
+    # the per-subject mean pupil resp. by condition using only those trials
+    # (a bit awkward because of potentially unequal counts)
+    if only_perfect:
+        # temporarily set these to infinite values (to check later that they
+        # got properly re-assigned)
+        chan_10_vs_20 = np.full_like(chan_10_vs_20, np.inf)
+        gap_200_vs_600 = np.full_like(gap_200_vs_600, np.inf)
+        maint_vs_switch = np.full_like(maint_vs_switch, np.inf)
+        # keep track of how many correct trials per condition
+        n_perfect_trials = dict()
+        for ix, subj in enumerate(subjects):
+            sj = np.zeros_like(perfect_ix)
+            sj[ix] = True
+            v10 = np.logical_and(perfect_ix, voc_10_ix)
+            v20 = np.logical_and(perfect_ix, voc_20_ix)
+            g2 = np.logical_and(perfect_ix, gap_200_ix)
+            g6 = np.logical_and(perfect_ix, gap_600_ix)
+            mn = np.logical_and(perfect_ix, maint_ix)
+            sw = np.logical_and(perfect_ix, switch_ix)
+            chan_10_vs_20[ix] = np.array([np.nanmean(data[sj & v10], axis=0),
+                                          np.nanmean(data[sj & v20], axis=0)])
+            gap_200_vs_600[ix] = np.array([np.nanmean(data[sj & g2], axis=0),
+                                           np.nanmean(data[sj & g6], axis=0)])
+            maint_vs_switch[ix] = np.array([np.nanmean(data[sj & mn], axis=0),
+                                            np.nanmean(data[sj & sw], axis=0)])
+            # bookkeeping for n_perfect_trials
+            conds = dict()
+            conds['voc'] = {10: np.logical_and(v10, sj).sum(),
+                            20: np.logical_and(v20, sj).sum()}
+            conds['gap'] = {200: np.logical_and(g2, sj).sum(),
+                            600: np.logical_and(g6, sj).sum()}
+            conds['attn'] = {'maint': np.logical_and(mn, sj).sum(),
+                             'switch': np.logical_and(sw, sj).sum()}
+            n_perfect_trials[subj] = conds
+        assert np.all(np.isfinite(chan_10_vs_20))
+        assert np.all(np.isfinite(gap_200_vs_600))
+        assert np.all(np.isfinite(maint_vs_switch))
+
     # axis limits
     ymax = np.max(np.mean(np.nanmean(data, axis=1), axis=0))  # ceil
     ymax = 10 ** np.trunc(np.log10(ymax)) if ymax < 1 else np.ceil(ymax)
@@ -176,6 +235,20 @@ for t, data in zip(times, datas):
             signif = np.where(np.array([p <= 0.05 for p in cluster_pvals]))[0]
             signif_clusters = [clusters[s] for s in signif]
             signif_cluster_pvals = cluster_pvals[signif]
+            # we only need x[0] in clusters because this is 1-D data; x[1] in
+            # clusters is just a list of all zeros (no spatial connectivity).
+            # All the hacky conversions to float, int, and list are because
+            # yaml doesn't understand numpy dtypes.
+            pupil_signifs = dict(thresh=float(thresh),
+                                 n_clusters=len(clusters),
+                                 clusters=[[int(y) for y in x[0]]
+                                           for x in clusters],
+                                 tvals=tvals.tolist(),
+                                 pvals=cluster_pvals.tolist())
+            label = '_vs_'.join([l.replace(' ', '-') for l in labels])
+            fname = 'voc_cluster_signifs_{}.yaml'.format(label)
+            with open(op.join(out_dir, fname), 'w') as f:
+                yaml.dump(pupil_signifs, stream=f)
             # plot stats
             for clu, pv in zip(signif_clusters, signif_cluster_pvals):
                 '''
@@ -228,14 +301,18 @@ for t, data in zip(times, datas):
 
         box_off(ax, ax_linewidth=0.5)
         ax.patch.set_facecolor('none')
-#fig.tight_layout(w_pad=2., rect=(0.02, 0, 1, 1))
+# fig.tight_layout(w_pad=2., rect=(0.02, 0, 1, 1))
 fig.tight_layout()
 fig.text(0.01, 0.98, 'a)')
 fig.text(0.01, 0.66, 'b)')
 fig.text(0.01, 0.34, 'c)')
 
 if savefig:
-    fig.savefig('pupil-fig-voc.pdf')
+    fig.savefig('pupil-fig-voc{}.pdf'.format(perfect_filename))
 else:
     plt.ion()
     plt.show()
+
+if only_perfect:
+    df = DataFrame.from_dict(n_perfect_trials, orient='index')
+    df.to_csv(op.join(out_dir, 'voc_perfect_trials.csv'))
