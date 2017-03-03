@@ -25,7 +25,7 @@ supplement:
 	supplement.md
 
 response:
-	pandoc --no-tex-ligatures --latex-engine=xelatex \
+	pandoc --no-tex-ligatures --latex-engine=xelatex --number-sections \
 	--template=pandoc/template-plain.tex \
 	--output=review/response-to-reviewers.pdf \
 	review/response-to-reviewers.md
