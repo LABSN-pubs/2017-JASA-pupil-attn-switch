@@ -21,8 +21,8 @@ _subm: manuscript.tex link_bib link_figs
 
 supplement:
 	pandoc --filter pandoc-citeproc --no-tex-ligatures --latex-engine=xelatex \
-	--template=pandoc/template-supplement.tex --output=supplement.pdf \
-	supplement.md
+	--template=pandoc/template-supplement.tex  --number-sections \
+	--output=supplement.pdf supplement.md
 
 response:
 	pandoc --no-tex-ligatures --latex-engine=xelatex --number-sections \

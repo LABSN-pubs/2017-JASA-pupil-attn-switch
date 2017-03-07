@@ -296,7 +296,8 @@ This model has the convenient advantage that coefficient estimates are
 interpretable as differences in bias and sensitivity on a d′ scale
 resulting from the various experimental manipulations.[@DeCarlo1998;
 @SheuEtAl2008; @McCloyLee2015]
-Full model specification is given in the supplementary material;
+Full model specifications are given in the supplementary material, Equations
+1 and 3;
 the general form of this model is given in Equation @eq-mod-probit, where
 $\Phi^{-1}$ is the inverse probit link function, $Pr(Y = 1)$ is the probability
 of button press, $X$ is the design matrix of trial parameters and indicator
@@ -305,14 +306,15 @@ variables, and $\beta$ is the vector of parameter coefficients to be estimated.
 (@eq-mod-probit)  $\Phi^{-1}(Pr(Y = 1 \mid X)) = X^\prime \beta$
 
 Reaction time was analyzed using linear
-mixed-effects regression (i.e., without a link function) but was otherwise
+mixed-effects regression (i.e., with identity link function) but was otherwise
 analyzed similarly to listener sensitivity.  Significance of predictors in the
 reaction time model was computed via F-tests using the Kenward-Roger
 approximation for degrees of freedom; significance in the sensitivity model was
 determined by likelihood ratio tests between models with and without the
 predictor of interest (as the Kenward-Roger approximation has not been
 demonstrated to work with non-normally-distributed response variables, i.e.,
-when modeling probabilities).  See supplementary material for full details.
+when modeling probabilities).  See supplementary material, Sections III.A and
+III.B and Tables I-III, for full details.
 
 ### Analysis of pupil diameter
 \label{sec-meth-pupil}
@@ -404,7 +406,7 @@ examined separately for each timing slot.  Foil response rates ranged from 1–4
 for slots 1 and 2 (before the switch gap), and from 9–15% for slots 3 and 4
 (after the switch gap), but showed no statistically reliable difference between
 maintain- and switch-attention trials for any of the four slots (see
-supplementary material for details).
+supplementary material, Section III.D.1, for details).
 
 ### Reaction time
 
@@ -426,7 +428,8 @@ significant interactions in reaction time among these trial parameters.
 Post-hoc analysis of reaction time by response slot showed showed no
 significant differences for the reverberation contrast.  For the talker gender
 (mis)match contrast and the maintain- versus switch-attention contrasts, there
-were significant differences only in slot 3 (see supplementary material for
+were significant differences only in slot 3 (see supplementary material,
+Section III.D.2 for
 details).  This is consistent with a view that the act of attention switching
 creates a lag or slow-down in auditory perception.[@LarsonLee2013a]
 
@@ -437,7 +440,8 @@ trials, and maintain/switch attention trials) are shown in Figure
 \ref{fig-rev-pupil}. Only the attentional manipulation shows a significant
 difference between conditions, with “switch attention” trials showing greater
 pupillary response than “maintain attention” trials in the time range from 1.0
-to 5.5 seconds ($t_{crit}=2.13$, _p_<0.001; see supplement for full
+to 5.5 seconds ($t_{crit}=2.13$, _p_<0.001; see supplementary material, Section
+III.C, and supplementary Table IV, for full
 statistical details). The time courses diverge
 as soon as listeners have heard the cue, and the response remains significantly
 higher in the switch-attention condition throughout the remainder of the trial.
@@ -615,8 +619,8 @@ on fixed-effect predictors (maintain/switch, 10- or 20-channel vocoder, and
 short/long mid-trial gap duration), a target/foil/neither indicator variable,
 and a subject-level random intercept. Statistical modeling of response time
 also mirrored Experiment 1, in omitting the indicator variable and considering
-only responses to targets and foils. See supplementary material for full
-details.
+only responses to targets and foils. See supplementary material, Sections IV.A
+and IV.B and Tables VI-VIII, for full details.
 
 ### Analysis of pupil diameter
 Analysis of pupil diameter was carried out as in Experiment 1: trials epoched
@@ -711,7 +715,8 @@ reaction times in the long-gap trials in slots 3 and 4 are expected given that
 listeners had additional time to process the first half of the trial and/or
 prepare for the second half in the long-gap condition. However, the difference
 in reaction time in slot 1 is unexpected and inexplicable given that the gap
-length manipulation was uncued.  See supplementary materials for details.
+length manipulation was uncued.  See supplementary material, Section IV.D.1
+for details.
 
 ### Pupillometry
 
@@ -730,7 +735,8 @@ significant difference in the time course of the pupillary response between
 long- and short-gap trials in the time range 3.9 - 5.0 s ($t_{crit}=2.13$,
 _p_<0.01), with the signals diverging around the onset of the
 mid-trial gap (though only differing statistically in the final ~1 s of the
-trial).
+trial).  See supplementary material, Section IV.C and Table IX, for full
+details.
 
 ![(Color online) Deconvolved pupil size (mean ±1 standard error across subjects) for (a) 10- versus 20-band vocoded stimuli, (b) 200 versus 600 ms mid-trial switch gap durations, and (c) maintain- versus switch-attention trials, with trial schematics showing the timecourse of stimulus events (compare to Figure \ref{fig-voc-trial}). Hatched region shows temporal span of statistically significant differences between time series. The late-trial divergence in (b) is attributable to the delay of stimulus presentation in the long-gap condition; the onset of divergence in (c) aligns with the end of the cue, as in Experiment 1 (see Figure \ref{fig-rev-pupil}c). a.u. = arbitrary units (see Section \ref{sec-meth-pupil} for explanation of “effort”).\label{fig-voc-pupil}](pupil-fig-voc.eps)
 
