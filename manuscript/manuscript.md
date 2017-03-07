@@ -355,7 +355,7 @@ only),[@MarisOostenveld2007] as implemented in `mne-python`.[@GramfortEtAl2013]
 ### Sensitivity
 \label{sec-res-exp1-dprime}
 
-Over all trials, sensitivity ranged across subjects from 1.7 to 4.2 (first
+Over all trials, sensitivity (d′) ranged across subjects from 1.7 to 4.2 (first
 quartile 1.9, median 2.4, third quartile 3.0).  Box-and-swarm plots displaying
 quartile and individual differences in d′ values between experimental
 conditions are shown in
@@ -590,8 +590,9 @@ one block of randomly mixed “maintain” and “switch” trials). Training bl
 were repeated until participants achieved ≥50% of trials correct on the
 homogenous blocks and ≥40% of trials correct on the mixed block. During
 testing, the three experimental conditions (maintain/switch, 10/20 channel
-vocoder, and 200/600 ms gap duration) were counterbalanced and randomly
-presented in 10 blocks of 32 trials each, for a total of 320 trials.
+vocoder, and 200/600 ms gap duration) were counterbalanced, intermixed within
+each block, and presented in 10 blocks of 32 trials each, for a total of 320
+trials.
 
 ### Behavioral analysis
 
@@ -633,7 +634,7 @@ carried out identically to Experiment 1.
 
 ### Sensitivity
 
-Over all trials, sensitivity ranged across subjects from 1.4 to 4.2 (first
+Over all trials, sensitivity (d′) ranged across subjects from 1.4 to 4.2 (first
 quartile 1.8, median 2.2, third quartile 2.7). Box-and-swarm plots displaying
 quartile and individual differences in d′ values between experimental
 conditions are shown in Figure \ref{fig-voc-dprime}.  Again, note that d′ is an
@@ -879,7 +880,7 @@ impairment and cognitive energy, might be described as the difference between
 “demands” and “motivation.”[@PichoraFullerEtAl2016]  In this light, we can
 understand why our stimulus manipulations yielded no change in pupillary
 response: our task required rapid-response target identification, in which
-listeners had no opportunity to ponder a distorted or partial percept, nor
+listeners had little opportunity to ponder a distorted or partial percept, nor
 could they later reconstruct whether a target had been present based on
 surrounding context.  Thus, the listener has no recourse by which to overcome
 the increased task demands, and consequently there should be no difference in
