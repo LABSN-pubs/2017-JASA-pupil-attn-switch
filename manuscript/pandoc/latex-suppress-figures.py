@@ -31,11 +31,14 @@ fignum = 1
 with open(infile, 'r') as f, open(outfile, 'w') as g:
     for line in f:
         # replace figure references with figure numbers
-        if '\\ref{' in line:
+        if '\\ref{' in line or '\\ref {' in line:
             for figname in figs.keys():
                 ref = '\\ref{{{}}}'.format(figname)
+                ref2 = '\\ref {{{}}}'.format(figname)
                 if ref in line:
                     line = line.replace(ref, figs[figname])
+                elif ref2 in line:
+                    line = line.replace(ref2, figs[figname])
         # replace figure code / caption with placeholder
         if '\\begin{figure}' in line:
             fig = True
