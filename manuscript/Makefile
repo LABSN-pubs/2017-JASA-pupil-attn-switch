@@ -58,3 +58,18 @@ cleanfigs:
 clean: cleantex
 	rm -f manuscript.pdf manuscript.tex submission.pdf submission.tex \
 	submission-no-figs.tex manuscript-prepress.pdf
+
+upload:
+	mkdir -p upload
+	cp submission.tex upload/Manuscript.tex
+	cp submission.pdf upload/ManuscriptWithInlineFigures.pdf
+	cp supplement.pdf upload/SuppPub1.pdf
+	cp review/response-to-reviewers.pdf upload/Rebuttal.pdf
+	cp ../figures/fig-trial-rev.eps upload/Figure1.eps
+	cp ../figures/fig-beh-rev.eps upload/Figure2.eps
+	cp ../figures/fig-beh-rev-rt.eps upload/Figure3.eps
+	cp ../figures/pupil-fig-rev.eps upload/Figure4.eps
+	cp ../figures/fig-trial-voc.eps upload/Figure5.eps
+	cp ../figures/fig-beh-voc.eps upload/Figure6.eps
+	cp ../figures/fig-beh-voc-rt.eps upload/Figure7.eps
+	cp ../figures/pupil-fig-voc.eps upload/Figure8.eps
