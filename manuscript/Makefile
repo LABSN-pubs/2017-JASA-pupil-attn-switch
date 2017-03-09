@@ -1,6 +1,6 @@
 EXTS = bbl aux ent fff log lof lol lot toc blg out pyg ttt
 
-.PHONY: link_bib link_figs link_subm_template cleantex clean
+.PHONY: link_bib link_figs link_subm_template cleantex clean upload
 
 submission: link_subm_template _subm cleantex
 
@@ -61,7 +61,7 @@ clean: cleantex
 
 upload:
 	mkdir -p upload
-	cp submission.tex upload/Manuscript.tex
+	cp submission-no-figs.tex upload/Manuscript.tex
 	cp submission.pdf upload/ManuscriptWithInlineFigures.pdf
 	cp supplement.pdf upload/SuppPub1.pdf
 	cp review/response-to-reviewers.pdf upload/Rebuttal.pdf
